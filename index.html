@@ -1,0 +1,651 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --c-primary: #2D6A4F;
+  --c-primary-light: #52B788;
+  --c-primary-pale: #D8F3DC;
+  --c-accent: #F4845F;
+  --c-accent-light: #FDEBD0;
+  --c-sky: #48CAE4;
+  --c-sky-pale: #E0F7FA;
+  --c-yellow: #F9C74F;
+  --c-yellow-pale: #FFF9DB;
+  --c-purple: #7B5EA7;
+  --c-purple-pale: #EDE7F6;
+  --c-red: #E63946;
+}
+body, html { font-family: var(--font-sans, 'Noto Sans KR', sans-serif); }
+.wrap { padding: 0; max-width: 100%; }
+
+.hero {
+  background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 50%, #40916C 100%);
+  padding: 28px 24px 20px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-title { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 4px; position: relative; }
+.hero-sub { color: rgba(255,255,255,0.75); font-size: 13px; position: relative; }
+.hero-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; position: relative; }
+.hero-badge {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex; align-items: center; gap: 4px;
+}
+
+.search-section {
+  background: var(--color-background-primary, #fff);
+  border-bottom: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+  padding: 16px 20px;
+}
+.search-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 130px; }
+.form-label { font-size: 11px; font-weight: 500; color: var(--color-text-secondary, #666); text-transform: uppercase; letter-spacing: 0.5px; }
+.form-group select, .form-group input {
+  border: 0.5px solid var(--color-border-secondary, #ccc);
+  border-radius: var(--border-radius-md, 8px);
+  padding: 8px 12px;
+  font-size: 14px;
+  background: var(--color-background-primary, #fff);
+  color: var(--color-text-primary, #111);
+  height: 38px;
+}
+.search-btn {
+  background: var(--c-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius-md, 8px);
+  padding: 0 20px;
+  height: 38px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.search-btn:hover { background: #1B4332; }
+
+.filter-row {
+  display: flex; gap: 8px; flex-wrap: wrap; padding: 10px 20px;
+  background: var(--color-background-secondary, #f9f9f7);
+  border-bottom: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+}
+.filter-chip {
+  font-size: 12px; padding: 4px 12px; border-radius: 20px; cursor: pointer;
+  border: 0.5px solid var(--color-border-secondary, #ccc);
+  background: var(--color-background-primary, #fff);
+  color: var(--color-text-secondary, #555);
+  display: flex; align-items: center; gap: 4px;
+  transition: all 0.15s;
+}
+.filter-chip.active {
+  background: var(--c-primary-pale); color: var(--c-primary);
+  border-color: var(--c-primary-light);
+  font-weight: 500;
+}
+.filter-chip:hover { border-color: var(--c-primary-light); color: var(--c-primary); }
+
+.main { display: flex; gap: 0; height: 580px; }
+
+.sidebar {
+  width: 300px; flex-shrink: 0;
+  border-right: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+  overflow-y: auto; background: var(--color-background-primary, #fff);
+}
+
+.result-header {
+  padding: 12px 16px 8px;
+  border-bottom: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.result-count { font-size: 13px; color: var(--color-text-secondary, #666); }
+.result-count strong { color: var(--c-primary); font-weight: 600; }
+
+.place-card {
+  padding: 14px 16px;
+  border-bottom: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+  cursor: pointer; transition: background 0.1s;
+}
+.place-card:hover, .place-card.active { background: var(--c-primary-pale); }
+.place-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.place-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary, #111); }
+.place-type-badge {
+  font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 500; flex-shrink: 0;
+}
+.badge-park { background: var(--c-primary-pale); color: var(--c-primary); }
+.badge-kids { background: var(--c-sky-pale); color: #006A77; }
+.badge-culture { background: var(--c-purple-pale); color: var(--c-purple); }
+.badge-play { background: var(--c-yellow-pale); color: #7A6210; }
+
+.place-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
+.place-tag {
+  font-size: 10px; padding: 2px 7px; border-radius: 8px;
+  background: var(--color-background-secondary, #f5f5f3);
+  color: var(--color-text-secondary, #666);
+  display: flex; align-items: center; gap: 3px;
+}
+.tag-ok { background: #E8F5E9; color: #2E7D32; }
+.tag-warn { background: #FFF3E0; color: #E65100; }
+.place-addr { font-size: 11px; color: var(--color-text-tertiary, #999); }
+
+.map-area {
+  flex: 1; position: relative; overflow: hidden;
+  background: #EEF4ED;
+}
+.map-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; color: var(--color-text-tertiary, #999); font-size: 13px;
+  position: relative;
+}
+.map-svg-wrap { width: 100%; height: 100%; position: absolute; inset: 0; }
+.map-info-panel {
+  position: absolute; bottom: 16px; right: 16px;
+  background: var(--color-background-primary, #fff);
+  border: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+  border-radius: var(--border-radius-lg, 12px);
+  padding: 16px; width: 260px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  display: none;
+}
+.map-info-panel.show { display: block; }
+.info-panel-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: var(--color-text-primary, #111); }
+.info-panel-type { font-size: 11px; color: var(--color-text-secondary, #666); margin-bottom: 12px; }
+.info-rows { display: flex; flex-direction: column; gap: 7px; }
+.info-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.info-icon { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+.info-ok { background: #E8F5E9; }
+.info-warn { background: #FFF3E0; }
+.info-neutral { background: var(--color-background-secondary, #f5f5f3); }
+.info-val { font-weight: 500; color: var(--color-text-primary, #111); }
+.info-label { color: var(--color-text-secondary, #666); margin-left: 2px; }
+.close-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; cursor: pointer; color: var(--color-text-secondary, #888); font-size: 18px; padding: 2px; }
+
+.legend {
+  position: absolute; top: 12px; left: 12px;
+  background: var(--color-background-primary, #fff);
+  border: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+  border-radius: var(--border-radius-md, 8px);
+  padding: 10px 12px; font-size: 11px;
+}
+.legend-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; color: var(--color-text-secondary, #555); }
+.legend-row:last-child { margin-bottom: 0; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+.stats-row {
+  display: flex; gap: 0;
+  border-top: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+  background: var(--color-background-secondary, #f9f9f7);
+}
+.stat-item {
+  flex: 1; padding: 10px 16px; text-align: center;
+  border-right: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num { font-size: 18px; font-weight: 700; color: var(--c-primary); }
+.stat-label { font-size: 10px; color: var(--color-text-secondary, #888); margin-top: 1px; }
+
+.loading-overlay {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.9);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; z-index: 10; border-radius: 8px;
+}
+.spinner {
+  width: 28px; height: 28px; border: 2px solid var(--c-primary-pale);
+  border-top-color: var(--c-primary); border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-size: 13px; color: var(--c-primary); font-weight: 500; }
+
+.api-section {
+  border-top: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+  padding: 16px 20px;
+  background: var(--color-background-primary, #fff);
+}
+.api-title { font-size: 13px; font-weight: 600; color: var(--color-text-primary, #111); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.event-cards { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
+.event-card {
+  flex-shrink: 0; width: 180px;
+  background: var(--color-background-secondary, #f9f9f7);
+  border: 0.5px solid var(--color-border-tertiary, #e5e5e5);
+  border-radius: var(--border-radius-md, 8px);
+  padding: 10px 12px;
+}
+.event-name { font-size: 12px; font-weight: 500; color: var(--color-text-primary, #111); margin-bottom: 4px; line-height: 1.4; }
+.event-meta { font-size: 10px; color: var(--color-text-tertiary, #999); }
+.event-type { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 6px; margin-bottom: 4px; background: var(--c-purple-pale); color: var(--c-purple); font-weight: 500; }
+
+.no-results { padding: 32px 16px; text-align: center; color: var(--color-text-tertiary, #999); font-size: 13px; }
+</style>
+
+<h2 class="sr-only">서울 어린이 동반 가족 나들이 통합 추천 서비스</h2>
+
+<div class="wrap">
+
+<div class="hero">
+  <div class="hero-title">서울 가족 나들이 플래너</div>
+  <div class="hero-sub">아이와 함께 떠나는 서울 나들이 — 주차·식당·공연·편의시설 한눈에</div>
+  <div class="hero-badges">
+    <span class="hero-badge"><i class="ti ti-car" aria-hidden="true"></i> 주차 정보</span>
+    <span class="hero-badge"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i> 키즈 맛집</span>
+    <span class="hero-badge"><i class="ti ti-star" aria-hidden="true"></i> 공연·전시</span>
+    <span class="hero-badge"><i class="ti ti-baby-carriage" aria-hidden="true"></i> 유아차 대여</span>
+    <span class="hero-badge"><i class="ti ti-heart" aria-hidden="true"></i> 수유실</span>
+    <span class="hero-badge"><i class="ti ti-building-hospital" aria-hidden="true"></i> 인근 병원</span>
+  </div>
+</div>
+
+<div class="search-section">
+  <div class="search-row">
+    <div class="form-group">
+      <span class="form-label">자치구 선택</span>
+      <select id="districtSelect">
+        <option value="">전체 (서울)</option>
+        <option value="종로구">종로구</option>
+        <option value="중구">중구</option>
+        <option value="용산구">용산구</option>
+        <option value="성동구">성동구</option>
+        <option value="광진구">광진구</option>
+        <option value="동대문구">동대문구</option>
+        <option value="중랑구">중랑구</option>
+        <option value="성북구">성북구</option>
+        <option value="강북구">강북구</option>
+        <option value="도봉구">도봉구</option>
+        <option value="노원구">노원구</option>
+        <option value="은평구">은평구</option>
+        <option value="서대문구">서대문구</option>
+        <option value="마포구">마포구</option>
+        <option value="양천구">양천구</option>
+        <option value="강서구">강서구</option>
+        <option value="구로구">구로구</option>
+        <option value="금천구">금천구</option>
+        <option value="영등포구">영등포구</option>
+        <option value="동작구">동작구</option>
+        <option value="관악구">관악구</option>
+        <option value="서초구">서초구</option>
+        <option value="강남구">강남구</option>
+        <option value="송파구">송파구</option>
+        <option value="강동구">강동구</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <span class="form-label">방문 날짜</span>
+      <input type="date" id="dateInput">
+    </div>
+    <div class="form-group" style="min-width:110px; max-width:130px;">
+      <span class="form-label">아이 연령대</span>
+      <select id="ageSelect">
+        <option value="">전체</option>
+        <option value="0">0~2세 (영아)</option>
+        <option value="3">3~5세 (유아)</option>
+        <option value="6">6~9세 (초등 저학년)</option>
+        <option value="10">10~13세 (초등 고학년)</option>
+      </select>
+    </div>
+    <button class="search-btn" onclick="searchPlaces()">
+      <i class="ti ti-search" aria-hidden="true"></i> 추천 찾기
+    </button>
+  </div>
+</div>
+
+<div class="filter-row" id="filterRow">
+  <span class="filter-chip active" data-filter="all" onclick="setFilter('all', this)">
+    <i class="ti ti-layout-grid" aria-hidden="true"></i> 전체
+  </span>
+  <span class="filter-chip" data-filter="park" onclick="setFilter('park', this)">
+    <i class="ti ti-trees" aria-hidden="true"></i> 공원·자연
+  </span>
+  <span class="filter-chip" data-filter="kids" onclick="setFilter('kids', this)">
+    <i class="ti ti-seeding" aria-hidden="true"></i> 키즈카페
+  </span>
+  <span class="filter-chip" data-filter="culture" onclick="setFilter('culture', this)">
+    <i class="ti ti-theater" aria-hidden="true"></i> 문화·공연
+  </span>
+  <span class="filter-chip" data-filter="play" onclick="setFilter('play', this)">
+    <i class="ti ti-roller-skating" aria-hidden="true"></i> 놀이시설
+  </span>
+  <span class="filter-chip" data-filter="parking" onclick="setFilter('parking', this)">
+    <i class="ti ti-car" aria-hidden="true"></i> 주차 가능
+  </span>
+  <span class="filter-chip" data-filter="stroller" onclick="setFilter('stroller', this)">
+    <i class="ti ti-baby-carriage" aria-hidden="true"></i> 유아차 대여
+  </span>
+</div>
+
+<div class="main">
+  <div class="sidebar">
+    <div class="result-header">
+      <span class="result-count" id="resultCount">추천 장소 <strong id="countNum">0</strong>곳</span>
+    </div>
+    <div id="placeList">
+      <div class="no-results">
+        <i class="ti ti-map-search" style="font-size:32px; display:block; margin-bottom:8px; opacity:0.4" aria-hidden="true"></i>
+        지역과 날짜를 선택하고<br>추천 찾기를 눌러주세요
+      </div>
+    </div>
+  </div>
+
+  <div class="map-area" id="mapArea">
+    <div id="mapContainer" style="width:100%; height:100%; position:relative;">
+      <div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; opacity:0.5;">
+        <i class="ti ti-map-2" style="font-size:48px; color: var(--c-primary)" aria-hidden="true"></i>
+        <span style="font-size:13px; color: var(--color-text-secondary)">지역을 선택하면 지도에 표시됩니다</span>
+      </div>
+      <div class="legend">
+        <div class="legend-row"><div class="legend-dot" style="background:#2D6A4F"></div> 공원·자연</div>
+        <div class="legend-row"><div class="legend-dot" style="background:#48CAE4"></div> 키즈카페</div>
+        <div class="legend-row"><div class="legend-dot" style="background:#7B5EA7"></div> 문화·공연</div>
+        <div class="legend-row"><div class="legend-dot" style="background:#F9C74F"></div> 놀이시설</div>
+      </div>
+    </div>
+
+    <div class="map-info-panel" id="infoPanel">
+      <button class="close-btn" onclick="closePanel()" aria-label="닫기">×</button>
+      <div class="info-panel-name" id="panelName"></div>
+      <div class="info-panel-type" id="panelType"></div>
+      <div class="info-rows" id="panelRows"></div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-row" id="statsRow" style="display:none;">
+  <div class="stat-item">
+    <div class="stat-num" id="statPark">0</div>
+    <div class="stat-label">공원·자연</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statKids">0</div>
+    <div class="stat-label">키즈카페</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statCulture">0</div>
+    <div class="stat-label">문화·공연</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statParking">0</div>
+    <div class="stat-label">주차 가능</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statStroller">0</div>
+    <div class="stat-label">유아차 대여</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="statNursing">0</div>
+    <div class="stat-label">수유실</div>
+  </div>
+</div>
+
+<div class="api-section" id="eventSection" style="display:none;">
+  <div class="api-title">
+    <i class="ti ti-ticket" style="font-size:16px; color:var(--c-purple)" aria-hidden="true"></i>
+    이 지역 공연·행사 <span id="eventDistLabel" style="color:var(--c-purple);font-weight:700;"></span>
+    <span id="eventLoadingSpan" style="font-size:11px;color:var(--color-text-tertiary); font-weight:400; margin-left:4px;"></span>
+  </div>
+  <div class="event-cards" id="eventCards"></div>
+</div>
+
+</div>
+
+<script>
+const today = new Date();
+document.getElementById('dateInput').value = today.toISOString().split('T')[0];
+
+const PLACES_DB = [
+  { id:1, name:'서울어린이대공원', gu:'광진구', type:'park', lat:37.548, lng:127.073, addr:'광진구 능동로 216', parking:true, stroller:true, nursing:true, hospital:true, yezkids:true, tags:['무료입장','동물원','놀이터'], ages:[0,3,6,10] },
+  { id:2, name:'북서울꿈의숲', gu:'강북구', type:'park', lat:37.622, lng:127.046, addr:'강북구 월계로 173', parking:true, stroller:false, nursing:true, hospital:false, yezkids:true, tags:['산책','연못','전망대'], ages:[0,3,6,10] },
+  { id:3, name:'서울숲', gu:'성동구', type:'park', lat:37.544, lng:127.037, addr:'성동구 뚝섬로 273', parking:true, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['자연놀이터','자전거','잔디광장'], ages:[3,6,10] },
+  { id:4, name:'월드컵공원 (평화의공원)', gu:'마포구', type:'park', lat:37.569, lng:126.898, addr:'마포구 하늘공원로 95', parking:true, stroller:false, nursing:false, hospital:false, yezkids:true, tags:['억새','자전거','피크닉'], ages:[3,6,10] },
+  { id:5, name:'올림픽공원', gu:'송파구', type:'park', lat:37.520, lng:127.122, addr:'송파구 올림픽로 424', parking:true, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['조각공원','운동','피크닉'], ages:[0,3,6,10] },
+  { id:6, name:'보라매공원', gu:'동작구', type:'park', lat:37.492, lng:126.919, addr:'동작구 보라매로5길 15', parking:true, stroller:false, nursing:false, hospital:false, yezkids:true, tags:['조깅','항공전시','무료'], ages:[6,10] },
+  { id:7, name:'하늘키즈카페 (강남)', gu:'강남구', type:'kids', lat:37.499, lng:127.027, addr:'강남구 테헤란로 101', parking:true, stroller:false, nursing:true, hospital:true, yezkids:true, tags:['실내놀이','짚라인','음식코너'], ages:[0,3,6] },
+  { id:8, name:'더키즈 (마포)', gu:'마포구', type:'kids', lat:37.553, lng:126.908, addr:'마포구 성암로 189', parking:false, stroller:false, nursing:true, hospital:false, yezkids:true, tags:['블록놀이','미술체험'], ages:[3,6] },
+  { id:9, name:'키즈파크 (노원)', gu:'노원구', type:'kids', lat:37.652, lng:127.064, addr:'노원구 동일로 1329', parking:true, stroller:true, nursing:true, hospital:true, yezkids:true, tags:['유아전용','볼풀','미끄럼틀'], ages:[0,3] },
+  { id:10, name:'국립어린이과학관', gu:'종로구', type:'culture', lat:37.581, lng:126.985, addr:'종로구 창경궁로 215', parking:false, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['과학체험','전시','예약권장'], ages:[3,6,10] },
+  { id:11, name:'국립중앙박물관 (어린이박물관)', gu:'용산구', type:'culture', lat:37.523, lng:126.979, addr:'용산구 서빙고로 137', parking:true, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['무료','역사체험','기획전'], ages:[3,6,10] },
+  { id:12, name:'서울상상나라', gu:'광진구', type:'culture', lat:37.549, lng:127.071, addr:'광진구 능동로 216 어린이대공원내', parking:true, stroller:true, nursing:true, hospital:true, yezkids:true, tags:['체험형전시','0~7세추천'], ages:[0,3,6] },
+  { id:13, name:'뮤지엄김치간 (인사동)', gu:'종로구', type:'culture', lat:37.573, lng:126.986, addr:'종로구 인사동11길 4', parking:false, stroller:false, nursing:false, hospital:false, yezkids:true, tags:['전통문화','체험'], ages:[6,10] },
+  { id:14, name:'어린이도서관 (노원)', gu:'노원구', type:'culture', lat:37.654, lng:127.057, addr:'노원구 동일로 1329', parking:true, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['독서','프로그램','무료'], ages:[0,3,6,10] },
+  { id:15, name:'드림플레이 (용산)', gu:'용산구', type:'play', lat:37.527, lng:126.963, addr:'용산구 한강대로 32', parking:true, stroller:false, nursing:true, hospital:true, yezkids:true, tags:['실내놀이터','스포츠','키즈존'], ages:[3,6,10] },
+  { id:16, name:'뚝섬놀이터 (한강)', gu:'성동구', type:'play', lat:37.531, lng:127.059, addr:'성동구 뚝섬로 1나길', parking:true, stroller:false, nursing:false, hospital:false, yezkids:true, tags:['강변','모래놀이','자전거'], ages:[3,6,10] },
+  { id:17, name:'경의선숲길 놀이터', gu:'마포구', type:'play', lat:37.555, lng:126.919, addr:'마포구 와우산로 94', parking:false, stroller:true, nursing:false, hospital:false, yezkids:true, tags:['도심공원','산책','무료'], ages:[3,6] },
+  { id:18, name:'창경궁', gu:'종로구', type:'culture', lat:37.578, lng:126.993, addr:'종로구 창경궁로 185', parking:false, stroller:true, nursing:false, hospital:false, yezkids:true, tags:['역사','궁궐','야간특별관람'], ages:[6,10] },
+  { id:19, name:'남산서울타워', gu:'중구', type:'culture', lat:37.551, lng:126.988, addr:'중구 남산공원길 105', parking:true, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['전망대','케이블카','야경'], ages:[3,6,10] },
+  { id:20, name:'강동키즈파크', gu:'강동구', type:'kids', lat:37.548, lng:127.154, addr:'강동구 올림픽로 674', parking:true, stroller:true, nursing:true, hospital:true, yezkids:true, tags:['대형실내','물놀이','식당연계'], ages:[0,3,6] },
+];
+
+const EVENTS_BY_GU = {
+  '광진구': [
+    { name:'서울어린이대공원 여름축제', type:'축제', date:'7/1~8/31', venue:'어린이대공원' },
+    { name:'인형극 "토끼와 거북이"', type:'공연', date:'매주 토·일 14:00', venue:'어린이대공원 야외무대' },
+  ],
+  '강남구': [
+    { name:'키즈뮤지컬 "어린왕자"', type:'공연', date:'~2024.09', venue:'강남아트센터' },
+    { name:'STEAM 과학체험전', type:'전시', date:'상시', venue:'코엑스' },
+  ],
+  '송파구': [
+    { name:'올림픽공원 음악축제', type:'축제', date:'8월 중', venue:'올림픽공원' },
+    { name:'어린이 역사탐방 프로그램', type:'교육', date:'매주 토 10:00', venue:'몽촌토성 역사관' },
+  ],
+  '종로구': [
+    { name:'창경궁 야간 특별관람', type:'전시', date:'4월~10월 금·토', venue:'창경궁' },
+    { name:'인사동 어린이 공예마켓', type:'축제', date:'매월 둘째 주말', venue:'인사동 사거리' },
+  ],
+  '용산구': [
+    { name:'국립중앙박물관 기획특별전', type:'전시', date:'상시', venue:'국립중앙박물관' },
+    { name:'용산어린이정원 개방', type:'축제', date:'상시', venue:'용산공원' },
+  ],
+  '마포구': [
+    { name:'월드컵공원 환경체험학교', type:'교육', date:'주말 10:00~16:00', venue:'노을공원' },
+    { name:'홍대 어린이 버스킹 페스티벌', type:'공연', date:'7~9월 매주 토', venue:'홍대 놀이터' },
+  ],
+  '성동구': [
+    { name:'서울숲 버그 호텔 생태체험', type:'교육', date:'매월 셋째 토 10:00', venue:'서울숲' },
+    { name:'뚝섬한강 물놀이장 개장', type:'축제', date:'7/1~8/25', venue:'뚝섬한강공원' },
+  ],
+  '노원구': [
+    { name:'어린이 미술관 여름방학 프로그램', type:'교육', date:'7~8월', venue:'노원 어린이미술관' },
+    { name:'당현천 물축제', type:'축제', date:'8월 중', venue:'당현천' },
+  ],
+};
+
+let currentFilter = 'all';
+let allPlaces = [];
+let displayedPlaces = [];
+
+function setFilter(filter, el) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderList(displayedPlaces);
+}
+
+function getFilteredPlaces(places) {
+  if (currentFilter === 'all') return places;
+  if (currentFilter === 'parking') return places.filter(p => p.parking);
+  if (currentFilter === 'stroller') return places.filter(p => p.stroller);
+  return places.filter(p => p.type === currentFilter);
+}
+
+function searchPlaces() {
+  const gu = document.getElementById('districtSelect').value;
+  const age = document.getElementById('ageSelect').value;
+
+  let results = [...PLACES_DB];
+  if (gu) results = results.filter(p => p.gu === gu);
+  if (age !== '') results = results.filter(p => p.ages.includes(parseInt(age)));
+
+  allPlaces = results;
+  displayedPlaces = results;
+
+  renderList(results);
+  renderMap(results);
+  updateStats(results);
+
+  document.getElementById('statsRow').style.display = 'flex';
+  document.getElementById('eventSection').style.display = 'block';
+  document.getElementById('eventDistLabel').textContent = gu || '서울 전체';
+  renderEvents(gu);
+}
+
+function renderList(places) {
+  const filtered = getFilteredPlaces(places);
+  document.getElementById('countNum').textContent = filtered.length;
+
+  if (filtered.length === 0) {
+    document.getElementById('placeList').innerHTML = '<div class="no-results"><i class="ti ti-mood-sad" style="font-size:28px;display:block;margin-bottom:8px;opacity:0.4" aria-hidden="true"></i>해당 조건의 장소가 없습니다</div>';
+    return;
+  }
+
+  const typeMap = { park:'공원·자연', kids:'키즈카페', culture:'문화·공연', play:'놀이시설' };
+  const badgeMap = { park:'badge-park', kids:'badge-kids', culture:'badge-culture', play:'badge-play' };
+
+  document.getElementById('placeList').innerHTML = filtered.map(p => `
+    <div class="place-card" onclick="showInfo(${p.id})" data-id="${p.id}">
+      <div class="place-card-top">
+        <span class="place-name">${p.name}</span>
+        <span class="place-type-badge ${badgeMap[p.type]}">${typeMap[p.type]}</span>
+      </div>
+      <div class="place-tags">
+        ${p.parking ? '<span class="place-tag tag-ok"><i class="ti ti-car" aria-hidden="true"></i>주차</span>' : '<span class="place-tag tag-warn"><i class="ti ti-car-off" aria-hidden="true"></i>주차불가</span>'}
+        ${p.stroller ? '<span class="place-tag tag-ok"><i class="ti ti-baby-carriage" aria-hidden="true"></i>유아차</span>' : ''}
+        ${p.nursing ? '<span class="place-tag tag-ok"><i class="ti ti-heart" aria-hidden="true"></i>수유실</span>' : ''}
+        ${p.hospital ? '<span class="place-tag tag-ok"><i class="ti ti-building-hospital" aria-hidden="true"></i>병원</span>' : ''}
+        ${p.yezkids ? '<span class="place-tag tag-ok">예스키즈</span>' : ''}
+        ${p.tags.slice(0,2).map(t => `<span class="place-tag">${t}</span>`).join('')}
+      </div>
+      <div class="place-addr"><i class="ti ti-map-pin" style="font-size:11px" aria-hidden="true"></i> ${p.addr}</div>
+    </div>
+  `).join('');
+}
+
+function renderMap(places) {
+  const colMap = { park:'#2D6A4F', kids:'#48CAE4', culture:'#7B5EA7', play:'#F9C74F' };
+  const container = document.getElementById('mapContainer');
+
+  const lats = places.map(p=>p.lat);
+  const lngs = places.map(p=>p.lng);
+  const minLat = Math.min(...lats)-0.01, maxLat = Math.max(...lats)+0.01;
+  const minLng = Math.min(...lngs)-0.01, maxLng = Math.max(...lngs)+0.01;
+
+  const W = 380, H = 500;
+  const toX = lng => ((lng - minLng) / (maxLng - minLng)) * (W - 40) + 20;
+  const toY = lat => ((maxLat - lat) / (maxLat - minLat)) * (H - 40) + 20;
+
+  const dots = places.map(p => {
+    const x = toX(p.lng), y = toY(p.lat);
+    const c = colMap[p.type];
+    return `<g onclick="showInfo(${p.id})" style="cursor:pointer" role="button" aria-label="${p.name}">
+      <circle cx="${x}" cy="${y}" r="10" fill="${c}" opacity="0.2"/>
+      <circle cx="${x}" cy="${y}" r="6" fill="${c}" stroke="#fff" stroke-width="1.5"/>
+    </g>`;
+  }).join('');
+
+  container.innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <rect width="${W}" height="${H}" fill="#EEF4ED"/>
+      <rect x="10" y="10" width="${W-20}" height="${H-20}" rx="8" fill="#E8F0E8" stroke="#C8D8C8" stroke-width="0.5"/>
+      ${dots}
+    </svg>
+    <div class="legend">
+      <div class="legend-row"><div class="legend-dot" style="background:#2D6A4F"></div> 공원·자연</div>
+      <div class="legend-row"><div class="legend-dot" style="background:#48CAE4"></div> 키즈카페</div>
+      <div class="legend-row"><div class="legend-dot" style="background:#7B5EA7"></div> 문화·공연</div>
+      <div class="legend-row"><div class="legend-dot" style="background:#F9C74F"></div> 놀이시설</div>
+    </div>
+  `;
+}
+
+function showInfo(id) {
+  const p = PLACES_DB.find(x => x.id === id);
+  if (!p) return;
+  document.querySelectorAll('.place-card').forEach(c => c.classList.remove('active'));
+  const card = document.querySelector(`[data-id="${id}"]`);
+  if (card) card.classList.add('active');
+
+  const typeMap = { park:'공원·자연', kids:'키즈카페', culture:'문화·공연', play:'놀이시설' };
+  document.getElementById('panelName').textContent = p.name;
+  document.getElementById('panelType').textContent = `${p.gu} · ${typeMap[p.type]}`;
+
+  const rows = [
+    { ok: p.parking, icon:'ti-car', label:'주차장', ok_txt:'이용 가능', no_txt:'주차 불가' },
+    { ok: p.stroller, icon:'ti-baby-carriage', label:'유아차 대여', ok_txt:'있음', no_txt:'미제공' },
+    { ok: p.nursing, icon:'ti-heart', label:'수유실', ok_txt:'있음', no_txt:'없음' },
+    { ok: p.hospital, icon:'ti-building-hospital', label:'인근 소아과', ok_txt:'있음', no_txt:'확인 필요' },
+    { ok: p.yezkids, icon:'ti-mood-happy', label:'키즈존', ok_txt:'예스키즈', no_txt:'노키즈' },
+  ];
+
+  document.getElementById('panelRows').innerHTML = rows.map(r => `
+    <div class="info-row">
+      <div class="info-icon ${r.ok ? 'info-ok':'info-warn'}">
+        <i class="ti ${r.icon}" style="font-size:14px; color:${r.ok ? '#2E7D32':'#E65100'}" aria-hidden="true"></i>
+      </div>
+      <span class="info-label">${r.label}</span>
+      <span class="info-val" style="margin-left:auto; color:${r.ok ? '#2E7D32':'#E65100'}">
+        ${r.ok ? r.ok_txt : r.no_txt}
+      </span>
+    </div>
+  `).join('');
+
+  document.getElementById('infoPanel').classList.add('show');
+}
+
+function closePanel() {
+  document.getElementById('infoPanel').classList.remove('show');
+  document.querySelectorAll('.place-card').forEach(c => c.classList.remove('active'));
+}
+
+function updateStats(places) {
+  document.getElementById('statPark').textContent = places.filter(p=>p.type==='park').length;
+  document.getElementById('statKids').textContent = places.filter(p=>p.type==='kids').length;
+  document.getElementById('statCulture').textContent = places.filter(p=>p.type==='culture').length;
+  document.getElementById('statParking').textContent = places.filter(p=>p.parking).length;
+  document.getElementById('statStroller').textContent = places.filter(p=>p.stroller).length;
+  document.getElementById('statNursing').textContent = places.filter(p=>p.nursing).length;
+}
+
+function renderEvents(gu) {
+  const el = document.getElementById('eventLoadingSpan');
+  el.textContent = '공연 정보 불러오는 중...';
+  const eventCards = document.getElementById('eventCards');
+  eventCards.innerHTML = '';
+
+  setTimeout(() => {
+    el.textContent = '';
+    let events = [];
+    if (gu && EVENTS_BY_GU[gu]) {
+      events = EVENTS_BY_GU[gu];
+    } else {
+      Object.values(EVENTS_BY_GU).forEach(arr => events.push(...arr));
+      events = events.slice(0, 6);
+    }
+
+    if (events.length === 0) {
+      eventCards.innerHTML = '<span style="font-size:12px;color:var(--color-text-tertiary);padding:8px 0;">등록된 공연·행사 정보가 없습니다</span>';
+      return;
+    }
+
+    eventCards.innerHTML = events.map(e => `
+      <div class="event-card">
+        <span class="event-type">${e.type}</span>
+        <div class="event-name">${e.name}</div>
+        <div class="event-meta"><i class="ti ti-calendar" style="font-size:11px" aria-hidden="true"></i> ${e.date}</div>
+        <div class="event-meta" style="margin-top:2px"><i class="ti ti-map-pin" style="font-size:11px" aria-hidden="true"></i> ${e.venue}</div>
+      </div>
+    `).join('');
+  }, 900);
+}
+
+searchPlaces();
+</script>
