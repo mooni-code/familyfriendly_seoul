@@ -1,0 +1,351 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+.app{width:100%;font-family:var(--font-sans);}
+
+.hero{background:#1B4332;padding:18px 16px 14px;}
+.hero-title{color:#fff;font-size:18px;font-weight:500;margin-bottom:2px;}
+.hero-sub{color:rgba(255,255,255,.65);font-size:12px;}
+.hero-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.hero-chip{background:rgba(255,255,255,.13);border:0.5px solid rgba(255,255,255,.22);color:#fff;font-size:11px;padding:3px 9px;border-radius:20px;display:flex;align-items:center;gap:3px;}
+
+.search-box{background:var(--color-background-primary);padding:12px 14px;border-bottom:0.5px solid var(--color-border-tertiary);}
+.field-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:8px;}
+.field-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:3px;font-weight:500;letter-spacing:.3px;}
+.field-row select,.field-row input{width:100%;height:40px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:0 10px;background:var(--color-background-primary);color:var(--color-text-primary);}
+.age-row{margin-bottom:8px;}
+.age-row select{width:100%;height:40px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:0 10px;background:var(--color-background-primary);color:var(--color-text-primary);}
+.search-btn{width:100%;height:42px;background:#2D6A4F;color:#fff;border:none;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+.search-btn:active{background:#1B4332;}
+
+.filter-scroll{display:flex;gap:7px;overflow-x:auto;padding:10px 14px;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);}
+.filter-scroll::-webkit-scrollbar{display:none;}
+.fchip{flex-shrink:0;font-size:12px;padding:5px 12px;border-radius:20px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-secondary);display:flex;align-items:center;gap:4px;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+.fchip.on{background:#D8F3DC;color:#1B4332;border-color:#52B788;font-weight:500;}
+
+.stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--color-border-tertiary);border-bottom:0.5px solid var(--color-border-tertiary);}
+.stat-cell{background:var(--color-background-primary);padding:10px 8px;text-align:center;}
+.stat-n{font-size:20px;font-weight:500;color:#2D6A4F;}
+.stat-l{font-size:10px;color:var(--color-text-secondary);margin-top:1px;}
+
+.result-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--color-border-tertiary);}
+.result-txt{font-size:13px;color:var(--color-text-secondary);}
+.result-txt strong{color:#2D6A4F;font-weight:500;}
+
+.place-list{display:flex;flex-direction:column;}
+.pcard{padding:14px;border-bottom:0.5px solid var(--color-border-tertiary);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.pcard.active,.pcard:active{background:#D8F3DC;}
+.pcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:8px;}
+.pname{font-size:14px;font-weight:500;color:var(--color-text-primary);flex:1;}
+.ptyp{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;flex-shrink:0;}
+.tp-park{background:#D8F3DC;color:#1B4332;}
+.tp-kids{background:#E0F7FA;color:#006A77;}
+.tp-culture{background:#EDE7F6;color:#4A148C;}
+.tp-play{background:#FFF9DB;color:#7A6210;}
+.ptags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px;}
+.ptag{font-size:11px;padding:2px 7px;border-radius:7px;background:var(--color-background-secondary);color:var(--color-text-secondary);display:flex;align-items:center;gap:2px;}
+.tok{background:#E8F5E9;color:#2E7D32;}
+.twarn{background:#FFF3E0;color:#E65100;}
+.paddr{font-size:11px;color:var(--color-text-tertiary);}
+
+.detail-overlay{background:var(--color-background-primary);border-top:0.5px solid var(--color-border-tertiary);padding:16px 14px;display:none;}
+.detail-overlay.show{display:block;}
+.det-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.det-name{font-size:16px;font-weight:500;color:var(--color-text-primary);}
+.det-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px;}
+.det-close{background:none;border:none;cursor:pointer;color:var(--color-text-secondary);font-size:20px;padding:0 0 0 8px;line-height:1;}
+.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+.icard{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;display:flex;align-items:center;gap:8px;}
+.iico{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.iico-ok{background:#E8F5E9;}
+.iico-no{background:#FFF3E0;}
+.i-label{font-size:11px;color:var(--color-text-secondary);}
+.i-val{font-size:12px;font-weight:500;}
+.i-ok{color:#2E7D32;}
+.i-no{color:#E65100;}
+.det-addr{font-size:12px;color:var(--color-text-tertiary);margin-top:10px;display:flex;align-items:center;gap:4px;}
+.det-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.det-tag{font-size:11px;padding:3px 9px;border-radius:8px;background:var(--color-background-secondary);color:var(--color-text-secondary);}
+
+.event-sec{background:var(--color-background-primary);padding:14px;border-top:0.5px solid var(--color-border-tertiary);display:none;}
+.event-sec.show{display:block;}
+.ev-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.ev-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;}
+.ev-scroll::-webkit-scrollbar{display:none;}
+.ecard{flex-shrink:0;width:160px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px;}
+.etype{display:inline-block;font-size:10px;padding:2px 6px;border-radius:6px;background:#EDE7F6;color:#4A148C;font-weight:500;margin-bottom:5px;}
+.ename{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:4px;line-height:1.4;}
+.emeta{font-size:11px;color:var(--color-text-tertiary);}
+
+.empty{padding:40px 16px;text-align:center;color:var(--color-text-tertiary);font-size:13px;}
+.empty i{font-size:36px;display:block;margin-bottom:8px;opacity:.35;}
+</style>
+
+<h2 class="sr-only">서울 어린이 동반 가족 나들이 통합 추천 서비스</h2>
+<div class="app">
+
+<div class="hero">
+  <div class="hero-title">서울 가족 나들이 플래너</div>
+  <div class="hero-sub">아이와 함께 떠나는 서울 나들이 통합 안내</div>
+  <div class="hero-chips">
+    <span class="hero-chip"><i class="ti ti-car" aria-hidden="true"></i>주차</span>
+    <span class="hero-chip"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i>키즈맛집</span>
+    <span class="hero-chip"><i class="ti ti-baby-carriage" aria-hidden="true"></i>유아차</span>
+    <span class="hero-chip"><i class="ti ti-heart" aria-hidden="true"></i>수유실</span>
+    <span class="hero-chip"><i class="ti ti-building-hospital" aria-hidden="true"></i>병원</span>
+  </div>
+</div>
+
+<div class="search-box">
+  <div class="field-row">
+    <div>
+      <div class="field-label">자치구</div>
+      <select id="guSel">
+        <option value="">전체 서울</option>
+        <option>종로구</option><option>중구</option><option>용산구</option>
+        <option>성동구</option><option>광진구</option><option>동대문구</option>
+        <option>중랑구</option><option>성북구</option><option>강북구</option>
+        <option>도봉구</option><option>노원구</option><option>은평구</option>
+        <option>서대문구</option><option>마포구</option><option>양천구</option>
+        <option>강서구</option><option>구로구</option><option>금천구</option>
+        <option>영등포구</option><option>동작구</option><option>관악구</option>
+        <option>서초구</option><option>강남구</option><option>송파구</option>
+        <option>강동구</option>
+      </select>
+    </div>
+    <div>
+      <div class="field-label">방문 날짜</div>
+      <input type="date" id="dateSel">
+    </div>
+  </div>
+  <div class="age-row">
+    <div class="field-label">아이 연령대</div>
+    <select id="ageSel">
+      <option value="">전체 연령</option>
+      <option value="0">0~2세 (영아)</option>
+      <option value="3">3~5세 (유아)</option>
+      <option value="6">6~9세 (초등 저학년)</option>
+      <option value="10">10~13세 (초등 고학년)</option>
+    </select>
+  </div>
+  <button class="search-btn" onclick="doSearch()">
+    <i class="ti ti-search" aria-hidden="true"></i> 추천 장소 찾기
+  </button>
+</div>
+
+<div class="filter-scroll" id="filterRow">
+  <span class="fchip on" data-f="all" onclick="setF('all',this)"><i class="ti ti-layout-grid" aria-hidden="true"></i>전체</span>
+  <span class="fchip" data-f="park" onclick="setF('park',this)"><i class="ti ti-trees" aria-hidden="true"></i>공원·자연</span>
+  <span class="fchip" data-f="kids" onclick="setF('kids',this)"><i class="ti ti-seeding" aria-hidden="true"></i>키즈카페</span>
+  <span class="fchip" data-f="culture" onclick="setF('culture',this)"><i class="ti ti-theater" aria-hidden="true"></i>문화·공연</span>
+  <span class="fchip" data-f="play" onclick="setF('play',this)"><i class="ti ti-roller-skating" aria-hidden="true"></i>놀이시설</span>
+  <span class="fchip" data-f="parking" onclick="setF('parking',this)"><i class="ti ti-car" aria-hidden="true"></i>주차 가능</span>
+  <span class="fchip" data-f="stroller" onclick="setF('stroller',this)"><i class="ti ti-baby-carriage" aria-hidden="true"></i>유아차 대여</span>
+</div>
+
+<div class="stats-grid" id="statsGrid" style="display:none;">
+  <div class="stat-cell"><div class="stat-n" id="sP">0</div><div class="stat-l">공원·자연</div></div>
+  <div class="stat-cell"><div class="stat-n" id="sK">0</div><div class="stat-l">키즈카페</div></div>
+  <div class="stat-cell"><div class="stat-n" id="sC">0</div><div class="stat-l">문화·공연</div></div>
+  <div class="stat-cell"><div class="stat-n" id="sPk">0</div><div class="stat-l">주차 가능</div></div>
+  <div class="stat-cell"><div class="stat-n" id="sSt">0</div><div class="stat-l">유아차 대여</div></div>
+  <div class="stat-cell"><div class="stat-n" id="sN">0</div><div class="stat-l">수유실</div></div>
+</div>
+
+<div class="result-bar" id="resultBar" style="display:none;">
+  <span class="result-txt">추천 장소 <strong id="rCount">0</strong>곳</span>
+</div>
+
+<div class="place-list" id="placeList">
+  <div class="empty">
+    <i class="ti ti-map-search" aria-hidden="true"></i>
+    지역과 날짜를 선택 후<br>추천 찾기를 눌러주세요
+  </div>
+</div>
+
+<div class="detail-overlay" id="detPanel">
+  <div class="det-head">
+    <div>
+      <div class="det-name" id="dName"></div>
+      <div class="det-sub" id="dSub"></div>
+    </div>
+    <button class="det-close" onclick="closeDetail()" aria-label="닫기">×</button>
+  </div>
+  <div class="info-grid" id="dInfoGrid"></div>
+  <div class="det-tags" id="dTags"></div>
+  <div class="det-addr" id="dAddr"></div>
+</div>
+
+<div class="event-sec" id="eventSec">
+  <div class="ev-title">
+    <i class="ti ti-ticket" style="font-size:15px;color:#7B5EA7" aria-hidden="true"></i>
+    이 지역 공연·행사
+    <span id="evDist" style="color:#4A148C;font-weight:500;"></span>
+  </div>
+  <div class="ev-scroll" id="evCards"></div>
+</div>
+
+</div>
+
+<script>
+const today=new Date();
+document.getElementById('dateSel').value=today.toISOString().split('T')[0];
+
+const DB=[
+  {id:1,name:'서울어린이대공원',gu:'광진구',type:'park',addr:'광진구 능동로 216',parking:true,stroller:true,nursing:true,hospital:true,yezkids:true,tags:['무료입장','동물원','놀이터'],ages:[0,3,6,10]},
+  {id:2,name:'북서울꿈의숲',gu:'강북구',type:'park',addr:'강북구 월계로 173',parking:true,stroller:false,nursing:true,hospital:false,yezkids:true,tags:['산책','연못','전망대'],ages:[0,3,6,10]},
+  {id:3,name:'서울숲',gu:'성동구',type:'park',addr:'성동구 뚝섬로 273',parking:true,stroller:true,nursing:true,hospital:false,yezkids:true,tags:['자연놀이터','자전거','잔디광장'],ages:[3,6,10]},
+  {id:4,name:'월드컵공원',gu:'마포구',type:'park',addr:'마포구 하늘공원로 95',parking:true,stroller:false,nursing:false,hospital:false,yezkids:true,tags:['억새','자전거','피크닉'],ages:[3,6,10]},
+  {id:5,name:'올림픽공원',gu:'송파구',type:'park',addr:'송파구 올림픽로 424',parking:true,stroller:true,nursing:true,hospital:false,yezkids:true,tags:['조각공원','운동','피크닉'],ages:[0,3,6,10]},
+  {id:6,name:'보라매공원',gu:'동작구',type:'park',addr:'동작구 보라매로5길 15',parking:true,stroller:false,nursing:false,hospital:false,yezkids:true,tags:['조깅','항공전시','무료'],ages:[6,10]},
+  {id:7,name:'하늘키즈카페 (강남)',gu:'강남구',type:'kids',addr:'강남구 테헤란로 101',parking:true,stroller:false,nursing:true,hospital:true,yezkids:true,tags:['실내놀이','짚라인','음식코너'],ages:[0,3,6]},
+  {id:8,name:'더키즈 (마포)',gu:'마포구',type:'kids',addr:'마포구 성암로 189',parking:false,stroller:false,nursing:true,hospital:false,yezkids:true,tags:['블록놀이','미술체험'],ages:[3,6]},
+  {id:9,name:'키즈파크 (노원)',gu:'노원구',type:'kids',addr:'노원구 동일로 1329',parking:true,stroller:true,nursing:true,hospital:true,yezkids:true,tags:['유아전용','볼풀','미끄럼틀'],ages:[0,3]},
+  {id:10,name:'국립어린이과학관',gu:'종로구',type:'culture',addr:'종로구 창경궁로 215',parking:false,stroller:true,nursing:true,hospital:false,yezkids:true,tags:['과학체험','전시','예약권장'],ages:[3,6,10]},
+  {id:11,name:'국립중앙박물관',gu:'용산구',type:'culture',addr:'용산구 서빙고로 137',parking:true,stroller:true,nursing:true,hospital:false,yezkids:true,tags:['무료','역사체험','기획전'],ages:[3,6,10]},
+  {id:12,name:'서울상상나라',gu:'광진구',type:'culture',addr:'광진구 능동로 216 어린이대공원내',parking:true,stroller:true,nursing:true,hospital:true,yezkids:true,tags:['체험형전시','0~7세추천'],ages:[0,3,6]},
+  {id:13,name:'창경궁',gu:'종로구',type:'culture',addr:'종로구 창경궁로 185',parking:false,stroller:true,nursing:false,hospital:false,yezkids:true,tags:['역사','궁궐','야간특별관람'],ages:[6,10]},
+  {id:14,name:'남산서울타워',gu:'중구',type:'culture',addr:'중구 남산공원길 105',parking:true,stroller:true,nursing:true,hospital:false,yezkids:true,tags:['전망대','케이블카','야경'],ages:[3,6,10]},
+  {id:15,name:'드림플레이 (용산)',gu:'용산구',type:'play',addr:'용산구 한강대로 32',parking:true,stroller:false,nursing:true,hospital:true,yezkids:true,tags:['실내놀이터','스포츠','키즈존'],ages:[3,6,10]},
+  {id:16,name:'뚝섬놀이터 (한강)',gu:'성동구',type:'play',addr:'성동구 뚝섬로 1나길',parking:true,stroller:false,nursing:false,hospital:false,yezkids:true,tags:['강변','모래놀이','자전거'],ages:[3,6,10]},
+  {id:17,name:'경의선숲길 놀이터',gu:'마포구',type:'play',addr:'마포구 와우산로 94',parking:false,stroller:true,nursing:false,hospital:false,yezkids:true,tags:['도심공원','산책','무료'],ages:[3,6]},
+  {id:18,name:'강동키즈파크',gu:'강동구',type:'kids',addr:'강동구 올림픽로 674',parking:true,stroller:true,nursing:true,hospital:true,yezkids:true,tags:['대형실내','물놀이','식당연계'],ages:[0,3,6]},
+];
+
+const EVENTS={
+  '광진구':[{name:'서울어린이대공원 여름축제',type:'축제',date:'7/1~8/31',venue:'어린이대공원'},{name:'인형극 "토끼와 거북이"',type:'공연',date:'매주 토·일 14:00',venue:'야외무대'}],
+  '강남구':[{name:'키즈뮤지컬 "어린왕자"',type:'공연',date:'~2024.09',venue:'강남아트센터'},{name:'STEAM 과학체험전',type:'전시',date:'상시',venue:'코엑스'}],
+  '송파구':[{name:'올림픽공원 음악축제',type:'축제',date:'8월 중',venue:'올림픽공원'},{name:'어린이 역사탐방',type:'교육',date:'매주 토 10:00',venue:'몽촌토성 역사관'}],
+  '종로구':[{name:'창경궁 야간 특별관람',type:'전시',date:'4~10월 금·토',venue:'창경궁'},{name:'인사동 어린이 공예마켓',type:'축제',date:'매월 둘째 주말',venue:'인사동'}],
+  '용산구':[{name:'국립중앙박물관 기획특별전',type:'전시',date:'상시',venue:'국립중앙박물관'}],
+  '마포구':[{name:'월드컵공원 환경체험학교',type:'교육',date:'주말 10:00~16:00',venue:'노을공원'},{name:'홍대 어린이 버스킹',type:'공연',date:'7~9월 매주 토',venue:'홍대 놀이터'}],
+  '성동구':[{name:'서울숲 생태체험',type:'교육',date:'매월 셋째 토 10:00',venue:'서울숲'},{name:'뚝섬한강 물놀이장',type:'축제',date:'7/1~8/25',venue:'뚝섬한강공원'}],
+  '노원구':[{name:'어린이 미술관 여름방학',type:'교육',date:'7~8월',venue:'노원 어린이미술관'}],
+};
+
+const TM={park:'공원·자연',kids:'키즈카페',culture:'문화·공연',play:'놀이시설'};
+const TC={park:'tp-park',kids:'tp-kids',culture:'tp-culture',play:'tp-play'};
+let curFilter='all', curPlaces=[], openId=null;
+
+function setF(f,el){
+  curFilter=f;
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  renderList(curPlaces);
+}
+
+function getFiltered(pl){
+  if(curFilter==='all') return pl;
+  if(curFilter==='parking') return pl.filter(p=>p.parking);
+  if(curFilter==='stroller') return pl.filter(p=>p.stroller);
+  return pl.filter(p=>p.type===curFilter);
+}
+
+function doSearch(){
+  const gu=document.getElementById('guSel').value;
+  const age=document.getElementById('ageSel').value;
+  let r=[...DB];
+  if(gu) r=r.filter(p=>p.gu===gu);
+  if(age!=='') r=r.filter(p=>p.ages.includes(parseInt(age)));
+  curPlaces=r;
+  renderList(r);
+  updateStats(r);
+  document.getElementById('statsGrid').style.display='grid';
+  document.getElementById('resultBar').style.display='flex';
+  const evSec=document.getElementById('eventSec');
+  evSec.classList.add('show');
+  document.getElementById('evDist').textContent=gu||'서울 전체';
+  renderEvents(gu);
+  closeDetail();
+}
+
+function renderList(pl){
+  const f=getFiltered(pl);
+  document.getElementById('rCount').textContent=f.length;
+  if(!f.length){
+    document.getElementById('placeList').innerHTML='<div class="empty"><i class="ti ti-mood-sad" aria-hidden="true"></i>해당 조건의 장소가 없습니다</div>';
+    return;
+  }
+  document.getElementById('placeList').innerHTML=f.map(p=>`
+    <div class="pcard${openId===p.id?' active':''}" onclick="openDetail(${p.id})" data-id="${p.id}">
+      <div class="pcard-top">
+        <span class="pname">${p.name}</span>
+        <span class="ptyp ${TC[p.type]}">${TM[p.type]}</span>
+      </div>
+      <div class="ptags">
+        ${p.parking?'<span class="ptag tok"><i class="ti ti-car" aria-hidden="true"></i>주차</span>':'<span class="ptag twarn"><i class="ti ti-car-off" aria-hidden="true"></i>주차불가</span>'}
+        ${p.stroller?'<span class="ptag tok"><i class="ti ti-baby-carriage" aria-hidden="true"></i>유아차</span>':''}
+        ${p.nursing?'<span class="ptag tok"><i class="ti ti-heart" aria-hidden="true"></i>수유실</span>':''}
+        ${p.hospital?'<span class="ptag tok"><i class="ti ti-building-hospital" aria-hidden="true"></i>병원</span>':''}
+        ${p.tags.slice(0,2).map(t=>`<span class="ptag">${t}</span>`).join('')}
+      </div>
+      <div class="paddr"><i class="ti ti-map-pin" style="font-size:11px" aria-hidden="true"></i> ${p.addr}</div>
+    </div>
+  `).join('');
+}
+
+function openDetail(id){
+  const p=DB.find(x=>x.id===id);
+  if(!p) return;
+  openId=id;
+  document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('active'));
+  const card=document.querySelector(`[data-id="${id}"]`);
+  if(card){card.classList.add('active');}
+
+  document.getElementById('dName').textContent=p.name;
+  document.getElementById('dSub').textContent=`${p.gu} · ${TM[p.type]}`;
+
+  const rows=[
+    {ok:p.parking,icon:'ti-car',label:'주차장',yt:'이용 가능',nt:'주차 불가'},
+    {ok:p.stroller,icon:'ti-baby-carriage',label:'유아차 대여',yt:'있음',nt:'미제공'},
+    {ok:p.nursing,icon:'ti-heart',label:'수유실',yt:'있음',nt:'없음'},
+    {ok:p.hospital,icon:'ti-building-hospital',label:'인근 소아과',yt:'있음',nt:'확인 필요'},
+    {ok:p.yezkids,icon:'ti-mood-happy',label:'키즈존',yt:'예스키즈',nt:'노키즈'},
+  ];
+  document.getElementById('dInfoGrid').innerHTML=rows.map(r=>`
+    <div class="icard">
+      <div class="iico ${r.ok?'iico-ok':'iico-no'}">
+        <i class="ti ${r.icon}" style="font-size:15px;color:${r.ok?'#2E7D32':'#E65100'}" aria-hidden="true"></i>
+      </div>
+      <div>
+        <div class="i-label">${r.label}</div>
+        <div class="i-val ${r.ok?'i-ok':'i-no'}">${r.ok?r.yt:r.nt}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('dTags').innerHTML=p.tags.map(t=>`<span class="det-tag">${t}</span>`).join('');
+  document.getElementById('dAddr').innerHTML=`<i class="ti ti-map-pin" style="font-size:12px" aria-hidden="true"></i> ${p.addr}`;
+
+  const panel=document.getElementById('detPanel');
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function closeDetail(){
+  openId=null;
+  document.getElementById('detPanel').classList.remove('show');
+  document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('active'));
+}
+
+function updateStats(pl){
+  document.getElementById('sP').textContent=pl.filter(p=>p.type==='park').length;
+  document.getElementById('sK').textContent=pl.filter(p=>p.type==='kids').length;
+  document.getElementById('sC').textContent=pl.filter(p=>p.type==='culture').length;
+  document.getElementById('sPk').textContent=pl.filter(p=>p.parking).length;
+  document.getElementById('sSt').textContent=pl.filter(p=>p.stroller).length;
+  document.getElementById('sN').textContent=pl.filter(p=>p.nursing).length;
+}
+
+function renderEvents(gu){
+  let evs=[];
+  if(gu&&EVENTS[gu]) evs=EVENTS[gu];
+  else Object.values(EVENTS).forEach(a=>evs.push(...a));
+  evs=evs.slice(0,6);
+  document.getElementById('evCards').innerHTML=evs.length
+    ? evs.map(e=>`<div class="ecard"><span class="etype">${e.type}</span><div class="ename">${e.name}</div><div class="emeta"><i class="ti ti-calendar" style="font-size:11px" aria-hidden="true"></i> ${e.date}</div><div class="emeta" style="margin-top:2px"><i class="ti ti-map-pin" style="font-size:11px" aria-hidden="true"></i> ${e.venue}</div></div>`).join('')
+    : '<span style="font-size:12px;color:var(--color-text-tertiary)">등록된 행사가 없습니다</span>';
+}
+
+doSearch();
+</script>
