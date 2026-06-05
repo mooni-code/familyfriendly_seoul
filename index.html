@@ -1,649 +1,1104 @@
-
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서울 가족 나들이 플래너</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --c-primary: #2D6A4F;
-  --c-primary-light: #52B788;
-  --c-primary-pale: #D8F3DC;
-  --c-accent: #F4845F;
-  --c-accent-light: #FDEBD0;
-  --c-sky: #48CAE4;
-  --c-sky-pale: #E0F7FA;
-  --c-yellow: #F9C74F;
-  --c-yellow-pale: #FFF9DB;
-  --c-purple: #7B5EA7;
-  --c-purple-pale: #EDE7F6;
-  --c-red: #E63946;
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g9:#1B4332;--g8:#2D6A4F;--g6:#40916C;--g4:#52B788;--g2:#95D5B2;--g1:#D8F3DC;--g0:#F0FDF4;
+  --sky:#0EA5E9;--sky0:#E0F2FE;
+  --amber:#D97706;--amber0:#FEF3C7;
+  --purple:#7C3AED;--purple0:#EDE9FE;
+  --red:#DC2626;--red0:#FEF2F2;
+  --orange:#EA580C;--orange0:#FFF7ED;
+  --teal:#0D9488;--teal0:#F0FDFA;
+  --pink:#DB2777;--pink0:#FCE7F3;
+  --indigo:#4F46E5;--indigo0:#EEF2FF;
+  --txt1:#111827;--txt2:#4B5563;--txt3:#9CA3AF;
+  --bg:#F8FAF9;--surf:#FFFFFF;--bdr:#E2EBE6;
+  --r-sm:8px;--r-md:12px;--r-lg:16px;
 }
-body, html { font-family: var(--font-sans, 'Noto Sans KR', sans-serif); }
-.wrap { padding: 0; max-width: 100%; }
+html,body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt1);font-size:14px;line-height:1.6;}
 
-.hero {
-  background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 50%, #40916C 100%);
-  padding: 28px 24px 20px;
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
-.hero-title { color: #fff; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 4px; position: relative; }
-.hero-sub { color: rgba(255,255,255,0.75); font-size: 13px; position: relative; }
-.hero-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; position: relative; }
-.hero-badge {
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.25);
-  color: #fff;
-  font-size: 11px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  display: flex; align-items: center; gap: 4px;
+/* ── HEADER ── */
+.header{background:var(--g9);padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:300;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-mark{width:30px;height:30px;background:var(--g4);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.logo h1{color:#fff;font-size:15px;font-weight:700;}
+.logo span{color:var(--g2);font-size:11px;margin-left:4px;}
+.hpills{display:flex;gap:6px;}
+.hpill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:11px;padding:2px 9px;border-radius:20px;display:flex;align-items:center;gap:3px;}
+.search-inp{height:32px;border:1px solid rgba(255,255,255,.3);border-radius:var(--r-sm);padding:0 10px;font-size:12px;background:rgba(255,255,255,.12);color:#fff;font-family:inherit;width:210px;}
+.search-inp::placeholder{color:rgba(255,255,255,.5);}
+.search-inp:focus{outline:none;border-color:var(--g4);background:rgba(255,255,255,.18);}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--g9) 0%,var(--g8) 55%,var(--g6) 100%);padding:28px 24px 24px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23fff' fill-opacity='.04'/%3E%3C/svg%3E");}
+.hero-inner{position:relative;}
+.hero-title{color:#fff;font-size:22px;font-weight:700;margin-bottom:4px;}
+.hero-sub{color:rgba(255,255,255,.7);font-size:13px;margin-bottom:20px;}
+.gu-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;}
+.gu-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);font-size:12px;padding:7px 4px;border-radius:var(--r-sm);cursor:pointer;text-align:center;transition:all .15s;font-family:inherit;line-height:1.3;}
+.gu-btn:hover{background:rgba(255,255,255,.22);color:#fff;}
+.gu-btn.active{background:var(--g4);border-color:var(--g4);color:#fff;font-weight:700;box-shadow:0 2px 8px rgba(82,183,136,.4);}
+.gu-btn small{display:block;font-size:9px;color:rgba(255,255,255,.55);margin-top:1px;}
+.gu-btn.active small{color:rgba(255,255,255,.85);}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--txt3);padding:9px 24px;background:var(--surf);border-bottom:1px solid var(--bdr);}
+.bc-cur{color:var(--g8);font-weight:500;}
+
+/* ── LAYOUT ── */
+.layout{display:flex;}
+
+/* ── SIDENAV ── */
+.sidenav{width:196px;flex-shrink:0;background:var(--surf);border-right:1px solid var(--bdr);position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto;display:flex;flex-direction:column;}
+.snav-head{padding:14px 14px 8px;border-bottom:1px solid var(--bdr);}
+.snav-gu{font-size:15px;font-weight:700;color:var(--g8);display:flex;align-items:center;gap:6px;}
+.snav-total{font-size:11px;color:var(--txt3);margin-top:2px;}
+.snav-items{padding:6px 0;flex:1;}
+.snav-item{display:flex;align-items:center;gap:9px;padding:9px 14px;cursor:pointer;border-left:3px solid transparent;transition:all .12s;color:var(--txt2);font-size:13px;}
+.snav-item:hover{background:var(--g0);color:var(--g8);}
+.snav-item.on{background:var(--g0);color:var(--g8);border-left-color:var(--g4);font-weight:500;}
+.snav-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.snav-badge{margin-left:auto;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:500;background:var(--g1);color:var(--g8);}
+.snav-footer{margin-top:auto;padding:12px 14px;border-top:1px solid var(--bdr);}
+.btn-back{width:100%;height:32px;border:1px solid var(--bdr);border-radius:var(--r-sm);background:none;color:var(--txt2);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:inherit;}
+.btn-back:hover{background:var(--bg);}
+
+/* ── CONTENT ── */
+.content{flex:1;min-width:0;}
+.content-inner{max-width:900px;padding:24px 24px 48px;}
+
+/* ── SECTION ── */
+.section{margin-bottom:36px;scroll-margin-top:70px;}
+.sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--g1);}
+.sec-title{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:700;color:var(--g9);}
+.sec-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.sec-count{font-size:12px;color:var(--txt3);}
+
+/* ── CARDS ── */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px;}
+.card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-lg);padding:14px 16px 32px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden;}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,.08);transform:translateY(-1px);border-color:var(--g2);}
+.card-bar{position:absolute;top:0;left:0;right:0;height:3px;}
+.card-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500;margin-bottom:7px;}
+.card-name{font-size:13px;font-weight:500;color:var(--txt1);margin-bottom:5px;line-height:1.4;}
+.card-row{font-size:11px;color:var(--txt2);display:flex;align-items:flex-start;gap:5px;margin-bottom:3px;}
+.card-row i{font-size:11px;flex-shrink:0;margin-top:1px;}
+.card-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px;}
+.ctag{font-size:10px;padding:2px 7px;border-radius:6px;background:var(--bg);color:var(--txt2);border:1px solid var(--bdr);}
+.card-arrow{position:absolute;bottom:10px;right:12px;color:var(--txt3);font-size:13px;}
+
+/* facility chips on cards */
+.fchip{font-size:10px;padding:2px 7px;border-radius:6px;display:inline-flex;align-items:center;gap:2px;font-weight:500;}
+.fc-ok{background:#dcfce7;color:#166534;}
+.fc-no{background:#fef3c7;color:#92400e;}
+
+/* ── 통계박스 ── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.stat-cell{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-md);padding:14px 8px;text-align:center;}
+.stat-n{font-size:26px;font-weight:700;color:var(--g8);}
+.stat-l{font-size:11px;color:var(--txt2);margin-top:2px;}
+
+/* ── PAGINATION ── */
+.pager{display:flex;align-items:center;justify-content:center;gap:6px;padding-top:14px;}
+.pg-btn{width:30px;height:30px;border:1px solid var(--bdr);border-radius:7px;background:var(--surf);color:var(--txt2);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s;}
+.pg-btn:hover:not(:disabled){border-color:var(--g4);color:var(--g8);}
+.pg-btn.on{background:var(--g8);color:#fff;border-color:var(--g8);}
+.pg-btn:disabled{opacity:.4;cursor:not-allowed;}
+.pg-info{font-size:12px;color:var(--txt2);}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;}
+.overlay.show{display:flex;}
+.modal{background:var(--surf);border-radius:var(--r-lg);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal-head{padding:20px 20px 14px;border-bottom:1px solid var(--bdr);position:sticky;top:0;background:var(--surf);z-index:2;}
+.modal-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 9px;border-radius:10px;font-weight:500;margin-bottom:8px;}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:2px;}
+.modal-sub{font-size:12px;color:var(--txt2);}
+.modal-close{position:absolute;top:14px;right:14px;width:28px;height:28px;border:1px solid var(--bdr);border-radius:7px;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--txt2);font-size:18px;}
+.modal-body{padding:18px 20px 24px;}
+.d-row{display:flex;gap:10px;margin-bottom:12px;align-items:flex-start;}
+.d-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.d-label{font-size:11px;color:var(--txt3);margin-bottom:1px;}
+.d-val{font-size:13px;color:var(--txt1);font-weight:500;line-height:1.5;}
+.divider{border:none;border-top:1px solid var(--bdr);margin:14px 0;}
+.facility-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:8px;}
+.fc-item{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:var(--r-sm);font-size:12px;font-weight:500;}
+.fc-item i{font-size:14px;}
+.fc-green{background:#dcfce7;color:#166534;}
+.fc-yellow{background:#fef3c7;color:#92400e;}
+.tag-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+.tag{font-size:11px;padding:3px 9px;border-radius:7px;background:var(--bg);color:var(--txt2);border:1px solid var(--bdr);}
+.sns-link{color:var(--purple);font-size:12px;display:inline-flex;align-items:center;gap:4px;text-decoration:none;}
+.sns-link:hover{text-decoration:underline;}
+.info-notice{background:var(--teal0);color:var(--teal);border-radius:var(--r-sm);padding:10px 12px;font-size:12px;margin-top:10px;}
+.kopis-link{color:var(--purple);font-size:12px;display:inline-flex;align-items:center;gap:5px;text-decoration:none;background:var(--purple0);padding:6px 12px;border-radius:var(--r-sm);}
+.kopis-link:hover{background:#ddd6fe;}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:48px 16px;color:var(--txt3);}
+.empty i{font-size:44px;display:block;margin-bottom:10px;opacity:.25;}
+
+/* ── LANDING ── */
+.landing{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 24px;text-align:center;min-height:400px;}
+.landing i{font-size:56px;color:var(--g4);margin-bottom:16px;}
+.landing h2{font-size:18px;font-weight:700;color:var(--g9);margin-bottom:8px;}
+.landing p{font-size:13px;color:var(--txt2);line-height:1.8;}
+
+/* ── HIDDEN ── */
+.hidden{display:none!important;}
+
+@media(max-width:768px){
+  .sidenav{display:none;}
+  .gu-grid{grid-template-columns:repeat(5,1fr);}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .card-grid{grid-template-columns:1fr;}
+  .content-inner{padding:16px 14px 40px;}
+  .hpills{display:none;}
 }
 
-.search-section {
-  background: var(--color-background-primary, #fff);
-  border-bottom: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-  padding: 16px 20px;
-}
-.search-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
-.form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 130px; }
-.form-label { font-size: 11px; font-weight: 500; color: var(--color-text-secondary, #666); text-transform: uppercase; letter-spacing: 0.5px; }
-.form-group select, .form-group input {
-  border: 0.5px solid var(--color-border-secondary, #ccc);
-  border-radius: var(--border-radius-md, 8px);
-  padding: 8px 12px;
-  font-size: 14px;
-  background: var(--color-background-primary, #fff);
-  color: var(--color-text-primary, #111);
-  height: 38px;
-}
-.search-btn {
-  background: var(--c-primary);
-  color: #fff;
-  border: none;
-  border-radius: var(--border-radius-md, 8px);
-  padding: 0 20px;
-  height: 38px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  display: flex; align-items: center; gap: 6px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.search-btn:hover { background: #1B4332; }
+/* ── 리뷰 섹션 ── */
+.review-wrap{margin-top:20px;border-top:1px solid var(--bdr);padding-top:16px;}
+.review-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.review-title{font-size:13px;font-weight:700;color:var(--txt1);display:flex;align-items:center;gap:6px;}
+.review-count{font-size:11px;color:var(--txt3);}
+.btn-write{height:30px;padding:0 12px;border:1px solid var(--g4);border-radius:var(--r-sm);background:none;color:var(--g8);font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:inherit;transition:all .12s;}
+.btn-write:hover{background:var(--g0);}
+.btn-write.open{background:var(--g1);border-color:var(--g6);}
 
-.filter-row {
-  display: flex; gap: 8px; flex-wrap: wrap; padding: 10px 20px;
-  background: var(--color-background-secondary, #f9f9f7);
-  border-bottom: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-}
-.filter-chip {
-  font-size: 12px; padding: 4px 12px; border-radius: 20px; cursor: pointer;
-  border: 0.5px solid var(--color-border-secondary, #ccc);
-  background: var(--color-background-primary, #fff);
-  color: var(--color-text-secondary, #555);
-  display: flex; align-items: center; gap: 4px;
-  transition: all 0.15s;
-}
-.filter-chip.active {
-  background: var(--c-primary-pale); color: var(--c-primary);
-  border-color: var(--c-primary-light);
-  font-weight: 500;
-}
-.filter-chip:hover { border-color: var(--c-primary-light); color: var(--c-primary); }
+/* 별점 */
+.stars-row{display:flex;gap:3px;margin-bottom:10px;}
+.star{font-size:24px;cursor:pointer;color:#D1D5DB;transition:color .1s;line-height:1;user-select:none;}
+.star.on,.star.hover{color:#FBBF24;}
 
-.main { display: flex; gap: 0; height: 580px; }
+/* 리뷰 작성 폼 */
+.review-form{background:var(--g0);border:1px solid var(--g1);border-radius:var(--r-md);padding:14px;margin-bottom:14px;display:none;}
+.review-form.show{display:block;}
+.form-label{font-size:11px;font-weight:500;color:var(--txt2);margin-bottom:5px;}
+.form-inp{width:100%;border:1px solid var(--bdr);border-radius:var(--r-sm);padding:7px 10px;font-size:13px;font-family:inherit;background:var(--surf);color:var(--txt1);margin-bottom:8px;}
+.form-inp:focus{outline:none;border-color:var(--g4);}
+textarea.form-inp{resize:vertical;min-height:72px;line-height:1.5;}
+.tag-select{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.rtag{font-size:11px;padding:4px 10px;border-radius:20px;cursor:pointer;border:1px solid var(--bdr);background:var(--surf);color:var(--txt2);transition:all .12s;user-select:none;}
+.rtag.on{background:var(--g1);color:var(--g8);border-color:var(--g4);font-weight:500;}
+.rtag-red.on{background:#fee2e2;color:#991b1b;border-color:#fca5a5;}
+.rtag-blue.on{background:var(--sky0);color:var(--sky);border-color:#7dd3fc;}
+.rtag-amber.on{background:var(--amber0);color:var(--amber);border-color:#fcd34d;}
+.form-btns{display:flex;gap:6px;justify-content:flex-end;}
+.btn-cancel-sm{height:30px;padding:0 12px;border:1px solid var(--bdr);border-radius:var(--r-sm);background:none;color:var(--txt2);font-size:12px;cursor:pointer;font-family:inherit;}
+.btn-submit-sm{height:30px;padding:0 14px;border:none;border-radius:var(--r-sm);background:var(--g8);color:#fff;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:background .12s;}
+.btn-submit-sm:hover{background:var(--g9);}
 
-.sidebar {
-  width: 300px; flex-shrink: 0;
-  border-right: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-  overflow-y: auto; background: var(--color-background-primary, #fff);
-}
+/* 리뷰 아이템 */
+.review-list{display:flex;flex-direction:column;gap:8px;}
+.review-item{background:var(--bg);border-radius:var(--r-md);padding:10px 12px;}
+.review-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.reviewer{display:flex;align-items:center;gap:7px;}
+.avatar{width:24px;height:24px;border-radius:50%;background:var(--g2);color:var(--g9);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.reviewer-name{font-size:12px;font-weight:500;color:var(--g8);}
+.review-date{font-size:10px;color:var(--txt3);}
+.review-stars{color:#FBBF24;font-size:13px;letter-spacing:1px;margin-bottom:4px;}
+.review-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:5px;}
+.rv-tag{font-size:10px;padding:2px 7px;border-radius:6px;background:var(--g1);color:var(--g8);}
+.rv-tag-red{background:#fee2e2;color:#991b1b;}
+.rv-tag-blue{background:var(--sky0);color:var(--sky);}
+.rv-tag-amber{background:var(--amber0);color:var(--amber);}
+.review-text{font-size:12px;color:var(--txt1);line-height:1.6;}
+.review-empty{font-size:12px;color:var(--txt3);text-align:center;padding:16px 0;}
+.review-del{background:none;border:none;cursor:pointer;color:var(--txt3);font-size:12px;padding:2px 4px;border-radius:4px;}
+.review-del:hover{color:var(--red);background:var(--red0);}
 
-.result-header {
-  padding: 12px 16px 8px;
-  border-bottom: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-  display: flex; align-items: center; justify-content: space-between;
-}
-.result-count { font-size: 13px; color: var(--color-text-secondary, #666); }
-.result-count strong { color: var(--c-primary); font-weight: 600; }
-
-.place-card {
-  padding: 14px 16px;
-  border-bottom: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-  cursor: pointer; transition: background 0.1s;
-}
-.place-card:hover, .place-card.active { background: var(--c-primary-pale); }
-.place-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
-.place-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary, #111); }
-.place-type-badge {
-  font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 500; flex-shrink: 0;
-}
-.badge-park { background: var(--c-primary-pale); color: var(--c-primary); }
-.badge-kids { background: var(--c-sky-pale); color: #006A77; }
-.badge-culture { background: var(--c-purple-pale); color: var(--c-purple); }
-.badge-play { background: var(--c-yellow-pale); color: #7A6210; }
-
-.place-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
-.place-tag {
-  font-size: 10px; padding: 2px 7px; border-radius: 8px;
-  background: var(--color-background-secondary, #f5f5f3);
-  color: var(--color-text-secondary, #666);
-  display: flex; align-items: center; gap: 3px;
-}
-.tag-ok { background: #E8F5E9; color: #2E7D32; }
-.tag-warn { background: #FFF3E0; color: #E65100; }
-.place-addr { font-size: 11px; color: var(--color-text-tertiary, #999); }
-
-.map-area {
-  flex: 1; position: relative; overflow: hidden;
-  background: #EEF4ED;
-}
-.map-placeholder {
-  width: 100%; height: 100%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 8px; color: var(--color-text-tertiary, #999); font-size: 13px;
-  position: relative;
-}
-.map-svg-wrap { width: 100%; height: 100%; position: absolute; inset: 0; }
-.map-info-panel {
-  position: absolute; bottom: 16px; right: 16px;
-  background: var(--color-background-primary, #fff);
-  border: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-  border-radius: var(--border-radius-lg, 12px);
-  padding: 16px; width: 260px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  display: none;
-}
-.map-info-panel.show { display: block; }
-.info-panel-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: var(--color-text-primary, #111); }
-.info-panel-type { font-size: 11px; color: var(--color-text-secondary, #666); margin-bottom: 12px; }
-.info-rows { display: flex; flex-direction: column; gap: 7px; }
-.info-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-.info-icon { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
-.info-ok { background: #E8F5E9; }
-.info-warn { background: #FFF3E0; }
-.info-neutral { background: var(--color-background-secondary, #f5f5f3); }
-.info-val { font-weight: 500; color: var(--color-text-primary, #111); }
-.info-label { color: var(--color-text-secondary, #666); margin-left: 2px; }
-.close-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; cursor: pointer; color: var(--color-text-secondary, #888); font-size: 18px; padding: 2px; }
-
-.legend {
-  position: absolute; top: 12px; left: 12px;
-  background: var(--color-background-primary, #fff);
-  border: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-  border-radius: var(--border-radius-md, 8px);
-  padding: 10px 12px; font-size: 11px;
-}
-.legend-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; color: var(--color-text-secondary, #555); }
-.legend-row:last-child { margin-bottom: 0; }
-.legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-
-.stats-row {
-  display: flex; gap: 0;
-  border-top: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-  background: var(--color-background-secondary, #f9f9f7);
-}
-.stat-item {
-  flex: 1; padding: 10px 16px; text-align: center;
-  border-right: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-}
-.stat-item:last-child { border-right: none; }
-.stat-num { font-size: 18px; font-weight: 700; color: var(--c-primary); }
-.stat-label { font-size: 10px; color: var(--color-text-secondary, #888); margin-top: 1px; }
-
-.loading-overlay {
-  position: absolute; inset: 0;
-  background: rgba(255,255,255,0.9);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 12px; z-index: 10; border-radius: 8px;
-}
-.spinner {
-  width: 28px; height: 28px; border: 2px solid var(--c-primary-pale);
-  border-top-color: var(--c-primary); border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.loading-text { font-size: 13px; color: var(--c-primary); font-weight: 500; }
-
-.api-section {
-  border-top: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-  padding: 16px 20px;
-  background: var(--color-background-primary, #fff);
-}
-.api-title { font-size: 13px; font-weight: 600; color: var(--color-text-primary, #111); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-.event-cards { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; }
-.event-card {
-  flex-shrink: 0; width: 180px;
-  background: var(--color-background-secondary, #f9f9f7);
-  border: 0.5px solid var(--color-border-tertiary, #e5e5e5);
-  border-radius: var(--border-radius-md, 8px);
-  padding: 10px 12px;
-}
-.event-name { font-size: 12px; font-weight: 500; color: var(--color-text-primary, #111); margin-bottom: 4px; line-height: 1.4; }
-.event-meta { font-size: 10px; color: var(--color-text-tertiary, #999); }
-.event-type { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 6px; margin-bottom: 4px; background: var(--c-purple-pale); color: var(--c-purple); font-weight: 500; }
-
-.no-results { padding: 32px 16px; text-align: center; color: var(--color-text-tertiary, #999); font-size: 13px; }
+/* 카드 리뷰 뱃지 */
+.card-review-badge{position:absolute;bottom:10px;left:14px;font-size:10px;color:var(--txt3);display:flex;align-items:center;gap:3px;}
+.card-review-badge .star-mini{color:#FBBF24;}
 </style>
+</head>
+<body>
 
-<div class="wrap">
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-mark">🌿</div>
+    <h1>서울 가족 나들이 플래너</h1>
+    <span>Seoul Family Outing</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <input class="search-inp" type="text" id="searchInp" placeholder="🔍 장소, 메뉴, 주소 검색..." oninput="onSearch()">
+    <div class="hpills">
+      <span class="hpill"><i class="ti ti-database"></i>공공데이터</span>
+      <span class="hpill"><i class="ti ti-wheelchair"></i>무장애</span>
+      <span class="hpill"><i class="ti ti-baby-carriage"></i>유아차</span>
+    </div>
+  </div>
+</header>
 
-<div class="hero">
-  <div class="hero-title">서울 가족 나들이 플래너</div>
-  <div class="hero-sub">아이와 함께 떠나는 서울 나들이 — 주차·식당·공연·편의시설 한눈에</div>
-  <div class="hero-badges">
-    <span class="hero-badge"><i class="ti ti-car" aria-hidden="true"></i> 주차 정보</span>
-    <span class="hero-badge"><i class="ti ti-tools-kitchen-2" aria-hidden="true"></i> 키즈 맛집</span>
-    <span class="hero-badge"><i class="ti ti-star" aria-hidden="true"></i> 공연·전시</span>
-    <span class="hero-badge"><i class="ti ti-baby-carriage" aria-hidden="true"></i> 유아차 대여</span>
-    <span class="hero-badge"><i class="ti ti-heart" aria-hidden="true"></i> 수유실</span>
-    <span class="hero-badge"><i class="ti ti-building-hospital" aria-hidden="true"></i> 인근 병원</span>
+<!-- HERO: 구 선택 -->
+<div class="hero" id="heroSec">
+  <div class="hero-inner">
+    <div class="hero-title">🗺️ 어느 구로 나들이 갈까요?</div>
+    <div class="hero-sub">구를 선택하면 모범음식점 · 공원 · 책방 · 산책길 · 편의시설 정보를 한눈에 확인할 수 있어요</div>
+    <div class="gu-grid" id="guGrid"></div>
   </div>
 </div>
 
-<div class="search-section">
-  <div class="search-row">
-    <div class="form-group">
-      <span class="form-label">자치구 선택</span>
-      <select id="districtSelect">
-        <option value="">전체 (서울)</option>
-        <option value="종로구">종로구</option>
-        <option value="중구">중구</option>
-        <option value="용산구">용산구</option>
-        <option value="성동구">성동구</option>
-        <option value="광진구">광진구</option>
-        <option value="동대문구">동대문구</option>
-        <option value="중랑구">중랑구</option>
-        <option value="성북구">성북구</option>
-        <option value="강북구">강북구</option>
-        <option value="도봉구">도봉구</option>
-        <option value="노원구">노원구</option>
-        <option value="은평구">은평구</option>
-        <option value="서대문구">서대문구</option>
-        <option value="마포구">마포구</option>
-        <option value="양천구">양천구</option>
-        <option value="강서구">강서구</option>
-        <option value="구로구">구로구</option>
-        <option value="금천구">금천구</option>
-        <option value="영등포구">영등포구</option>
-        <option value="동작구">동작구</option>
-        <option value="관악구">관악구</option>
-        <option value="서초구">서초구</option>
-        <option value="강남구">강남구</option>
-        <option value="송파구">송파구</option>
-        <option value="강동구">강동구</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <span class="form-label">방문 날짜</span>
-      <input type="date" id="dateInput">
-    </div>
-    <div class="form-group" style="min-width:110px; max-width:130px;">
-      <span class="form-label">아이 연령대</span>
-      <select id="ageSelect">
-        <option value="">전체</option>
-        <option value="0">0~2세 (영아)</option>
-        <option value="3">3~5세 (유아)</option>
-        <option value="6">6~9세 (초등 저학년)</option>
-        <option value="10">10~13세 (초등 고학년)</option>
-      </select>
-    </div>
-    <button class="search-btn" onclick="searchPlaces()">
-      <i class="ti ti-search" aria-hidden="true"></i> 추천 찾기
-    </button>
-  </div>
+<!-- BREADCRUMB -->
+<div class="breadcrumb hidden" id="breadcrumb">
+  <i class="ti ti-home" style="font-size:12px;"></i>
+  <i class="ti ti-chevron-right" style="font-size:11px;"></i>
+  <span class="bc-cur" id="bcGu"></span>
 </div>
 
-<div class="filter-row" id="filterRow">
-  <span class="filter-chip active" data-filter="all" onclick="setFilter('all', this)">
-    <i class="ti ti-layout-grid" aria-hidden="true"></i> 전체
-  </span>
-  <span class="filter-chip" data-filter="park" onclick="setFilter('park', this)">
-    <i class="ti ti-trees" aria-hidden="true"></i> 공원·자연
-  </span>
-  <span class="filter-chip" data-filter="kids" onclick="setFilter('kids', this)">
-    <i class="ti ti-seeding" aria-hidden="true"></i> 키즈카페
-  </span>
-  <span class="filter-chip" data-filter="culture" onclick="setFilter('culture', this)">
-    <i class="ti ti-theater" aria-hidden="true"></i> 문화·공연
-  </span>
-  <span class="filter-chip" data-filter="play" onclick="setFilter('play', this)">
-    <i class="ti ti-roller-skating" aria-hidden="true"></i> 놀이시설
-  </span>
-  <span class="filter-chip" data-filter="parking" onclick="setFilter('parking', this)">
-    <i class="ti ti-car" aria-hidden="true"></i> 주차 가능
-  </span>
-  <span class="filter-chip" data-filter="stroller" onclick="setFilter('stroller', this)">
-    <i class="ti ti-baby-carriage" aria-hidden="true"></i> 유아차 대여
-  </span>
-</div>
+<!-- LAYOUT -->
+<div class="layout hidden" id="layoutArea">
 
-<div class="main">
-  <div class="sidebar">
-    <div class="result-header">
-      <span class="result-count" id="resultCount">추천 장소 <strong id="countNum">0</strong>곳</span>
+  <!-- SIDENAV -->
+  <nav class="sidenav" id="sideNav">
+    <div class="snav-head">
+      <div class="snav-gu"><i class="ti ti-map-pin" style="font-size:15px;"></i><span id="navGuName"></span></div>
+      <div class="snav-total" id="navTotal"></div>
     </div>
-    <div id="placeList">
-      <div class="no-results">
-        <i class="ti ti-map-search" style="font-size:32px; display:block; margin-bottom:8px; opacity:0.4" aria-hidden="true"></i>
-        지역과 날짜를 선택하고<br>추천 찾기를 눌러주세요
-      </div>
+    <div class="snav-items" id="navItems"></div>
+    <div class="snav-footer">
+      <button class="btn-back" onclick="goHome()"><i class="ti ti-arrow-left" style="font-size:12px;"></i> 구 다시 선택</button>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div class="content-inner" id="contentInner">
+      <div class="landing"><i class="ti ti-map-search"></i><h2>구를 선택해주세요</h2></div>
     </div>
   </div>
 
-  <div class="map-area" id="mapArea">
-    <div id="mapContainer" style="width:100%; height:100%; position:relative;">
-      <div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; opacity:0.5;">
-        <i class="ti ti-map-2" style="font-size:48px; color: var(--c-primary)" aria-hidden="true"></i>
-        <span style="font-size:13px; color: var(--color-text-secondary)">지역을 선택하면 지도에 표시됩니다</span>
-      </div>
-      <div class="legend">
-        <div class="legend-row"><div class="legend-dot" style="background:#2D6A4F"></div> 공원·자연</div>
-        <div class="legend-row"><div class="legend-dot" style="background:#48CAE4"></div> 키즈카페</div>
-        <div class="legend-row"><div class="legend-dot" style="background:#7B5EA7"></div> 문화·공연</div>
-        <div class="legend-row"><div class="legend-dot" style="background:#F9C74F"></div> 놀이시설</div>
-      </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeOut(event)">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <div class="modal-badge" id="mBadge"></div>
+      <div class="modal-title" id="mTitle"></div>
+      <div class="modal-sub" id="mSub"></div>
+      <button class="modal-close" onclick="closeModal()">×</button>
     </div>
-
-    <div class="map-info-panel" id="infoPanel">
-      <button class="close-btn" onclick="closePanel()" aria-label="닫기">×</button>
-      <div class="info-panel-name" id="panelName"></div>
-      <div class="info-panel-type" id="panelType"></div>
-      <div class="info-rows" id="panelRows"></div>
-    </div>
+    <div class="modal-body" id="mBody"></div>
   </div>
-</div>
-
-<div class="stats-row" id="statsRow" style="display:none;">
-  <div class="stat-item">
-    <div class="stat-num" id="statPark">0</div>
-    <div class="stat-label">공원·자연</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statKids">0</div>
-    <div class="stat-label">키즈카페</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statCulture">0</div>
-    <div class="stat-label">문화·공연</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statParking">0</div>
-    <div class="stat-label">주차 가능</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statStroller">0</div>
-    <div class="stat-label">유아차 대여</div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-num" id="statNursing">0</div>
-    <div class="stat-label">수유실</div>
-  </div>
-</div>
-
-<div class="api-section" id="eventSection" style="display:none;">
-  <div class="api-title">
-    <i class="ti ti-ticket" style="font-size:16px; color:var(--c-purple)" aria-hidden="true"></i>
-    이 지역 공연·행사 <span id="eventDistLabel" style="color:var(--c-purple);font-weight:700;"></span>
-    <span id="eventLoadingSpan" style="font-size:11px;color:var(--color-text-tertiary); font-weight:400; margin-left:4px;"></span>
-  </div>
-  <div class="event-cards" id="eventCards"></div>
-</div>
-
 </div>
 
 <script>
-const today = new Date();
-document.getElementById('dateInput').value = today.toISOString().split('T')[0];
+const DB={"restaurants":[{"name":"남다른 감자탕(마곡점)","addr":"서울특별시 강서구 공항대로 228, 리더스타워마곡 1층 101~102호","phone":"02-2666-2001","area":"107.1","menu":"감자탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"KANS 칸스","addr":"서울특별시 강서구 방화동로5길 12-1, 1층 (방화동)","phone":"0507-1373-8681","area":"53.12","menu":"칸스부리또","label":"한식","gu":"강서구","type":"restaurant"},{"name":"(유)아웃백스테이크하우스코리아 공항점","addr":"서울특별시 강서구 마곡중앙6로 16, 마곡지엠지타워 3층 301호 (마곡동)","phone":"02-2054-8365","area":"570.87","menu":"스테이크","label":"한식","gu":"강서구","type":"restaurant"},{"name":"(주)농심 코코이찌방야 롯데몰 김포공항점","addr":"서울특별시 강서구 하늘길 38, 지하 2층 (방화동, 2동 김포공항 스카이파크)","phone":"02-6116-5702","area":"99.54","menu":"카레","label":"한식","gu":"강서구","type":"restaurant"},{"name":"(주)닥터로빈","addr":"서울특별시 강서구 공항대로 396, 1층 (화곡동, 6동 귀뚜라미보일러사옥)","phone":"02-2693-3100","area":"414.76","menu":"파스타, 피자","label":"한식","gu":"강서구","type":"restaurant"},{"name":"(주)더벨즈","addr":"서울특별시 강서구 양천로60길 19, 지하1층, 지상2층 (등촌동, 1동)","phone":"02-2664-8080","area":"460.3","menu":"뷔페","label":"한식","gu":"강서구","type":"restaurant"},{"name":"(주)이춘복참치발산역점","addr":"서울특별시 강서구 공항대로 287, 1층 (등촌동, 3동 화인빌딩)","phone":"02-3662-4558","area":"680.7","menu":"일품참치","label":"한식","gu":"강서구","type":"restaurant"},{"name":"가든키친(Garden Kitchen)","addr":"서울특별시 강서구 마곡중앙12로 10, 메리어트호텔 1층 (마곡동)","phone":"02-6946-7111","area":"563.92","menu":"뷔페","label":"한식","gu":"강서구","type":"restaurant"},{"name":"감성9091","addr":"서울특별시 강서구 공항대로 345, 2층 (등촌동)","phone":"0507-1391-9094","area":"483","menu":"돼지고기","label":"한식","gu":"강서구","type":"restaurant"},{"name":"강서 명동전가","addr":"서울특별시 강서구 화곡로 398, 4층 (등촌동, 1동 홈플러스강서점)","phone":"02-3665-9886","area":"126.5","menu":"칼국수","label":"한식","gu":"강서구","type":"restaurant"},{"name":"강서복집","addr":"서울특별시 강서구 공항대로59길 8, 우현빌딩 (등촌동)","phone":"02-3661-6672","area":"287.51","menu":"복지리","label":"한식","gu":"강서구","type":"restaurant"},{"name":"갯마을식당","addr":"서울특별시 강서구 양천로 362, 1층 (등촌동, 1동)","phone":"02-3662-5112","area":"170.8","menu":"생선회","label":"한식","gu":"강서구","type":"restaurant"},{"name":"고향맛집","addr":"서울특별시 강서구 공항대로44길 50, 1층 (화곡동, 6동)","phone":"02-6339-1236","area":"89.64","menu":"쌈밥, 갈치조림","label":"한식","gu":"강서구","type":"restaurant"},{"name":"공항칼국수","addr":"서울특별시 강서구 공항대로 18-1, 지하 1층 (공항동, 이스카이오피스텔)","phone":"02-2664-9748","area":"388.27","menu":"칼국수","label":"한식","gu":"강서구","type":"restaurant"},{"name":"교동짬뽕 강서구청점","addr":"서울특별시 강서구 화곡로 320, 1층 (화곡동, 6동)","phone":"02-2602-1093","area":"92.77","menu":"짬뽕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"국민전통갈비 미소그릴","addr":"서울특별시 강서구 우장산로 119, 1층 (화곡동, 6동)","phone":"02-2697-9512","area":"98.38","menu":"돼지갈비","label":"한식","gu":"강서구","type":"restaurant"},{"name":"꽃향기","addr":"서울특별시 강서구 화곡로 142, 3층 301호 (화곡동, 1동 메가박스)","phone":"02-3144-0501","area":"483.11","menu":"샤브샤브","label":"한식","gu":"강서구","type":"restaurant"},{"name":"낙원(樂源)","addr":"서울특별시 강서구 방화대로 94, 1층 (외발산동, 1동 메이필드호텔)","phone":"02-2660-9010","area":"614.69","menu":"갈비","label":"한식","gu":"강서구","type":"restaurant"},{"name":"남다른 감자탕","addr":"서울특별시 강서구 금낭화로 29, 1층 (방화동, 2동)","phone":"02-2664-2110","area":"231.5","menu":"감자탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"능라도","addr":"서울특별시 강서구 마곡동로 56, 건와빌딩 2층 202,203호 (마곡동)","phone":"02-6958-8939","area":"536","menu":"평양냉면","label":"한식","gu":"강서구","type":"restaurant"},{"name":"다도해","addr":"서울특별시 강서구 마곡동로 62, 마곡사이언스타워 2층 212호 (마곡동)","phone":"02-2661-0176","area":"136.38","menu":"활어회","label":"한식","gu":"강서구","type":"restaurant"},{"name":"다이닝원 발산점","addr":"서울특별시 강서구 마곡중앙6로 93, 9층 901~906호 (마곡동, 가양 1동 열린프라자)","phone":"02-3661-1357","area":"876.25","menu":"뷔페","label":"한식","gu":"강서구","type":"restaurant"},{"name":"대가원","addr":"서울특별시 강서구 공항대로 209, 4층 401~405호 (마곡동)","phone":"02-3662-3902","area":"355.61","menu":"생등심","label":"한식","gu":"강서구","type":"restaurant"},{"name":"대게나라 발산점","addr":"서울특별시 강서구 공항대로 290, 1층 101호 (내발산동, 우장산동)","phone":"02-3662-0655","area":"298","menu":"대게찜","label":"한식","gu":"강서구","type":"restaurant"},{"name":"대박감자탕","addr":"서울특별시 강서구 곰달래로 255, 1층 (화곡동, 4동)","phone":"02-2642-0555","area":"153.95","menu":"감자탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"대박집","addr":"서울특별시 강서구 강서로 489-4, 1층 (가양동, 1동)","phone":"02-3662-8292","area":"187.3","menu":"삼겹살","label":"한식","gu":"강서구","type":"restaurant"},{"name":"대청마루","addr":"서울특별시 강서구 하늘길 38-0, 3층 (방화동, 김포공항국제선청사)","phone":"070-4947-9859","area":"570","menu":"김치찌개","label":"한식","gu":"강서구","type":"restaurant"},{"name":"덕인관 김포밥상","addr":"서울특별시 강서구 하늘길 38, MF층 한식코너호 (방화동, 김포공항, 롯데몰, 스카이시티)","phone":"02-6116-5327","area":"217.17","menu":"뼈없는 갈비탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"도일처","addr":"서울특별시 강서구 개화동로 567, 1~2층 (방화동)","phone":"02-2662-2322","area":"119","menu":"누룽지해물탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"도쿄하나 등촌점","addr":"서울특별시 강서구 공항대로 367, 2층 (등촌동, 3동 백제원도쿄오백년장어)","phone":"02-2668-0880","area":"729.26","menu":"생선회","label":"한식","gu":"강서구","type":"restaurant"},{"name":"동궁찜닭 마곡점","addr":"서울특별시 강서구 마곡중앙6로 21, 이너매스 마곡 1층 102~103호 (마곡동)","phone":"02-2668-4282","area":"91.2","menu":"찜닭","label":"한식","gu":"강서구","type":"restaurant"},{"name":"등촌샤브칼국수","addr":"서울특별시 강서구 강서로56가길 65, 2층 (등촌동, 3동)","phone":"02-2659-9318","area":"168.55","menu":"칼국수","label":"한식","gu":"강서구","type":"restaurant"},{"name":"로운 NC강서점","addr":"서울특별시 강서구 강서로56길 17, 9층 (등촌동, 강서NC백화점)","phone":"02-2667-9779","area":"481.6","menu":"뷔페","label":"한식","gu":"강서구","type":"restaurant"},{"name":"마산아구찜","addr":"서울특별시 강서구 금낭화로 135, 3층 (방화동, 3동)","phone":"02-2665-1527","area":"102.86","menu":"대구탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"마실한정식 발산점","addr":"서울특별시 강서구 공항대로 290, 2층 201~202호 (내발산동, 우장산동)","phone":"02-3663-6639","area":"348.43","menu":"삼겹살","label":"한식","gu":"강서구","type":"restaurant"},{"name":"만배아리랑","addr":"서울특별시 강서구 화곡로18길 24, 1층 111,113호 (화곡동, 강서뉴타워)","phone":"02-2607-3126","area":"75.86","menu":"보쌈","label":"한식","gu":"강서구","type":"restaurant"},{"name":"만석장 롯데몰 김포공항점","addr":"서울특별시 강서구 하늘길 38, 김포공항 롯데몰 지하 1층 (방화동)","phone":"02-6116-5000","area":"159.14","menu":"두부한정식","label":"한식","gu":"강서구","type":"restaurant"},{"name":"맛남굼터","addr":"서울특별시 강서구 강서로45가길 10, 2층 (화곡동, 3동)","phone":"02-2699-6692","area":"174.96","menu":"숙성삼겹살","label":"한식","gu":"강서구","type":"restaurant"},{"name":"망향비빔국수","addr":"서울특별시 강서구 양천로 720, 가동 1층 (염창동, 유동빌딩)","phone":"02-2659-6599","area":"264","menu":"비빔국수","label":"한식","gu":"강서구","type":"restaurant"},{"name":"맹순이꽃게 아구전문점","addr":"서울특별시 강서구 공항대로 272, 2층 (내발산동, 1동)","phone":"02-3661-6570","area":"331.9","menu":"꽃게찜, 아구찜","label":"한식","gu":"강서구","type":"restaurant"},{"name":"메이탄","addr":"서울특별시 강서구 강서로 242, 상가동 2층 215호 (화곡동, 강서힐스테이트)","phone":"02-2699-8686","area":"197.04","menu":"양장피","label":"한식","gu":"강서구","type":"restaurant"},{"name":"메이필드 큐(MAYFIELD KEW)","addr":"서울특별시 강서구 방화대로 94, 1층 (외발산동, 1동 메이필드호텔A동)","phone":"02-2660-9040","area":"256","menu":"파스타","label":"한식","gu":"강서구","type":"restaurant"},{"name":"명동가츠라","addr":"서울특별시 강서구 하늘길 38, 지하 2층 (방화동, 2동 김포공항 스카이파크)","phone":"02-6116-5539","area":"165.75","menu":"우동","label":"한식","gu":"강서구","type":"restaurant"},{"name":"명량","addr":"서울특별시 강서구 양천로 401, A동 2층 210호 (가양동, 1동 강서한강자이타워)","phone":"02-2638-5848","area":"95.9","menu":"고등어조림","label":"한식","gu":"강서구","type":"restaurant"},{"name":"문배동육칼 김포공항점","addr":"서울특별시 강서구 하늘길 112, 김포공항 국내선청사 4층 (공항동)","phone":"02-2663-1980","area":"142.74","menu":"육개장 칼국수, 사골 칼국수","label":"한식","gu":"강서구","type":"restaurant"},{"name":"박가부대 홈플러스강서점","addr":"서울특별시 강서구 화곡로 398, 4층 (등촌동, 1동 홈플러스강서점)","phone":"02-3664-0955","area":"220.93","menu":"부대찌개","label":"한식","gu":"강서구","type":"restaurant"},{"name":"발산삼계탕","addr":"서울특별시 강서구 강서로 344, 1~2층 (내발산동, 우장산동)","phone":"02-3662-3930","area":"307.7","menu":"삼계탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"발산역맛찬들왕소금구이","addr":"서울특별시 강서구 강서로 375-7, 1~3층 (가양동, 1동)","phone":"02-3661-5026","area":"576.09","menu":"삼겹살","label":"한식","gu":"강서구","type":"restaurant"},{"name":"방화초록동원칼국수","addr":"서울특별시 강서구 금낭화로 128, 1층 (방화동)","phone":"02-2661-0910","area":"107.52","menu":"칼국수","label":"한식","gu":"강서구","type":"restaurant"},{"name":"백제원 등촌점","addr":"서울특별시 강서구 공항대로 367, 3층 (등촌동, 3동 백제원도쿄오백년장어)","phone":"02-2668-4114","area":"729.26","menu":"갈비찜","label":"한식","gu":"강서구","type":"restaurant"},{"name":"베뉴지","addr":"서울특별시 강서구 강서로 388, 지하1~2층 (등촌동, 3동 그랜드백화점)","phone":"02-2657-2125","area":"3,649.97","menu":"뷔페","label":"한식","gu":"강서구","type":"restaurant"},{"name":"베이징화곡본점","addr":"서울특별시 강서구 화곡로 118, 2~4층 (화곡동, 1동 베이징빌딩)","phone":"02-2699-7275","area":"818.91","menu":"전가복","label":"한식","gu":"강서구","type":"restaurant"},{"name":"보타닉파크웨딩","addr":"서울특별시 강서구 마곡중앙5로 6, 지하 2층 205호 (마곡동, 가양 1동 마곡나루역보타닉푸르지오시티)","phone":"02-2658-1900","area":"2,855.92","menu":"뷔페","label":"한식","gu":"강서구","type":"restaurant"},{"name":"봉래헌(蓬萊軒)","addr":"서울특별시 강서구 방화대로 94, 1층 (외발산동, 1동 메이필드호텔)","phone":"02-2660-9020","area":"429","menu":"한정식","label":"한식","gu":"강서구","type":"restaurant"},{"name":"새벽집","addr":"서울특별시 강서구 양천로 401, A동 2층 206호 (가양동, 1동 강서한강자이타워)","phone":"02-2638-5787","area":"108.25","menu":"순두부","label":"한식","gu":"강서구","type":"restaurant"},{"name":"생어거스틴 김포공항점","addr":"서울특별시 강서구 하늘길 38, 김포공항, 롯데몰, 스카이파크 지하1층 (방화동)","phone":"02-6116-5832","area":"200","menu":"뿌팟봉커리","label":"한식","gu":"강서구","type":"restaurant"},{"name":"샤브미 강서점","addr":"서울특별시 강서구 화곡로 398, 1층 (등촌동, 1동 홈플러스강서점)","phone":"02-3664-8383","area":"334","menu":"샤브샤브","label":"한식","gu":"강서구","type":"restaurant"},{"name":"설악추어탕","addr":"서울특별시 강서구 금낭화로 105, 1층 (방화동, 1동)","phone":"02-2662-9992","area":"198.36","menu":"추어탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"소담촌 마곡점","addr":"서울특별시 강서구 마곡중앙6로 93, 4층 403호 (마곡동, 가양 1동 열린프라자)","phone":"02-3661-5566","area":"300.15","menu":"샤브샤브","label":"한식","gu":"강서구","type":"restaurant"},{"name":"송화명가","addr":"서울특별시 강서구 강서로45나길 47, 선재빌딩 1층 (내발산동)","phone":"02-2661-4360","area":"280.5","menu":"한우생등심","label":"한식","gu":"강서구","type":"restaurant"},{"name":"신고집해물찜","addr":"서울특별시 강서구 강서로 188, 1층 (화곡동, 우장산동)","phone":"02-2668-3359","area":"158.54","menu":"해물찜","label":"한식","gu":"강서구","type":"restaurant"},{"name":"씨제이푸드빌(주) 빕스 마곡원그로브점","addr":"서울특별시 강서구 공항대로 165, 2층","phone":"02-3661-1997","area":"1,298.52","menu":"스테이크","label":"한식","gu":"강서구","type":"restaurant"},{"name":"아그라","addr":"서울특별시 강서구 하늘길 38, 김포공항, 롯데몰, 스카이시티 지하1층 (방화동)","phone":"02-6116-5794","area":"199.35","menu":"버터치킨마크니","label":"한식","gu":"강서구","type":"restaurant"},{"name":"애슐리퀸즈 NC 강서점","addr":"서울특별시 강서구 강서로56길 17, 9층 (등촌동, 강서NC백화점)","phone":"02-2667-9804","area":"754.05","menu":"샐러드바","label":"한식","gu":"강서구","type":"restaurant"},{"name":"애슐리퀸즈 롯데백화점 김포공항점","addr":"서울특별시 강서구 하늘길 38, 김포공항, 롯데몰, 스카이시티 5층 (방화동)","phone":"02-6116-3553","area":"823","menu":"초밥, 그릴, 샐러드","label":"한식","gu":"강서구","type":"restaurant"},{"name":"양촌리","addr":"서울특별시 강서구 화곡로 109, 1~2층 (화곡동, 3동)","phone":"02-2698-8592","area":"456.71","menu":"돼지갈비, 삼겹살","label":"한식","gu":"강서구","type":"restaurant"},{"name":"엉터리생고기","addr":"서울특별시 강서구 양천로 706, 1층 (염창동)","phone":"02-3665-5336","area":"364.45","menu":"삼겹살","label":"한식","gu":"강서구","type":"restaurant"},{"name":"온더보더 롯데몰김포공항점","addr":"서울특별시 강서구 하늘길 38, 지하 2층 (방화동, 2동 롯데몰김포공항스카이파크)","phone":"02-6116-5182","area":"359.55","menu":"타코","label":"한식","gu":"강서구","type":"restaurant"},{"name":"온라이프 다이닝 NC강서점(리미니, 테루, 아시아문)","addr":"서울특별시 강서구 강서로56길 17, 엔씨백화점 9층 (등촌동)","phone":"02-2667-9853","area":"380.49","menu":"냉면, 돈가스, 쌀국수","label":"한식","gu":"강서구","type":"restaurant"},{"name":"올데이 한식뷔페","addr":"서울특별시 강서구 마곡동로 56, 건와빌딩 2층 201호 (마곡동)","phone":"02-2658-0701","area":"288.26","menu":"뷔페","label":"한식","gu":"강서구","type":"restaurant"},{"name":"우리마을셀프장어네","addr":"서울특별시 강서구 곰달래로 254, 1층 (화곡동, 4동)","phone":"02-2652-2284","area":"188.48","menu":"장어","label":"한식","gu":"강서구","type":"restaurant"},{"name":"이조갈비","addr":"서울특별시 강서구 양천로 353, 1층 (가양동, 1동)","phone":"02-3661-3457","area":"266.45","menu":"갈비탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"익스퍼랩(EXPER LAB)","addr":"서울특별시 강서구 마곡서로 152, 두산더랜드타워 B동 2층 221호 (마곡동)","phone":"02-6989-9388","area":"97.45","menu":"스파게티","label":"한식","gu":"강서구","type":"restaurant"},{"name":"임진강민물장어","addr":"서울특별시 강서구 양천로 723, 1층 (염창동)","phone":"02-3663-7900","area":"117.27","menu":"장어","label":"한식","gu":"강서구","type":"restaurant"},{"name":"자연솜씨 이대서울병원","addr":"서울특별시 강서구 공항대로 260, 이화의대부속서울병원 지하 1층 (마곡동)","phone":"02-2135-5597","area":"358.7","menu":"갈비탕, 제육볶음, 생대구탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"장위동 유성집","addr":"서울특별시 강서구 마곡중앙6로 16, 2층 201호 (마곡동, 가양 1동 마곡지엠지타워)","phone":"02-3661-9807","area":"149.08","menu":"한우등심","label":"한식","gu":"강서구","type":"restaurant"},{"name":"조선갈비","addr":"서울특별시 강서구 공항대로 341, 2~5층 (등촌동)","phone":"02-2658-9300","area":"818.8","menu":"갈비","label":"한식","gu":"강서구","type":"restaurant"},{"name":"조코제주똥돼지","addr":"서울특별시 강서구 방화대로47가길 7, 2층 205호 (방화동, 3동 샤르망)","phone":"02-2666-1662","area":"95.37","menu":"제주생오겹살","label":"한식","gu":"강서구","type":"restaurant"},{"name":"주식회사 갓텐코리아 갓텐스시롯데몰김포공항점","addr":"서울특별시 강서구 하늘길 38, 지하 2층 (방화동, 2동 스카이파크 롯데몰)","phone":"02-6116-5755","area":"329.2","menu":"초밥","label":"한식","gu":"강서구","type":"restaurant"},{"name":"주식회사 딘타이펑코리아","addr":"서울특별시 강서구 하늘길 38, 지하 2층 (방화동, 2동 김포공항 스카이파크)","phone":"02-6116-5537","area":"300.01","menu":"딮섶","label":"한식","gu":"강서구","type":"restaurant"},{"name":"주식회사 땡순이","addr":"서울특별시 강서구 마곡중앙로 161-22, 마곡일성트루엘플래닛 2층 201~204호 (마곡동)","phone":"02-2659-3020","area":"203.51","menu":"아구찜","label":"한식","gu":"강서구","type":"restaurant"},{"name":"주식회사 명가원설농탕","addr":"서울특별시 강서구 강서로 195, 1층 (화곡동, 3동)","phone":"02-2693-0055","area":"195","menu":"설농탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"주식회사 이랜드이츠 반궁NC강서점","addr":"서울특별시 강서구 강서로56길 17, 엔씨백화점 9층 (등촌동)","phone":"02-2667-9860","area":"209.35","menu":"고등어구이, 제육볶음, 묵은지찌개","label":"한식","gu":"강서구","type":"restaurant"},{"name":"주식회사 한우1번지","addr":"서울특별시 강서구 양천로 564, 1층 119호 (등촌동, 1동 두산위브센티움)","phone":"02-2668-0001","area":"275","menu":"소고기","label":"한식","gu":"강서구","type":"restaurant"},{"name":"차이(Chai)797 김포롯데몰점","addr":"서울특별시 강서구 하늘길 38, 김포공항, 롯데몰, 스카이시티 GF층 (방화동)","phone":"02-6116-5377","area":"237.5","menu":"탕수육","label":"한식","gu":"강서구","type":"restaurant"},{"name":"청북경오리","addr":"서울특별시 강서구 마곡동로4길 15, 3층 302~304호 (마곡동, 가양 1동 엠팰리체)","phone":"02-3661-5892","area":"349.84","menu":"짬뽕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"초애삼계탕마곡점","addr":"서울특별시 강서구 공항대로 205, 에스에이치빌딩 3층 304~305호 (마곡동)","phone":"02-3663-7767","area":"171.82","menu":"삼계탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"촌장골","addr":"서울특별시 강서구 양천로 59, 2층 (방화동)","phone":"02-2661-8592","area":"454.46","menu":"촌장소왕구이","label":"한식","gu":"강서구","type":"restaurant"},{"name":"춘천전통69닭갈비","addr":"서울특별시 강서구 송정로 64, 1층 (공항동)","phone":"02-2663-4975","area":"76.61","menu":"닭갈비","label":"한식","gu":"강서구","type":"restaurant"},{"name":"취락한방능이백숙","addr":"서울특별시 강서구 화곡로53길 7-8, 1층 (화곡동, 6동)","phone":"02-2602-8478","area":"99.57","menu":"능이백숙","label":"한식","gu":"강서구","type":"restaurant"},{"name":"캐슬 테라스(Castle Terrace)","addr":"서울특별시 강서구 방화대로 94, 1층 (외발산동, 외발산동 메이필드호텔)","phone":"02-2660-9030","area":"508.27","menu":"뷔페","label":"한식","gu":"강서구","type":"restaurant"},{"name":"콩쥐가 기르고 팥쥐가 요리하는 고기짓","addr":"서울특별시 강서구 강서로 349, 2층 22호(내발산동)","phone":"0507-1424-0848","area":"132.23","menu":"삼겹살","label":"한식","gu":"강서구","type":"restaurant"},{"name":"태풍참치","addr":"서울특별시 강서구 공항대로 261, 2층 207호 (마곡동, 가양 1동 발산파크프라자)","phone":"02-3663-3753","area":"141.12","menu":"참치모듬회","label":"한식","gu":"강서구","type":"restaurant"},{"name":"토끼정 롯데몰 김포공항점","addr":"서울특별시 강서구 하늘길 38, 김포공항, 롯데몰, 스카이시티 지하1층 (방화동)","phone":"02-6116-5477","area":"158.77","menu":"우동","label":"한식","gu":"강서구","type":"restaurant"},{"name":"팔도미락","addr":"서울특별시 강서구 우장산로 123, 2층 (화곡동, 6동)","phone":"02-2607-7161","area":"160.76","menu":"계절요리","label":"한식","gu":"강서구","type":"restaurant"},{"name":"포베이 강서점","addr":"서울특별시 강서구 화곡로 398, 홈플러스강서점앤본사사옥 4층 (등촌동)","phone":"02-3663-0887","area":"185.11","menu":"베트남쌀국수","label":"한식","gu":"강서구","type":"restaurant"},{"name":"푸드엠파이어 이대서울병원 남산왕돈가스","addr":"서울특별시 강서구 공항대로 260, 이화의대부속서울병원 지하1층 (마곡동)","phone":"02-2135-2465","area":"138.73","menu":"돈가스","label":"한식","gu":"강서구","type":"restaurant"},{"name":"푸드엠파이어 이대서울병원 불고기명가","addr":"서울특별시 강서구 공항대로 260, 이화의대부속서울병원 지하1층 (마곡동)","phone":"02-2135-2465","area":"143.87","menu":"불고기","label":"한식","gu":"강서구","type":"restaurant"},{"name":"푸드엠파이어 이대서울병원 청진동순두부","addr":"서울특별시 강서구 공항대로 260, 이화의대부속서울병원 지하1층 (마곡동)","phone":"02-2135-2465","area":"138.73","menu":"순두부찌개","label":"한식","gu":"강서구","type":"restaurant"},{"name":"푸주도가니","addr":"서울특별시 강서구 까치산로 183, 1층 (화곡동)","phone":"02-2606-3677","area":"257.11","menu":"도가니탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"플레이팅 김포공항점 티엔루","addr":"서울특별시 강서구 하늘길 112, 김포공항 국내선청사 4층 (공항동)","phone":"02-2666-9386","area":"227.7","menu":"베트남쌀국수","label":"한식","gu":"강서구","type":"restaurant"},{"name":"하늘찬","addr":"서울특별시 강서구 하늘길 38, 3층 (방화동, 2동 김포공항 국제선청사 동관)","phone":"070-4947-9855","area":"288","menu":"갈비찜","label":"한식","gu":"강서구","type":"restaurant"},{"name":"한우리김포점","addr":"서울특별시 강서구 하늘길 38, 지하 2층 (방화동, 2동 김포공항 스카이파크)","phone":"02-512 -3103","area":"231.18","menu":"샤브샤브","label":"한식","gu":"강서구","type":"restaurant"},{"name":"한우정","addr":"서울특별시 강서구 공항대로 195, 2층 상가-201~203호 (마곡동, 가양 1동 힐스테이트에코동익)","phone":"02-3664-8689","area":"267.89","menu":"곰탕","label":"한식","gu":"강서구","type":"restaurant"},{"name":"할머니가 차려주는 밥상","addr":"서울특별시 강서구 공항대로 290, 2층 (내발산동, 우장산동)","phone":"02-3663-6639","area":"267","menu":"한정식","label":"한식","gu":"강서구","type":"restaurant"},{"name":"함평해장","addr":"서울특별시 강서구 마곡동로 55, 1층 103호 (마곡동, 가양 1동 마커스빌딩)","phone":"02-2084-7000","area":"241.52","menu":"냉면, 갈비찜","label":"한식","gu":"강서구","type":"restaurant"},{"name":"해녀장","addr":"서울특별시 강서구 강서로54길 49, 1층 (등촌동, 3동)","phone":"02-3663-9233","area":"152.3","menu":"회","label":"한식","gu":"강서구","type":"restaurant"},{"name":"해탄 발산본점","addr":"서울특별시 강서구 마곡중앙6로 85, 2층 201호 (마곡동, 가양 1동 마곡사이언스파크뷰)","phone":"02-2659-7577","area":"197.88","menu":"갈락찜","label":"한식","gu":"강서구","type":"restaurant"},{"name":"현대옥 강서점","addr":"서울특별시 강서구 화곡로 346, 1층 101~102호 (화곡동, 6동 귀뚜라미홈시스템)","phone":"02-2602-0069","area":"92.83","menu":"전주비빔밥","label":"한식","gu":"강서구","type":"restaurant"},{"name":"홍린","addr":"서울특별시 강서구 우장산로15길 25, 1~3층 (화곡동, 6동)","phone":"02-2608-6556","area":"326.76","menu":"탕수육","label":"한식","gu":"강서구","type":"restaurant"},{"name":"화로구이","addr":"서울특별시 강서구 강서로 374, 1~3층 (등촌동, 3동)","phone":"02-3663-3292","area":"964.75","menu":"돼지갈비","label":"한식","gu":"강서구","type":"restaurant"},{"name":"군산아구찜","addr":"서울특별시 서초구 강남대로8길 39-72","phone":"02-573-9355","area":"","menu":"아구찜","label":"한식","gu":"서초구","type":"restaurant"},{"name":"별난횟집","addr":"서울특별시 서초구 강남대로 224, 지하1층 제1~9호","phone":"02-576-3050","area":"","menu":"회, 덮밥, 탕","label":"생선회","gu":"서초구","type":"restaurant"},{"name":"화덕 닭갈비","addr":"서울특별시 서초구 강남대로10길 41, 1층","phone":"02-575-5959","area":"","menu":"닭갈비, 찌개정식","label":"화덕구이","gu":"서초구","type":"restaurant"},{"name":"우성횟집","addr":"서울특별시 서초구 언남11길 34-14","phone":"02-579-4808","area":"","menu":"회","label":"생선회","gu":"서초구","type":"restaurant"},{"name":"토끼네마굿간","addr":"서울특별시 서초구 방배로32길 30-9, 1층","phone":"nan","area":"","menu":"이탈리아 가정식","label":"이탈리안","gu":"서초구","type":"restaurant"},{"name":"장군한방삼계탕","addr":"서울특별시 서초구 매헌로 34, 한일빌딩 2층","phone":"070-4107-9900","area":"","menu":"삼계탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"금강바베큐","addr":"서울특별시 서초구 사평대로 349, 201호,202호","phone":"02-511-0976","area":"","menu":"치킨","label":"치킨류","gu":"서초구","type":"restaurant"},{"name":"한성돈까스","addr":"서울특별시 서초구 강남대로97길 10","phone":"02-540-7054","area":"","menu":"돈까스","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"어진","addr":"서울특별시 서초구 강남대로18길 15-11, 1,2층 (양재동)","phone":"02-2058-2933","area":"","menu":"생선찜","label":"한식","gu":"서초구","type":"restaurant"},{"name":"약초마을","addr":"서울특별시 서초구 강남대로2길 3 (양재동,1층)","phone":"02-577-5551","area":"","menu":"삼계탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"소호정","addr":"서울특별시 서초구 논현로 27 (양재동,(1,2층))","phone":"02-579-7282","area":"","menu":"국시, 국밥","label":"한식","gu":"서초구","type":"restaurant"},{"name":"평가옥","addr":"서울특별시 서초구 논현로 69 (양재동,1층,2층)","phone":"02-3462-1577","area":"","menu":"냉면, 국밥","label":"한식","gu":"서초구","type":"restaurant"},{"name":"(주)배나무골","addr":"서울특별시 서초구 마방로2길 12 보성빌딩 지하1층(양재동)","phone":"02-571-5252","area":"","menu":"오리","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서울만남의광장휴게소 한식당","addr":"서울특별시 서초구 양재대로12길 73-71 (원지동, 서울만남의광장휴게소 한식당)","phone":"02-578-3372","area":"","menu":"국밥, 찌개","label":"한식","gu":"서초구","type":"restaurant"},{"name":"영양센타 서초역점","addr":"서울특별시 서초구 명달로 130, 1층 (서초동)","phone":"02-3487-0101","area":"","menu":"삼계탕","label":"치킨류","gu":"서초구","type":"restaurant"},{"name":"디토","addr":"서울특별시 서초구 명달로 94 (주)삼성출판사 사옥 1층 (서초동)","phone":"02-3471-7022","area":"","menu":"경양식","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"송강","addr":"서울특별시 서초구 명달로9길 5, 정호빌딩 1층(방배동,1층)","phone":"02-598-9288","area":"","menu":"복어, 장어요리","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서초갈비","addr":"서울특별시 서초구 반포대로 12, 2층 (서초동)","phone":"02-582-2988","area":"","menu":"등심","label":"한식","gu":"서초구","type":"restaurant"},{"name":"오발탄","addr":"서울특별시 서초구 반포대로 154, 1,2,3층 (서초동)","phone":"02-591-6657","area":"","menu":"양대창구이","label":"한식","gu":"서초구","type":"restaurant"},{"name":"시골집","addr":"서울특별시 서초구 반포대로10길 7, 1층 (서초동)","phone":"02-597-0400","area":"","menu":"쌈밥","label":"한식","gu":"서초구","type":"restaurant"},{"name":"신박사 콩사랑","addr":"서울특별시 서초구 반포대로23길 30, 1층 (서초동)","phone":"02-588-8862","area":"","menu":"두부","label":"한식","gu":"서초구","type":"restaurant"},{"name":"다피타(da pitta)","addr":"서울특별시 서초구 반포대로23길 32, 1층 101호 (서초동)","phone":"02-521-5147","area":"","menu":"피자","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"등촌샤브칼국수","addr":"서울특별시 서초구 반포대로28길 28, 초석빌딩 1층 101호 (서초동)","phone":"02-508-4519","area":"","menu":"샤브칼국수","label":"한식","gu":"서초구","type":"restaurant"},{"name":"원당","addr":"서울특별시 서초구 반포대로28길 69, 1층 (서초동)","phone":"02-583-3333","area":"","menu":"감자탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"남도찌개","addr":"서울특별시 서초구 반포대로28길 71-17, 1층 (서초동)","phone":"02-584-9940","area":"","menu":"새우탕, 생대구찌개","label":"한식","gu":"서초구","type":"restaurant"},{"name":"봉추찜닭","addr":"서울특별시 서초구 반포대로28길 91, 101호 (서초동)","phone":"02-584-6981","area":"","menu":"찜닭","label":"한식","gu":"서초구","type":"restaurant"},{"name":"청솔감자탕","addr":"서울특별시 서초구 반포대로30길 53, 조광빌딩 지하1층 (서초동)","phone":"02-585-5872","area":"","menu":"감자탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서래족발","addr":"서울특별시 서초구 방배로 189, 1층 (방배동)","phone":"02-6104-5188","area":"","menu":"족발","label":"한식","gu":"서초구","type":"restaurant"},{"name":"방배본가면옥","addr":"서울특별시 서초구 방배로 41, 방배홈스텔 1층 102호 (방배동)","phone":"02-587-5799","area":"","menu":"면요리","label":"한식","gu":"서초구","type":"restaurant"},{"name":"램하우스 서초법원점","addr":"서울특별시 서초구 법원로2길 15 (서초동,,5,6 (202호))","phone":"02-3476-0678","area":"","menu":"양갈비","label":"기타","gu":"서초구","type":"restaurant"},{"name":"주식회사 우밀가","addr":"서울특별시 서초구 법원로2길 15, 1층 104호 (서초동, 길도 BD )","phone":"02-596-3770","area":"","menu":"국수류","label":"한식","gu":"서초구","type":"restaurant"},{"name":"장원한정식","addr":"서울특별시 서초구 법원로2길 19 (서초동)","phone":"02-593-8449","area":"","menu":"한정식","label":"한식","gu":"서초구","type":"restaurant"},{"name":"송학횟집","addr":"서울특별시 서초구 법원로3길 12, 승소빌딩 지하1층 (서초동)","phone":"02-595-8822","area":"","menu":"회정식","label":"횟집","gu":"서초구","type":"restaurant"},{"name":"대나무골","addr":"서울특별시 서초구 법원로3길 15 (서초동)","phone":"02-533-8410","area":"","menu":"한정식","label":"한식","gu":"서초구","type":"restaurant"},{"name":"속리산 염소요리 전문점","addr":"서울특별시 서초구 법원로3길 24 (서초동,두언빌딩 1층)","phone":"02-595-7760","area":"","menu":"염소요리","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서초원","addr":"서울특별시 서초구 서초대로 283, 남촌빌딩 지하1층 (서초동)","phone":"02-596-0927","area":"","menu":"한정식","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서초정육식당","addr":"서울특별시 서초구 서초대로38길 51 (서초동)","phone":"02-588-0290","area":"","menu":"등심","label":"한식","gu":"서초구","type":"restaurant"},{"name":"울돌목 가는길","addr":"서울특별시 서초구 서초대로40길 41, 지하1층 (서초동)","phone":"02-521-6032","area":"","menu":"한정식","label":"한식","gu":"서초구","type":"restaurant"},{"name":"한우플러스","addr":"서울특별시 서초구 서초대로46길 109, 2층 (서초동, 지산빌딩)","phone":"02-522-6457","area":"","menu":"한우,등심구이","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"이여곰탕","addr":"서울특별시 서초구 서초대로46길 19-15, 1층 (서초동)","phone":"02-598-9337","area":"","menu":"곰탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"이남장(서초점)","addr":"서울특별시 서초구 서초대로49길 4, 1층,2층,3층 (서초동)","phone":"02-592-0268","area":"","menu":"설렁탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"da Pitta(다 피타)","addr":"서울특별시 서초구 효령로 202, 1층 (서초동)","phone":"02-523-1547","area":"","menu":"파스타","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"낙천정","addr":"서울특별시 서초구 효령로49길 19 (서초동,2층,3층)","phone":"02-3473-8232","area":"","menu":"한정식","label":"한식","gu":"서초구","type":"restaurant"},{"name":"채향","addr":"서울특별시 서초구 효령로53길 23, 1층 (서초동)","phone":"02-525-7737","area":"","menu":"쌈밥, 생선구이","label":"한식","gu":"서초구","type":"restaurant"},{"name":"홍천한우","addr":"서울특별시 서초구 효령로55길 47 (서초동,2층일부,3층일부)","phone":"02-586-0513","area":"","menu":"등심","label":"한식","gu":"서초구","type":"restaurant"},{"name":"참이맛 감자탕","addr":"서울특별시 서초구 사평대로56길 10, 1층 (서초동)","phone":"02-3481-3399","area":"","menu":"감자탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"포폴라리타","addr":"서울특별시 서초구 사평대로22길 41, 1층 (반포동)","phone":"02-593-2340","area":"","menu":"스파게티","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"육갑식당","addr":"서울특별시 서초구 서래로 33, 2층 (반포동)","phone":"02-533-9282","area":"","menu":"구이류","label":"한식","gu":"서초구","type":"restaurant"},{"name":"원할머니 보쌈 족발 박가 부대찌개 반포점","addr":"서울특별시 서초구 서초중앙로 238, 삼호가든쇼핑센타 지하중층 (반포동)","phone":"0503-7259-7827","area":"","menu":"부대찌개","label":"한식","gu":"서초구","type":"restaurant"},{"name":"건너편갈비살","addr":"서울특별시 서초구 신반포로42길 2, 2층 (반포동, NOVA월드)","phone":"0507-1303-9879","area":"","menu":"구이류","label":"한식","gu":"서초구","type":"restaurant"},{"name":"(주)이춘복스시강남","addr":"서울특별시 서초구 강남대로61길 13, 1층 2층 (서초동)","phone":"02-591-4558","area":"","menu":"초밥","label":"일식","gu":"서초구","type":"restaurant"},{"name":"장꼬방","addr":"서울특별시 서초구 강남대로61길 27, 1층 (서초동)","phone":"02-597-5511","area":"","menu":"단팥죽","label":"한식","gu":"서초구","type":"restaurant"},{"name":"광평 평양냉면갈비 강남점","addr":"서울특별시 서초구 서운로 135, 1층,2층 (서초동)","phone":"02-581-2235","area":"","menu":"냉면, 갈비","label":"한식","gu":"서초구","type":"restaurant"},{"name":"신태평양","addr":"서울특별시 서초구 서초대로 307, 지하1층 가호 (서초동)","phone":"02-534-0354","area":"","menu":"모듬회","label":"일식","gu":"서초구","type":"restaurant"},{"name":"주식회사 서석대","addr":"서울특별시 서초구 서초대로 346, 102호 (서초동, 서초동 동아빌라트)","phone":"02-584-0990","area":"","menu":"한정식","label":"한식","gu":"서초구","type":"restaurant"},{"name":"강남역 모범갈빗살","addr":"서울특별시 서초구 서초대로73길 40, 104호 (서초동, 강남오피스텔)","phone":"02-533-2588","area":"","menu":"한우구이","label":"한식","gu":"서초구","type":"restaurant"},{"name":"주식회사 맛있는이야기 노랑저고리","addr":"서울특별시 서초구 서초대로73길 9 (서초동,타임빌딩 501호)","phone":"02-534-5300","area":"","menu":"한정식","label":"한식","gu":"서초구","type":"restaurant"},{"name":"이자카야 나무  (서초)","addr":"서울특별시 서초구 서초대로75길 23, 지하1층~지상4층 (서초동)","phone":"02-535-0348","area":"","menu":"한우구이","label":"일식","gu":"서초구","type":"restaurant"},{"name":"한우등심한판","addr":"서울특별시 서초구 서초대로77길 45, 306호,307호 (서초동)","phone":"02-3481-1118","area":"","menu":"한우구이","label":"한식","gu":"서초구","type":"restaurant"},{"name":"삼성각","addr":"서울특별시 서초구 서초대로78길 42 (서초동,2층)","phone":"02-598-5553","area":"","menu":"전가복","label":"중식","gu":"서초구","type":"restaurant"},{"name":"늘봄웰봄","addr":"서울특별시 서초구 서초중앙로 188 (서초동, 아크로비스타지하1층지하A-105,A-106,A-107호)","phone":"02-599-8804","area":"","menu":"등심, 갈비, 샤브샤브","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서초 해물찜","addr":"서울특별시 서초구 서초중앙로24길 27, 지하1층 지106,107호 (서초동, 지파이브센트럴프라자)","phone":"02-577-6465","area":"","menu":"해물찜","label":"한식","gu":"서초구","type":"restaurant"},{"name":"빛고을으뜸추어탕","addr":"서울특별시 서초구 서초중앙로26길 13, 1층 (서초동)","phone":"02-537-0156","area":"","menu":"추어탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"홍.낙.제","addr":"서울특별시 서초구 서초중앙로26길 17 (서초동,1층)","phone":"02-3482-3661","area":"","menu":"낙지갈비탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"정담남원추어탕","addr":"서울특별시 서초구 방배로15길 14, 1층 (방배동)","phone":"02-583-7588","area":"","menu":"추어탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"명동보리밥 방배점","addr":"서울특별시 서초구 서초대로 108 (방배동,지상2층 201호)","phone":"02-3471-3392","area":"","menu":"보리밥정식","label":"한식","gu":"서초구","type":"restaurant"},{"name":"선화의 고기","addr":"서울특별시 서초구 서초대로24길 9, 1층 (방배동)","phone":"02-3486-5505","area":"","menu":"소고기구이","label":"한식","gu":"서초구","type":"restaurant"},{"name":"구이마마","addr":"서울특별시 서초구 강남대로25길 59 (양재동,1층)","phone":"02-575-7449","area":"","menu":"생삼겹","label":"한식","gu":"서초구","type":"restaurant"},{"name":"인덕원비빔국수","addr":"서울특별시 서초구 남부순환로 2656, 1,2층 (양재동)","phone":"02-579-5678","area":"","menu":"비빔국수","label":"한식","gu":"서초구","type":"restaurant"},{"name":"장모사랑","addr":"서울특별시 서초구 남부순환로350길 36, 프렌닥터 지하1층 101호 (양재동)","phone":"02-3473-8261","area":"","menu":"한정식","label":"한식","gu":"서초구","type":"restaurant"},{"name":"미나토","addr":"서울특별시 서초구 방배로23길 19, 1층 (방배동)","phone":"02-525-5841","area":"","menu":"사시미,초밥,롤","label":"일식","gu":"서초구","type":"restaurant"},{"name":"차돌풍(방배점)","addr":"서울특별시 서초구 효령로31길 19, 1층 (방배동)","phone":"02-581-9293","area":"","menu":"차돌박이","label":"식육(숯불구이)","gu":"서초구","type":"restaurant"},{"name":"방배순대국","addr":"서울특별시 서초구 효령로31길 46, 1층 (방배동)","phone":"02-598-9597","area":"","menu":"순대국","label":"한식","gu":"서초구","type":"restaurant"},{"name":"갈비사랑","addr":"서울특별시 서초구 강남대로 204, 지층,지상1,2,3,4,5층 (양재동)","phone":"02-3463-9800","area":"","menu":"돼지갈비","label":"한식","gu":"서초구","type":"restaurant"},{"name":"디오디아(DIODIA)","addr":"서울특별시 서초구 강남대로 213, 4층 (양재동, 스포타임)","phone":"02-526-8700","area":"","menu":"뷔페","label":"뷔페식","gu":"서초구","type":"restaurant"},{"name":"동신참치양재직영점","addr":"서울특별시 서초구 강남대로 213, 지하1층 (양재동)","phone":"02-529-7130","area":"","menu":"생선회","label":"일식","gu":"서초구","type":"restaurant"},{"name":"청정해참치","addr":"서울특별시 서초구 강남대로 221 (양재동,환승주차장 201호)","phone":"02-577-4419","area":"","menu":"참치","label":"일식","gu":"서초구","type":"restaurant"},{"name":"영동회관","addr":"서울특별시 서초구 강남대로30길 28, 1층 (양재동)","phone":"02-6084-0250","area":"","menu":"삼겹살","label":"한식","gu":"서초구","type":"restaurant"},{"name":"오선채","addr":"서울특별시 서초구 남부순환로 2634-8, 지하1층 (양재동)","phone":"02-578-9411","area":"","menu":"한정식","label":"한식","gu":"서초구","type":"restaurant"},{"name":"사랑채","addr":"서울특별시 서초구 언남길 15-6 (양재동,1층)","phone":"0507-1473-0464","area":"","menu":"곤드레밥","label":"한식","gu":"서초구","type":"restaurant"},{"name":"여의도생고기","addr":"서울특별시 서초구 신흥말길 27-9, 1층 (내곡동)","phone":"02-6339-7299","area":"","menu":"소,돼지구이","label":"한식","gu":"서초구","type":"restaurant"},{"name":"피노","addr":"서울특별시 서초구 신흥말길 84, 1층 (내곡동)","phone":"02-445-0417","area":"","menu":"연잎밥","label":"한식","gu":"서초구","type":"restaurant"},{"name":"영주축협 한우프라자 청계산역점","addr":"서울특별시 서초구 청계산로 197, 4층, 5층 (신원동)","phone":"02-579-9292","area":"","menu":"한우구이,냉면,갈비탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"부안애서","addr":"서울특별시 서초구 청계산로 223, 1층 (신원동)","phone":"02-572-0112","area":"","menu":"김치찌개, 닭도리탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"맷돌로만청계산점","addr":"서울특별시 서초구 청룡마을3길 11 (신원동)","phone":"02-574-9691","area":"","menu":"순두부,두부전골","label":"한식","gu":"서초구","type":"restaurant"},{"name":"(주)댓짱돈까스","addr":"서울특별시 서초구 방배로6길 13, 파크에비뉴빌딩 1층 (방배동)","phone":"02-584-7348","area":"","menu":"돈까스","label":"한식","gu":"서초구","type":"restaurant"},{"name":"방배골식당","addr":"서울특별시 서초구 방배로8길 6 (방배동,(지상2층))","phone":"02-588-5197","area":"","menu":"아구탕, 복찜","label":"한식","gu":"서초구","type":"restaurant"},{"name":"민어사랑","addr":"서울특별시 서초구 효령로 182-8, 1층 (방배동)","phone":"02-588-2714","area":"","menu":"민어회, 민어탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"우면산","addr":"서울특별시 서초구 효령로2길 5, 1층 (방배동)","phone":"02-586-8883","area":"","menu":"불고기백반","label":"한식","gu":"서초구","type":"restaurant"},{"name":"신의주찹쌀순대&숯불갈비","addr":"서울특별시 서초구 방배천로6길 3-12 (방배동,(1층))","phone":"02-525-0041","area":"","menu":"순대국,숯불갈비","label":"한식","gu":"서초구","type":"restaurant"},{"name":"우주","addr":"서울특별시 서초구 동광로 106, 2층 (방배동)","phone":"02-2138-0881","area":"","menu":"한우","label":"한식","gu":"서초구","type":"restaurant"},{"name":"교촌치킨 방배1호점","addr":"서울특별시 서초구 방배중앙로 176, 1층 (방배동)","phone":"02-535-1991","area":"","menu":"치킨","label":"치킨류","gu":"서초구","type":"restaurant"},{"name":"삼육가 사당역1호점","addr":"서울특별시 서초구 방배천로 10, 1층 (방배동)","phone":"02-582-0102","area":"","menu":"구이류","label":"한식","gu":"서초구","type":"restaurant"},{"name":"삼소락","addr":"서울특별시 서초구 방배천로 17, 1층 (방배동, 주건축물제1동)","phone":"02-585-9288","area":"","menu":"삼겹살","label":"한식","gu":"서초구","type":"restaurant"},{"name":"속초바다야","addr":"서울특별시 서초구 방배천로2길 12, 1층 (방배동)","phone":"02-523-0512","area":"","menu":"모둠회","label":"일식","gu":"서초구","type":"restaurant"},{"name":"원당감자탕","addr":"서울특별시 서초구 방배천로4길 9, 2층 3층 (방배동)","phone":"02-522-5255","area":"","menu":"감자탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"담소사골순대 이수역점","addr":"서울특별시 서초구 서초대로 12, 101동 101호,102호,103호 (방배동, 세양아르비채)","phone":"02-522-1821","area":"","menu":"순대국","label":"한식","gu":"서초구","type":"restaurant"},{"name":"방배 육감","addr":"서울특별시 서초구 효령로 19, 1,2층 (방배동, 지상)","phone":"02-584-8008","area":"","menu":"생고기","label":"한식","gu":"서초구","type":"restaurant"},{"name":"델리세","addr":"서울특별시 서초구 동광로 106 (방배동)","phone":"02-534-3412","area":"","menu":"파스타","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"칠프로 칠백식당(방배직영점)","addr":"서울특별시 서초구 방배로27길 12, 영복빌딩 1층 (방배동)","phone":"02-534-0705","area":"","menu":"한우모둠","label":"한식","gu":"서초구","type":"restaurant"},{"name":"우동 키누(UDON KINU)","addr":"서울특별시 서초구 방배로28길 16 (방배동,1층)","phone":"02-536-5980","area":"","menu":"돈까스, 우동","label":"한식","gu":"서초구","type":"restaurant"},{"name":"송이하랑","addr":"서울특별시 서초구 서초대로 21 (방배동,지상1층,2층)","phone":"02-599-4499","area":"","menu":"삼겹살","label":"한식","gu":"서초구","type":"restaurant"},{"name":"김영희 강남동태찜 이수점","addr":"서울특별시 서초구 서초대로 3-4 (방배동,방배디오슈페리움 1차 B117~119, B122~126호)","phone":"0507-1304-0890","area":"","menu":"동태탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"아기다람쥐","addr":"서울특별시 서초구 서초대로 3-4, 1층 109-1호 (방배동, 방배디오슈페리움Ⅰ)","phone":"0507-1328-5685","area":"","menu":"생선구이","label":"한식","gu":"서초구","type":"restaurant"},{"name":"명인등심","addr":"서울특별시 서초구 서초대로 87, 1층 (방배동)","phone":"02-591-3888","area":"","menu":"등심","label":"한식","gu":"서초구","type":"restaurant"},{"name":"마초셰프","addr":"서울특별시 서초구 서초대로25길 8, 1층 (방배동)","phone":"02-6465-4242","area":"","menu":"파스타","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"만발","addr":"서울특별시 서초구 서초대로29길 32, 1층 (방배동)","phone":"02-535-7456","area":"","menu":"소고기","label":"한식","gu":"서초구","type":"restaurant"},{"name":"통큰 솥뚜껑 닭볶음탕 방배역점","addr":"서울특별시 서초구 효령로31길 7, 1층 (방배동)","phone":"02-585-9388","area":"","menu":"닭볶음","label":"한식","gu":"서초구","type":"restaurant"},{"name":"경복궁서초점(주)엔타스","addr":"서울특별시 서초구 서초중앙로 195, 3,4층 (반포동)","phone":"02-3482-3030","area":"","menu":"한우갈비","label":"한식","gu":"서초구","type":"restaurant"},{"name":"한우명가 노고단","addr":"서울특별시 서초구 법원로 16 (서초동,정곡빌딩 동관 지하15호)","phone":"02-973-9792","area":"","menu":"불고기","label":"한식","gu":"서초구","type":"restaurant"},{"name":"한국회관","addr":"서울특별시 서초구 사평대로18길 10 (반포동,가동 1층,2층)","phone":"02-595-3355","area":"","menu":"갈비탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"잠실닭두마리집(잠닭)","addr":"서울특별시 서초구 사평대로26길 47, 2층 (반포동)","phone":"02-596-3450","area":"","menu":"닭볶음탕, 닭칼국수, 파전, 한우사골떡만두국","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서래횟집","addr":"서울특별시 서초구 서래로5길 17, 1층 (반포동)","phone":"02-532-1573","area":"","menu":"회,탕,생선구이","label":"한식","gu":"서초구","type":"restaurant"},{"name":"(주)톰볼라","addr":"서울특별시 서초구 서래로7길 16, 1층 101호 (반포동)","phone":"02-593-4660","area":"","menu":"피자,파스타","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"황제","addr":"서울특별시 서초구 서래로7길 19, 2층 (반포동)","phone":"02-536-8820","area":"","menu":"자장면","label":"중식","gu":"서초구","type":"restaurant"},{"name":"수라빔","addr":"서울특별시 서초구 신반포로 176, 1층중층 M8호 (반포동, 센트럴시티)","phone":"02-6282-3355","area":"","menu":"비빔밥","label":"한식","gu":"서초구","type":"restaurant"},{"name":"영변","addr":"서울특별시 서초구 반포대로23길 22, 2층 (서초동, 영변빌딩)","phone":"02-583-1123","area":"","menu":"생선회, 회정식","label":"일식","gu":"서초구","type":"restaurant"},{"name":"서초바다 청조","addr":"서울특별시 서초구 서초대로 338, 1층 (서초동)","phone":"02-522-3334","area":"","menu":"한정식, 회","label":"한식","gu":"서초구","type":"restaurant"},{"name":"기와집순두부 서초점","addr":"서울특별시 서초구 서초대로51길 14, 지하1층 (서초동)","phone":"02-599-0579","area":"","menu":"순두부","label":"한식","gu":"서초구","type":"restaurant"},{"name":"옛날 손칼국수 전문점","addr":"서울특별시 서초구 서초대로53길 20-3 (서초동,1층)","phone":"02-532-6886","area":"","menu":"칼국수","label":"한식","gu":"서초구","type":"restaurant"},{"name":"녹담샤브 교대점","addr":"서울특별시 서초구 서초대로54길 32, 지하1층 (서초동, 추호주택 )","phone":"02-6671-5342","area":"","menu":"샤브샤브","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서관면옥 교대본점","addr":"서울특별시 서초구 서초대로56길 11, 1층 (서초동)","phone":"02-521-9945","area":"","menu":"냉면","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서동한우 강남점","addr":"서울특별시 서초구 서초대로74길 29, 2층 (서초동, 서초파라곤)","phone":"02-3474-9297","area":"","menu":"한우구이","label":"한식","gu":"서초구","type":"restaurant"},{"name":"두껍삼 강남직영점","addr":"서울특별시 서초구 서초대로78길 44, 1층 (서초동)","phone":"02-585-3592","area":"","menu":"삼겹살","label":"한식","gu":"서초구","type":"restaurant"},{"name":"부일갈비","addr":"서울특별시 서초구 서초중앙로2길 42, 101호 (서초동)","phone":"02-585-3112","area":"","menu":"갈비","label":"한식","gu":"서초구","type":"restaurant"},{"name":"우작설렁탕","addr":"서울특별시 서초구 서초중앙로6길 7, 지하1층 (서초동)","phone":"02-584-8544","area":"","menu":"설렁탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"신선설농탕","addr":"서울특별시 서초구 효령로 322, 1층 (서초동)","phone":"02-3473-1155","area":"","menu":"설렁탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"만다린","addr":"서울특별시 서초구 방배로6길 10-15, 1층 (방배동)","phone":"02-581-3366","area":"","menu":"중화요리","label":"중식","gu":"서초구","type":"restaurant"},{"name":"오장동함흥냉면 파미에스테이션점","addr":"서울특별시 서초구 사평대로 205, 1층","phone":"02-595-8959","area":"","menu":"냉면","label":"한식","gu":"서초구","type":"restaurant"},{"name":"평가옥(반포점)","addr":"서울특별시 서초구 사평대로 353 (반포동,서일빌딩 1층 (103-107호))","phone":"02-517-1577","area":"","menu":"냉면","label":"한식","gu":"서초구","type":"restaurant"},{"name":"주미요","addr":"서울특별시 서초구 사평대로18길 5, 위너스빌 1층 (반포동)","phone":"02-599-1988","area":"","menu":"자장면","label":"중식","gu":"서초구","type":"restaurant"},{"name":"비스타(VISTA)","addr":"서울특별시 서초구 올림픽대로 2085-14, 3층 (반포동, 새빛둥둥섬 제1섬 )","phone":"0507-1416-2405","area":"","menu":"파스타","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"스시타노","addr":"서울특별시 서초구 동광로 93, 테라스빌딩 3층 (방배동)","phone":"02-593-1600","area":"","menu":"스시","label":"일식","gu":"서초구","type":"restaurant"},{"name":"임금님밥상","addr":"서울특별시 서초구 동광로11길 97, A동 1층 (방배동)","phone":"02-535-5338","area":"","menu":"백반","label":"한식","gu":"서초구","type":"restaurant"},{"name":"개성손만두요리전문점 방배점","addr":"서울특별시 서초구 동광로19길 5, 1층 (방배동)","phone":"02-596-2763","area":"","menu":"만두","label":"한식","gu":"서초구","type":"restaurant"},{"name":"제주어항1950","addr":"서울특별시 서초구 방배로 189, 1층 (방배동)","phone":"02-3482-8400","area":"","menu":"생선요리","label":"한식","gu":"서초구","type":"restaurant"},{"name":"장수원","addr":"서울특별시 서초구 방배중앙로 153, 지하1층,1층,2층 (방배동)","phone":"02-532-2225","area":"","menu":"불고기","label":"한식","gu":"서초구","type":"restaurant"},{"name":"조가네 갑오징어 방배카페거리점","addr":"서울특별시 서초구 방배중앙로 173, 1층 (방배동)","phone":"02-536-4842","area":"","menu":"갑오징어","label":"한식","gu":"서초구","type":"restaurant"},{"name":"댓짱돈까스","addr":"서울특별시 서초구 방배중앙로 204, 1층 101호, 102호, 106호 (방배동, 리첸시아방배)","phone":"02-534-7009","area":"","menu":"돈가스","label":"한식","gu":"서초구","type":"restaurant"},{"name":"코다리밥도둑 방배점","addr":"서울특별시 서초구 방배중앙로 214 (방배동,지하1층)","phone":"02-536-0009","area":"","menu":"코다리","label":"중식","gu":"서초구","type":"restaurant"},{"name":"방배골숯불갈비","addr":"서울특별시 서초구 방배중앙로29길 21, 가우디빌딩 1층","phone":"0507-1407-1527","area":"","menu":"갈비","label":"한식","gu":"서초구","type":"restaurant"},{"name":"금빛","addr":"서울특별시 서초구 방배중앙로29길 3, 2층 (방배동)","phone":"02-591-3391","area":"","menu":"장어구이","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"왕금성(이수역점)","addr":"서울특별시 서초구 서초대로 3-4, 2층 203호 (방배동, 방배디오슈페리움1)","phone":"02-533-1193","area":"","menu":"중국코스요리","label":"중식","gu":"서초구","type":"restaurant"},{"name":"더하누","addr":"서울특별시 서초구 서초대로74길 49, 아르누보씨티2 1층","phone":"02-584-9392","area":"","menu":"양념갈비","label":"한식","gu":"서초구","type":"restaurant"},{"name":"해우담 서초본점","addr":"서울특별시 서초구 강남대로 349, 지하1층 (서초동, 우남빌딩)","phone":"02-522-4211","area":"","menu":"해초요리","label":"한식","gu":"서초구","type":"restaurant"},{"name":"솥밥 모랑 강남점","addr":"서울특별시 서초구 강남대로 359, 212호 (서초동, 대우도씨에빛2)","phone":"02-521-3980","area":"","menu":"솥밥","label":"한식","gu":"서초구","type":"restaurant"},{"name":"자인뭉티기","addr":"서울특별시 서초구 강남대로37길 24-7, 도원빌딩 1층 (서초동)","phone":"02-597-2158","area":"","menu":"구이류","label":"한식","gu":"서초구","type":"restaurant"},{"name":"시래정(양재점)","addr":"서울특별시 서초구 강남대로39길 15-10, 지하1층 103-1호 (서초동, 한라비발디스튜디오193)","phone":"0502-5552-1981","area":"","menu":"시래기국","label":"한식","gu":"서초구","type":"restaurant"},{"name":"우대포 양재점","addr":"서울특별시 서초구 강남대로47길 20 (서초동)","phone":"0507-1416-0498","area":"","menu":"구이류","label":"한식","gu":"서초구","type":"restaurant"},{"name":"삼호복집","addr":"서울특별시 서초구 강남대로51길 5 (서초동)","phone":"02-3474-3533","area":"","menu":"복지리","label":"복어취급","gu":"서초구","type":"restaurant"},{"name":"포메인서초점","addr":"서울특별시 서초구 반포대로 104, 1층 102호 (서초동)","phone":"02-521-0722","area":"","menu":"쌀국수","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서초곰탕24시","addr":"서울특별시 서초구 반포대로 12, 1층 (서초동)","phone":"02-3474-2988","area":"","menu":"곰탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"비노바인","addr":"서울특별시 서초구 반포대로23길 6, 지하1층 (서초동)","phone":"02-588-1408","area":"","menu":"코스요리","label":"경양식","gu":"서초구","type":"restaurant"},{"name":"나나마구로","addr":"서울특별시 서초구 반포대로28길 65-4, 1,2층 (서초동)","phone":"02-582-5674","area":"","menu":"참치회","label":"일식","gu":"서초구","type":"restaurant"},{"name":"춘향골 추어탕","addr":"서울특별시 서초구 서운로11길 10, 1층 (서초동)","phone":"02-3472-0050","area":"","menu":"추어탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"바른식 시골보쌈 앤 옹심이","addr":"서울특별시 서초구 서초대로52길 17, 1층,2층 (서초동)","phone":"02-583-6431","area":"","menu":"보쌈","label":"한식","gu":"서초구","type":"restaurant"},{"name":"됐소강남","addr":"서울특별시 서초구 서초대로78길 36 (서초동, B101호 일부)","phone":"0507-1332-8588","area":"","menu":"구이류","label":"한식","gu":"서초구","type":"restaurant"},{"name":"초선과여포","addr":"서울특별시 서초구 서초대로78길 44 (서초동,201호)","phone":"02-525-9890","area":"","menu":"깐쇼새우","label":"중국식","gu":"서초구","type":"restaurant"},{"name":"진대감 강남역 삼성타운점","addr":"서울특별시 서초구 서초대로78길 50 (서초동,우영빌딩 2층)","phone":"02-587-0073","area":"","menu":"차돌삼합","label":"한식","gu":"서초구","type":"restaurant"},{"name":"본가왕뼈감자탕 서초점","addr":"서울특별시 서초구 효령로 428, 광림빌딩 1층 (서초동)","phone":"02-598-0976","area":"","menu":"감자탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"듬북담북(뱅뱅점)","addr":"서울특별시 서초구 효령로 430, 1층 (서초동)","phone":"02-525-8689","area":"","menu":"북어국","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서초버드나무집","addr":"서울특별시 서초구 효령로 434, 1층 (서초동)","phone":"02-3473-4167","area":"","menu":"갈비탕","label":"한식","gu":"서초구","type":"restaurant"},{"name":"서초아구찜","addr":"서울특별시 서초구 효령로55길 15, 1층 105호 (서초동)","phone":"02-522-3673","area":"","menu":"아구찜","label":"한식","gu":"서초구","type":"restaurant"},{"name":"진상샤브샤브","addr":"서울특별시 서초구 효령로77길 30, 지하1층 (서초동, 강남역 푸르지오시티)","phone":"02-581-0092","area":"","menu":"샤브샤브","label":"한식","gu":"서초구","type":"restaurant"},{"name":"진동둔횟집","addr":"서울특별시 서초구 강남대로91길 18, 1층,2층 (잠원동)","phone":"02-543-3849","area":"","menu":"대구탕","label":"일식","gu":"서초구","type":"restaurant"},{"name":"의정부 평양면옥","addr":"서울특별시 서초구 강남대로93길 28, 1,2층 (잠원동)","phone":"02-547-6947","area":"","menu":"냉면","label":"한식","gu":"서초구","type":"restaurant"},{"name":"망향비빔국수 신사점","addr":"서울특별시 서초구 강남대로95길 17, 1층 (잠원동)","phone":"02-511-6355","area":"","menu":"비빔국수","label":"한식","gu":"서초구","type":"restaurant"},{"name":"내고향본가","addr":"서울특별시 서초구 나루터로 69, 샤르망 101호 (잠원동)","phone":"02-540-6331","area":"","menu":"남도요리","label":"한식","gu":"서초구","type":"restaurant"},{"name":"사쿠","addr":"서울특별시 서초구 나루터로15길 11, 대영빌딩 1층 (잠원동)","phone":"nan","area":"","menu":"회","label":"일식","gu":"서초구","type":"restaurant"},{"name":"봉평고향메밀촌","addr":"서울특별시 서초구 신반포로45길 26, 동화빌딩 1층 (잠원동)","phone":"02-511-7888","area":"","menu":"막국수","label":"한식","gu":"서초구","type":"restaurant"},{"name":"강남따로국밥","addr":"서울특별시 서초구 신반포로47길 118, 2층 (잠원동, 근생빌딩A동)","phone":"02-543-2527","area":"","menu":"국밥","label":"한식","gu":"서초구","type":"restaurant"},{"name":"원조마산콧털네아구찜","addr":"서울특별시 서초구 신반포로47길 118, A동 1층 (잠원동)","phone":"02-548-9139","area":"","menu":"아구찜","label":"한식","gu":"서초구","type":"restaurant"}],"parks":[{"name":"큰더기어린이공원","dept":"마포구청 공원녹지과","area":"1949.1","addr":"서울특별시 마포구 공덕동 470-1","gu":"마포구","type":"park"},{"name":"공덕역어린이공원","dept":"마포구청 공원녹지과","area":"2434.6","addr":"서울특별시 마포구 공덕동 467-1,2,3","gu":"마포구","type":"park"},{"name":"마포어린이공원","dept":"마포구청 공원녹지과","area":"2030.0","addr":"서울특별시 마포구 마포대로4다길 30 마포어린이공원","gu":"마포구","type":"park"},{"name":"복사꽃어린이공원","dept":"마포구청 공원녹지과","area":"1552.7","addr":"서울특별시 마포구 마포대로4길 11-1","gu":"마포구","type":"park"},{"name":"도화소어린이공원","dept":"마포구청 공원녹지과","area":"1646.0","addr":"서울특별시 마포구 토정로37길 22","gu":"마포구","type":"park"},{"name":"삼개어린이공원","dept":"마포구청 공원녹지과","area":"3028.5","addr":"서울특별시특별시 마포구 토정로37길 12","gu":"마포구","type":"park"},{"name":"대흥어린이공원","dept":"마포구청 공원녹지과","area":"1486.0","addr":"서울특별시 마포구 대흥동 660-1","gu":"마포구","type":"park"},{"name":"현석어린이공원","dept":"마포구청 공원녹지과","area":"1622.0","addr":"서울특별시 마포구 현석동 1-5","gu":"마포구","type":"park"},{"name":"창전어린이공원","dept":"마포구청 공원녹지과","area":"1185.0","addr":"서울특별시 마포구 창전동 35-28","gu":"마포구","type":"park"},{"name":"와우어린이공원","dept":"마포구청 공원녹지과","area":"2924.0","addr":"서울특별시특별시 마포구 독막로19길 20-13","gu":"마포구","type":"park"},{"name":"서교어린이공원","dept":"마포구청 공원녹지과","area":"1761.0","addr":"서울특별시특별시 마포구 양화로11길 21","gu":"마포구","type":"park"},{"name":"잔다리어린이공원","dept":"마포구청 공원녹지과","area":"773.6","addr":"서울특별시특별시 마포구 동교로 95","gu":"마포구","type":"park"},{"name":"윗잔다리어린이공원","dept":"마포구청 공원녹지과","area":"3251.0","addr":"서울특별시특별시 마포구 양화로18안길 21","gu":"마포구","type":"park"},{"name":"동교어린이공원","dept":"마포구청 공원녹지과","area":"978.2","addr":"서울특별시특별시 마포구 동교동 197-17","gu":"마포구","type":"park"},{"name":"합정어린이공원","dept":"마포구청 공원녹지과","area":"3004.5","addr":"서울특별시특별시 마포구 연남로 3","gu":"마포구","type":"park"},{"name":"양화어린이공원","dept":"마포구청 공원녹지과","area":"1387.8","addr":"서울특별시특별시 마포구 월드컵로5길 79","gu":"마포구","type":"park"},{"name":"한마음어린이공원","dept":"마포구청 공원녹지과","area":"769.9","addr":"서울특별시특별시 마포구 월드컵로15길 53","gu":"마포구","type":"park"},{"name":"옹달샘어린이공원","dept":"마포구청 공원녹지과","area":"1133.6","addr":"서울특별시특별시 마포구 망원로4길 38","gu":"마포구","type":"park"},{"name":"두리어린이공원","dept":"마포구청 공원녹지과","area":"1006.9","addr":"서울특별시특별시 마포구 월드컵로31길 69","gu":"마포구","type":"park"},{"name":"망원새싹어린이공원","dept":"마포구청 공원녹지과","area":"558.8","addr":"서울특별시 마포구 망원2동 509-1","gu":"마포구","type":"park"},{"name":"느티나무어린이공원","dept":"마포구청 공원녹지과","area":"992.7","addr":"서울특별시특별시 마포구 연남로3길 80","gu":"마포구","type":"park"},{"name":"은행나무어린이공원","dept":"마포구청 공원녹지과","area":"993.7","addr":"서울특별시특별시 마포구 성미산로29길 17-3","gu":"마포구","type":"park"},{"name":"다솜어린이공원","dept":"마포구청 공원녹지과","area":"975.2","addr":"서울특별시특별시 마포구 월드컵북로12길 27","gu":"마포구","type":"park"},{"name":"뒤뜰어린이공원","dept":"마포구청 공원녹지과","area":"530.3","addr":"서울특별시 마포구 성산동 588-8","gu":"마포구","type":"park"},{"name":"외주목어린이공원","dept":"마포구청 공원녹지과","area":"262.8","addr":"서울특별시특별시 마포구 성산로4길 42","gu":"마포구","type":"park"},{"name":"성메어린이공원","dept":"마포구청 공원녹지과","area":"640.0","addr":"서울특별시 마포구 성산동 667-1","gu":"마포구","type":"park"},{"name":"성황당어린이공원","dept":"마포구청 공원녹지과","area":"1366.9","addr":"서울특별시 마포구 성산동 147-5","gu":"마포구","type":"park"},{"name":"큰길어린이공원","dept":"마포구청 공원녹지과","area":"942.0","addr":"서울특별시특별시 마포구 월드컵북로 183","gu":"마포구","type":"park"},{"name":"쌍둥이어린이공원","dept":"마포구청 공원녹지과","area":"905.0","addr":"서울특별시 마포구 성산동 200-335","gu":"마포구","type":"park"},{"name":"성사천어린이공원","dept":"마포구청 공원녹지과","area":"166.0","addr":"서울특별시 마포구 성산동 199-11","gu":"마포구","type":"park"},{"name":"중동소어린이공원","dept":"마포구청 공원녹지과","area":"778.5","addr":"서울특별시특별시 마포구 월드컵북로38나길 25","gu":"마포구","type":"park"},{"name":"중동어린이공원","dept":"마포구청 공원녹지과","area":"377.0","addr":"서울특별시 마포구 중동 228","gu":"마포구","type":"park"},{"name":"샘터어린이공원","dept":"마포구청 공원녹지과","area":"123.3","addr":"서울특별시 마포구 중동 36-34","gu":"마포구","type":"park"},{"name":"개나리어린이공원","dept":"마포구청 공원녹지과","area":"1481.3","addr":"서울특별시 마포구 중동 40-5","gu":"마포구","type":"park"},{"name":"새누리어린이공원","dept":"마포구청 공원녹지과","area":"2896.8","addr":"서울특별시 마포구 상암동 1619","gu":"마포구","type":"park"},{"name":"휴암어린이공원","dept":"마포구청 공원녹지과","area":"921.0","addr":"서울특별시 마포구 상암동 14-5","gu":"마포구","type":"park"},{"name":"부엉바위어린이공원","dept":"마포구청 공원녹지과","area":"1511.3","addr":"서울특별시 마포구 상암동 1636","gu":"마포구","type":"park"},{"name":"물치어린이공원","dept":"마포구청 공원녹지과","area":"1522.2","addr":"서울특별시 마포구 상암동 1656","gu":"마포구","type":"park"},{"name":"귀리어린이공원","dept":"마포구청 공원녹지과","area":"1504.3","addr":"서울특별시 마포구 상암동 1681","gu":"마포구","type":"park"},{"name":"목련어린이공원","dept":"마포구청 공원녹지과","area":"1500.5","addr":"서울특별시 마포구 상암동 1742","gu":"마포구","type":"park"},{"name":"산수유어린이공원","dept":"마포구청 공원녹지과","area":"2010.7","addr":"서울특별시 마포구 상암동 1744","gu":"마포구","type":"park"},{"name":"산딸나무어린이공원","dept":"마포구청 공원녹지과","area":"1499.1","addr":"서울특별시 마포구 상암동 1753","gu":"마포구","type":"park"},{"name":"애오개도담어린이공원","dept":"마포구청 공원녹지과","area":"3211.5","addr":"서울특별시 마포구 아현동 800-6","gu":"마포구","type":"park"},{"name":"쌍룡산어린이공원","dept":"마포구청 공원녹지과","area":"5910.7","addr":"서울특별시 마포구 아현동 769","gu":"마포구","type":"park"},{"name":"토정어린이공원","dept":"마포구청 공원녹지과","area":"2631.3","addr":"서울특별시 마포구 용강동 508-3","gu":"마포구","type":"park"},{"name":"애오개어린이공원","dept":"마포구청 공원녹지과","area":"1424.2","addr":"서울특별시 마포구 아현동 802-7","gu":"마포구","type":"park"},{"name":"망원어린이공원","dept":"마포구청 공원녹지과","area":"2852.2","addr":"서울특별시 마포구 망원동 521-1","gu":"마포구","type":"park"},{"name":"광흥창어린이공원","dept":"마포구청 공원녹지과","area":"1353.4","addr":"서울특별시 마포구 창전동 449-1","gu":"마포구","type":"park"},{"name":"신수어린이공원","dept":"마포구청 공원녹지과","area":"3792.2","addr":"서울특별시 마포구 신수동 462-1","gu":"마포구","type":"park"},{"name":"염리어린이공원","dept":"마포구청 공원녹지과","area":"1933.0","addr":"서울특별시 마포구 숭문6길 12","gu":"마포구","type":"park"}],"trails":[{"name":"북한산둘레길 무장애 1구간","path":"진관생태다리앞~대성마트앞","level":"평지","dist":"2.1","time":"1시간 50분","surface":"포장(보도블럭)","gu":"은평구","type":"trail"},{"name":"북한산둘레길 무장애 2구간","path":"대성마트앞~북한산성 입구","level":"평지","dist":"1.7","time":"1시간 00분","surface":"포장 및 비포장","gu":"은평구","type":"trail"},{"name":"불광천 무장애구간","path":"응암역 ~ 디지털미디어씨티역","level":"평지","dist":"2.5","time":"1시간 40분","surface":"포장(아스콘)","gu":"은평구","type":"trail"},{"name":"창릉천길 무장애구간","path":"금암문화공원 앞 ~ 입곡삼거리","level":"평지","dist":"2.6","time":"1시간 10분","surface":"포장(아스콘)","gu":"은평구","type":"trail"},{"name":"못자리골공원 무장애구간","path":"싸릿말교 ~ 연화사","level":"평지,완경사","dist":"1.6","time":"1시간 00분","surface":"포장(아스콘)","gu":"은평구","type":"trail"},{"name":"금암문화공원 무장애 구간","path":"구파발역 금계수교 ~ 금암문화공원","level":"평지","dist":"1.0","time":"1시간 00분","surface":"포장(아스콘)","gu":"은평구","type":"trail"},{"name":"탑골생태공원 무장애구간","path":"구파발사거리 ~ 탑골생태공원","level":"완경사","dist":"0.6","time":"1시간 00분","surface":"포장(아스콘)","gu":"은평구","type":"trail"},{"name":"구파발역 실개천 무장애 구간","path":"구파발역 ~ 폭포동","level":"평지","dist":"1.5","time":"1시간 10분","surface":"포장(아스콘)","gu":"은평구","type":"trail"},{"name":"기자촌공원 무장애구간","path":"기자촌아파트 ~ 기자촌 근린공원","level":"완경사,급경사","dist":"1.5","time":"1시간 20분","surface":"포장(아스콘)","gu":"은평구","type":"trail"},{"name":"갈현근린공원 무장애구간","path":"연신초등학교 ~ 갈현근린공원","level":"완경사","dist":"0.5","time":"1시간 00분","surface":"포장(아스콘)","gu":"은평구","type":"trail"},{"name":"구름정원길 무장애구간","path":"불광중학교 ~ 폭포동","level":"완경사","dist":"1.1","time":"1시간 00분","surface":"포장(아스콘)","gu":"은평구","type":"trail"}],"culture":[{"name":"동작구 문화공간 현황 (2025)","total":21,"theater":2,"cinema":3,"museum":1,"art":0,"welfare":6,"sports":4,"youth":4,"cultural_org":1,"addr":"서울특별시 동작구","phone":"02-820-9114","gu":"동작구","type":"culture"}],"bookstores":[{"name":"깍지모모북아지트","prog":"그림책 읽기와 서평 쓰기: 장면에서 삶의 문장으로","addr":"서울시 강남구 밤고개로165, S001동 5호(아파트단지)","hours":"월~금(10:00~18:00)","holiday":"토~일요일","sns":"https://www.instagram.com/kkakjimomo_book_agit","gu":"강남구","type":"bookstore"},{"name":"아운트","prog":"문장 아카이브: 나를 정의하는 감각의 조각들","addr":"서울시 강동구 양재대로 126길 54","hours":"월~목(17:00-21:00)\n금~토(13:00-21:00)","holiday":"일요일","sns":"https://www.instagram.com/a.und_","gu":"강동구","type":"bookstore"},{"name":"책방시행과착오","prog":"미완의 감정들","addr":"서울시 강북구 도봉로96길 75, 1층","hours":"월~목(13:00-20:00)\n토~일(13:00-18:00)","holiday":"금요일","sns":"https://www.instagram.com/trial_error_books","gu":"강북구","type":"bookstore"},{"name":"게으른오후","prog":"동네책방에서 정겨운 이웃과 함께하는 슬기로운 문화생활","addr":"서울시 강서구 양천로 30길 46, 1층","hours":"월~금(13:00-18:00)\n토(10:00-18:00)","holiday":"일요일","sns":"https://www.instagram.com/lazy.ohoo","gu":"강서구","type":"bookstore"},{"name":"다시서점","prog":"사라지는 것을 기록하는 방법 - 도시와 마을의 기억을 남기는 기술","addr":"서울시 강서구 공항대로8길 77-24, 1층","hours":"수~토(12:00-18:00)","holiday":"일~화요일","sns":"https://www.instagram.com/dasibookshop","gu":"강서구","type":"bookstore"},{"name":"그날이오면","prog":"깨어 있는 시민, 함께하는 공동체","addr":"서울시 관악구 신림로 91, 1층","hours":"월~토(10:00-22:30)","holiday":"일요일","sns":"https://www.instagram.com/gnalzigi","gu":"관악구","type":"bookstore"},{"name":"비씨지북스","prog":"그림과 글이 만나는 예술 수업","addr":"서울시 구로구 경인로 25길31, 2층","hours":"화~토(14:00-21:00)","holiday":"일~월요일","sns":"https://www.instagram.com/bcgbooks","gu":"구로구","type":"bookstore"},{"name":"인공위성","prog":"작은 질문들의 운명","addr":"서울시 구로구 구로중앙로25길 2-9 1층","hours":"월~금(11:00-18:00)","holiday":"토~일요일\n(프로그램 진행시 운영)","sns":"https://www.instagram.com/2lookbook","gu":"구로구","type":"bookstore"},{"name":"콕콕콕","prog":"그림책으로 쓰담쓰담","addr":"서울시 구로구 고척로 8, 2층","hours":"월~금(11:00-19:00)\n토요일(13:00-19:00)\n그 외 예약운영","holiday":"·","sns":"https://www.instagram.com/cokcokcok_book.doll","gu":"구로구","type":"bookstore"},{"name":"책인감","prog":"동네책방과 함께하는 문학 북토크의 밤","addr":"서울시 노원구 동일로182길63-1, 2층","hours":"화~토(13:00-18:00)","holiday":"일~월요일","sns":"https://www.instagram.com/chaegingam","gu":"노원구","type":"bookstore"},{"name":"대륙서점","prog":"지역 선순환 아지트 대륙서점, 함께하는 에너지쉼표","addr":"서울시 동작구 성대로 40 1층","hours":"월~토(13:00-20:00)","holiday":"일요일","sns":"https://www.instagram.com/daerukbooks","gu":"동작구","type":"bookstore"},{"name":"가가77페이지","prog":"나를 알아가는 일(나의 감정 찾기)","addr":"서울시 마포구 망원로 74-1 지하 1층","hours":"수~월(13:00-20:00)","holiday":"화요일","sns":"https://www.instagram.com/gaga77page","gu":"마포구","type":"bookstore"},{"name":"덴마크서재","prog":"덴마크 행복 북클럽","addr":"서울시 마포구 포은로 61","hours":"토~일(12:00-19:00)","holiday":"월~금요일","sns":"https://www.instagram.com/inside.denmark.library","gu":"마포구","type":"bookstore"},{"name":"동네책방개똥이네책놀이터","prog":"책모임 맛집에 초대합니다.","addr":"서울시 마포구 월드컵로 128-3, 1층","hours":"월~금(10:00-19:00)\n토요일(10:00-18:00)","holiday":"일요일\n법정공휴일","sns":"https://www.instagram.com/book338_0478","gu":"마포구","type":"bookstore"},{"name":"서점산책자","prog":"언어 여행자가 사랑한 영화: 4인의 번역가에세 듣는 문학과 영화 이야기","addr":"서울시 마포구 성지길 36, 3층","hours":"월~토(14:00-19:00)","holiday":"일요일","sns":"https://www.instagram.com/sanchaekja","gu":"마포구","type":"bookstore"},{"name":"스파인","prog":"몸 만들기","addr":"서울시 마포구 백범로48, 2층","hours":"주말 상시 오픈","holiday":"평일","sns":"https://www.instagram.com/spineseoul","gu":"마포구","type":"bookstore"},{"name":"이루리북스","prog":"영화로 보는 인문학","addr":"서울시 마포구 독막로 320","hours":"월~토(9:00-18:00)","holiday":"일요일\n국경일","sns":"https://www.instagram.com/yrurybooks","gu":"마포구","type":"bookstore"},{"name":"제로헌드레드","prog":"나의 최애 서점, 나의 최애 실험실","addr":"서울시 마포구 희우정로12길 11","hours":"수~일(14:00-19:00)\n토~일(12:00-18:00)","holiday":"월~화요일","sns":"https://www.instagram.com/_zerohundred","gu":"마포구","type":"bookstore"},{"name":"책방연희","prog":"책으로 읽는 AI : 기계 시대의 인간다움","addr":"서울시 마포구 와우산로35길 3, 지하 1층","hours":"수~토(12:00-18:00)","holiday":"일~화","sns":"https://www.instagram.com/chaegbangyeonhui","gu":"마포구","type":"bookstore"},{"name":"테일탱고","prog":"은유에서 담론으로: 한국문학의 장애 재현","addr":"서울시 마포구 망원로 62-3, 1층","hours":"월~화,금(13:00-20:00) 토~일(12:00-20:00)","holiday":"수~목요일","sns":"https://www.instagram.com/tale_tango","gu":"마포구","type":"bookstore"},{"name":"밤의서점","prog":"밤의 피크닉 2026","addr":"서울시 서대문구 성산로 567-8","hours":"화~토(12:00-21:00)\n휴게시간(16:30-17:30)","holiday":"일~월요일","sns":"https://www.instagram.com/librairie_de_nuit","gu":"서대문구","type":"bookstore"},{"name":"쏘블루","prog":"블루로 재즈하는 연희동 서점'과 함께 걷고, 생각하고, 기록하기","addr":"서울시 서대문구 증가로 27 1층","hours":"수~일(13:00-19:00)","holiday":"월~화요일","sns":"https://www.instagram.com/soblue_official","gu":"서대문구","type":"bookstore"},{"name":"옥수서재","prog":"[인문 연극 워크숍] 존엄을 연기하다: 희곡 <고트>와 함께 하는 낭독극","addr":"서울시 성동구 한림말1길 16-1 지하1층","hours":"화~토(12:00-19:00)\n수~금(12:00-20:00)","holiday":"일~월요일","sns":"https://www.instagram.com/oksubook","gu":"성동구","type":"bookstore"},{"name":"다온책방","prog":"오페라가 읽히는 순간","addr":"서울시 성북구 성북로8길 14","hours":"월~금(12:00-18:00)","holiday":"토~일요일","sns":"https://www.instagram.com/books_daon","gu":"성북구","type":"bookstore"},{"name":"책보냥","prog":"세별동네 친구들","addr":"서울시 성북구 성북로 10가길 21","hours":"목~일(13:00-19:00)","holiday":"월~수(휴무/행사진행)","sns":"https://www.instagram.com/chaekbonyang","gu":"성북구","type":"bookstore"},{"name":"햇살속으로","prog":"책방과 함께하는 성북 문화 기행","addr":"서울시 성북구 정릉로 346","hours":"화~토(11:00-21:00)","holiday":"일~월요일","sns":"https://www.instagram.com/sunshinebook","gu":"성북구","type":"bookstore"},{"name":"호박이넝쿨책야책","prog":"호박책 아트 커넥트","addr":"서울시 성북구 아리랑로 120-10","hours":"월~일(10:00-22:00)","holiday":"·","sns":"https://www.instagram.com/hobakbook.official","gu":"성북구","type":"bookstore"},{"name":"무엇보다책방","prog":"소설이 만들어 낸 영상들","addr":"서울시 송파구 백제고분로 45길 30 미석빌딩 3층","hours":"수~금(14:00-19:00)\n토~일(13:00-19:00)","holiday":"월~화요일","sns":"https://www.instagram.com/morethan_anything","gu":"송파구","type":"bookstore"},{"name":"책숲","prog":"전문가와 함께 하는 독서 모임","addr":"서울시 송파구 석촌호수로134, 2층","hours":"화~목(14:00-19:00)","holiday":"월, 금~일","sns":"https://www.instagram.com/bookforestshop","gu":"송파구","type":"bookstore"},{"name":"새벽감성1집","prog":"서울, 도시 기록 프로젝트","addr":"서울시 양천구 월정로50길 16-8","hours":"월,목,금(12:00-15:00)\n화(12:00-15:00)\n토,일(14:00-19:00)","holiday":"수요일","sns":"https://www.instagram.com/dawnsense_1.zip","gu":"양천구","type":"bookstore"},{"name":"대원문고","prog":"AI야! 나는 책 읽으러 간다. ('나'로 존재하기 위한 책읽기)","addr":"서울시 영등포구 당산로45길1 삼성쉐르빌 205호","hours":"월~토(10:00-19:50)","holiday":"일요일(3월은 영업)","sns":"02-2671-2375","gu":"영등포구","type":"bookstore"},{"name":"선유서가","prog":"책방에서 뭐해?","addr":"서울시 영등포구 양평로30가길 23, 1층","hours":"매일(12:00-20:00)","holiday":"·","sns":"https://www.instagram.com/seonyu_seoga","gu":"영등포구","type":"bookstore"},{"name":"일각서점","prog":"\"책을 다양하게 즐기는 방법, 읽고 쓰고 보고 듣다.\"\n(보기 분야) 함께 읽고 나누고 남기는 한 페이지 워크숍  (진행 : 제이노트(정다영) 작가)\n(듣기 분야) 함께 읽고 듣는 J-POP 번역 모임 (진행 : 서하나 번역가)","addr":"서울시 용산구 한강대로7길 10-11, 4층","hours":"화~금(13:00-20:00)\n토~일(12:00-19:00)","holiday":"월요일","sns":"https://www.instagram.com/ilgak_bookstore","gu":"용산구","type":"bookstore"},{"name":"자작나무책방","prog":"후암동의 시간을 담다","addr":"서울시 용산구 후암로 36 2층","hours":"화~일(11:00-20:00)","holiday":"월요일","sns":"https://www.instagram.com/jajaknamu_books","gu":"용산구","type":"bookstore"},{"name":"책방죄책감","prog":"책의 경험 - 문턱을 넘어, 읽고, 새김","addr":"서울시 용산구 청파로47길 8, 2층","hours":"월~수, 금~토(13:00-18:00)","holiday":"목요일","sns":"https://www.instagram.com/guilty_books","gu":"용산구","type":"bookstore"},{"name":"광명문고","prog":"동네 독서모임 리더 확장 프로젝트","addr":"서울시 은평구 수색로 268","hours":"월~금(11:00-21:00)\n토요일(11:00-18:00)","holiday":"일요일","sns":"https://www.instagram.com/km3030524","gu":"은평구","type":"bookstore"},{"name":"책방시나브로","prog":"산책자의 노트 (계절인사 * 정원향기)","addr":"서울시 은평구 응암로 25길 11-1, 1층","hours":"월~화, 목~일(12:00-19:00)","holiday":"수요일","sns":"https://www.instagram.com/littlebylittlebook","gu":"은평구","type":"bookstore"},{"name":"건강책방일일호일","prog":"불안 시대를 위한 북테라피","addr":"서울시 종로구 자하문로 52","hours":"화~토(10:00-18:00)","holiday":"일, 월요일","sns":"https://www.instagram.com/11ho1_bookshop","gu":"종로구","type":"bookstore"},{"name":"마음책방서가는","prog":"문학치유사와 함께하는 소설상담소","addr":"서울시 종로구 창경궁로35길21, 1층","hours":"화~토(10:00-20:00)","holiday":"일~월요일","sns":"https://www.instagram.com/houseinmind","gu":"종로구","type":"bookstore"},{"name":"서촌그책방","prog":"전통과 현대의 서울을 알아가며, 즐기기","addr":"서울시 종로구 자하문로 5가길 30-1","hours":"매일(11:00-19:00)","holiday":"·","sns":"https://www.instagram.com/seochonbooks","gu":"종로구","type":"bookstore"},{"name":"소원책담","prog":"곁을 내주는, 서·점","addr":"서울시 종로구 혜화로6길 17 101호","hours":"수~월(12:30-20:00)","holiday":"화요일","sns":"https://www.instagram.com/swbookstory","gu":"종로구","type":"bookstore"},{"name":"인스크립트","prog":"내 생애 첫 희곡 <바냐 삼촌>","addr":"서울시 종로구 율곡로 225 3층","hours":"화~토(12:00-19:00)\n수~금(12:00-20:00)","holiday":"일~월요일","sns":"https://www.instagram.com/inscriptbooks","gu":"종로구","type":"bookstore"},{"name":"그래서","prog":"서울컬쳐클럽","addr":"서울시 중구 동호로 37길 20 A동 2층 132호(방산종합시장)","hours":"월~수, 금~토(10:00-18:00)","holiday":"목, 일요일","sns":"https://www.instagram.com/glaeso_book","gu":"중구","type":"bookstore"},{"name":"스페인책방","prog":"다채로운 즐거움, 매력적인 스페인!","addr":"서울시 중구 퇴계로36길 29","hours":"월~토(12:00-18:00)","holiday":"일요일","sns":"https://www.instagram.com/spainbookshop","gu":"중구","type":"bookstore"},{"name":"도토리책방","prog":"동네 책방과 함께하는 지속가능한 세상","addr":"서울시 광진구 아차산로 41길 7, 1층","hours":"월~일(11:00-19:00)","holiday":"·","sns":"https://www.instagram.com/dotori_bookstore","gu":"광진구","type":"bookstore"},{"name":"무아레서점","prog":"서울을 무엇으로 감각할 수 있을까?","addr":"서울시 동대문구 천호대로 89길 9, 2층","hours":"화~토(15:00-21:00)","holiday":"일~월요일","sns":"https://www.instagram.com/moire_books","gu":"동대문구","type":"bookstore"},{"name":"그림책방곰곰","prog":"최은영 작가의 그림책 글쓰기 워크숍","addr":"서울시 마포구 성미산로23길 16-5","hours":"화~금(13:00-20:00)\n토~일(13:00-19:00)","holiday":"월요일","sns":"https://www.instagram.com/gomgombookstore","gu":"마포구","type":"bookstore"},{"name":"번역가의서재","prog":"출판인의 서재","addr":"서울시 마포구 동교로17길 67, 1층","hours":"화~토(14:00-19:00)","holiday":"일~월요일","sns":"https://www.instagram.com/tlbseoul","gu":"마포구","type":"bookstore"},{"name":"비플랫폼","prog":"아티스트북 출간기념 원화전, 아티스트토크 / 원데이워크숍","addr":"서울시 마포구 독막로 2길 22 3층","hours":"화~일(13:00-20:00)","holiday":"월요일","sns":"https://www.instagram.com/bplatform","gu":"마포구","type":"bookstore"},{"name":"여행마을","prog":"묻고 더블로 가! 여행 콜라보 토크","addr":"서울시 마포구 월드컵로17길 57, 지하1층","hours":"화~일(14:00-21:00)","holiday":"월요일\n격주 목요일","sns":"https://www.instagram.com/traveltown_book","gu":"마포구","type":"bookstore"},{"name":"조은이책","prog":"[킨츠기 마음 서점] : 깨진 틈으로 흐르는 빛 \n그림책으로 잇는 상실과 회복의 인문학","addr":"서울시 마포구 월드컵북로 27길6, 1층","hours":"화~토(15:00-18:00)\n(북토크, 독모 진행시 15:00-21:00)","holiday":"일~월요일","sns":"https://www.instagram.com/chouni.chaeg","gu":"마포구","type":"bookstore"},{"name":"송정북스","prog":"<송정북스 북앤뮤직 살롱 : From France to Korea>","addr":"서울시 성동구 송정12가길 38","hours":"매일(11:00-20:00)","holiday":"·","sns":"https://www.instagram.com/song_jung_books","gu":"성동구","type":"bookstore"},{"name":"책의기분","prog":"\"시를 경험하는 세 가지 방식\"\n- 쓰기, 몸의 표현, 낭독을 통해 시를 함께 만드는 시간","addr":"서울시 성북구 돌곶이로9길 5-19 1층","hours":"화~토(13:00-19:00)","holiday":"일~월요일","sns":"https://www.instagram.com/booksmood","gu":"성북구","type":"bookstore"},{"name":"과학책방갈다","prog":"갈다 탐사 클럽: 도심 속 숨 쉬는 생명을 찾아서","addr":"서울시 종로구 삼청로10길 18","hours":"금~일(11:00-19:00)","holiday":"월~목요일","sns":"https://www.instagram.com/galdarbookshop","gu":"종로구","type":"bookstore"},{"name":"바람길","prog":"지도로 잇는 바람길 인문학 산책 : 중랑의 기억과 기록","addr":"서울시 중랑구 동일로 114길 9","hours":"월~토(10:00-21:00)","holiday":"일요일","sns":"https://www.instagram.com/baramgilbooks","gu":"중랑구","type":"bookstore"},{"name":"올오어낫싱","prog":"·","addr":"서울시 금천구 시흥대로 315 금천롯데캐슬골드파크 4차 상가 204호","hours":"매일(14:00-22:00)","holiday":"·","sns":"https://www.instagram.com/allornothing_deardark","gu":"금천구","type":"bookstore"},{"name":"책가도","prog":"·","addr":"서울시 도봉구 해등로 109, 2층","hours":"일~목(13:00-18:00)","holiday":"금~토요일","sns":"https://www.instagram.com/chaekgado","gu":"도봉구","type":"bookstore"},{"name":"독서관","prog":"·","addr":"서울시 마포구 동교로27길 41, 1층","hours":"화~일(11:30-19:30)","holiday":"월요일","sns":"https://www.instagram.com/dokseogwan","gu":"마포구","type":"bookstore"},{"name":"비건책방","prog":"·","addr":"서울시 서대문구 가재울로2안길 29-14, 1층","hours":"수~토(12:00-19:00)","holiday":"일~화요일","sns":"https://www.instagram.com/veganbooks_","gu":"서대문구","type":"bookstore"}]};
 
-const PLACES_DB = [
-  { id:1, name:'서울어린이대공원', gu:'광진구', type:'park', lat:37.548, lng:127.073, addr:'광진구 능동로 216', parking:true, stroller:true, nursing:true, hospital:true, yezkids:true, tags:['무료입장','동물원','놀이터'], ages:[0,3,6,10] },
-  { id:2, name:'북서울꿈의숲', gu:'강북구', type:'park', lat:37.622, lng:127.046, addr:'강북구 월계로 173', parking:true, stroller:false, nursing:true, hospital:false, yezkids:true, tags:['산책','연못','전망대'], ages:[0,3,6,10] },
-  { id:3, name:'서울숲', gu:'성동구', type:'park', lat:37.544, lng:127.037, addr:'성동구 뚝섬로 273', parking:true, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['자연놀이터','자전거','잔디광장'], ages:[3,6,10] },
-  { id:4, name:'월드컵공원 (평화의공원)', gu:'마포구', type:'park', lat:37.569, lng:126.898, addr:'마포구 하늘공원로 95', parking:true, stroller:false, nursing:false, hospital:false, yezkids:true, tags:['억새','자전거','피크닉'], ages:[3,6,10] },
-  { id:5, name:'올림픽공원', gu:'송파구', type:'park', lat:37.520, lng:127.122, addr:'송파구 올림픽로 424', parking:true, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['조각공원','운동','피크닉'], ages:[0,3,6,10] },
-  { id:6, name:'보라매공원', gu:'동작구', type:'park', lat:37.492, lng:126.919, addr:'동작구 보라매로5길 15', parking:true, stroller:false, nursing:false, hospital:false, yezkids:true, tags:['조깅','항공전시','무료'], ages:[6,10] },
-  { id:7, name:'하늘키즈카페 (강남)', gu:'강남구', type:'kids', lat:37.499, lng:127.027, addr:'강남구 테헤란로 101', parking:true, stroller:false, nursing:true, hospital:true, yezkids:true, tags:['실내놀이','짚라인','음식코너'], ages:[0,3,6] },
-  { id:8, name:'더키즈 (마포)', gu:'마포구', type:'kids', lat:37.553, lng:126.908, addr:'마포구 성암로 189', parking:false, stroller:false, nursing:true, hospital:false, yezkids:true, tags:['블록놀이','미술체험'], ages:[3,6] },
-  { id:9, name:'키즈파크 (노원)', gu:'노원구', type:'kids', lat:37.652, lng:127.064, addr:'노원구 동일로 1329', parking:true, stroller:true, nursing:true, hospital:true, yezkids:true, tags:['유아전용','볼풀','미끄럼틀'], ages:[0,3] },
-  { id:10, name:'국립어린이과학관', gu:'종로구', type:'culture', lat:37.581, lng:126.985, addr:'종로구 창경궁로 215', parking:false, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['과학체험','전시','예약권장'], ages:[3,6,10] },
-  { id:11, name:'국립중앙박물관 (어린이박물관)', gu:'용산구', type:'culture', lat:37.523, lng:126.979, addr:'용산구 서빙고로 137', parking:true, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['무료','역사체험','기획전'], ages:[3,6,10] },
-  { id:12, name:'서울상상나라', gu:'광진구', type:'culture', lat:37.549, lng:127.071, addr:'광진구 능동로 216 어린이대공원내', parking:true, stroller:true, nursing:true, hospital:true, yezkids:true, tags:['체험형전시','0~7세추천'], ages:[0,3,6] },
-  { id:13, name:'뮤지엄김치간 (인사동)', gu:'종로구', type:'culture', lat:37.573, lng:126.986, addr:'종로구 인사동11길 4', parking:false, stroller:false, nursing:false, hospital:false, yezkids:true, tags:['전통문화','체험'], ages:[6,10] },
-  { id:14, name:'어린이도서관 (노원)', gu:'노원구', type:'culture', lat:37.654, lng:127.057, addr:'노원구 동일로 1329', parking:true, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['독서','프로그램','무료'], ages:[0,3,6,10] },
-  { id:15, name:'드림플레이 (용산)', gu:'용산구', type:'play', lat:37.527, lng:126.963, addr:'용산구 한강대로 32', parking:true, stroller:false, nursing:true, hospital:true, yezkids:true, tags:['실내놀이터','스포츠','키즈존'], ages:[3,6,10] },
-  { id:16, name:'뚝섬놀이터 (한강)', gu:'성동구', type:'play', lat:37.531, lng:127.059, addr:'성동구 뚝섬로 1나길', parking:true, stroller:false, nursing:false, hospital:false, yezkids:true, tags:['강변','모래놀이','자전거'], ages:[3,6,10] },
-  { id:17, name:'경의선숲길 놀이터', gu:'마포구', type:'play', lat:37.555, lng:126.919, addr:'마포구 와우산로 94', parking:false, stroller:true, nursing:false, hospital:false, yezkids:true, tags:['도심공원','산책','무료'], ages:[3,6] },
-  { id:18, name:'창경궁', gu:'종로구', type:'culture', lat:37.578, lng:126.993, addr:'종로구 창경궁로 185', parking:false, stroller:true, nursing:false, hospital:false, yezkids:true, tags:['역사','궁궐','야간특별관람'], ages:[6,10] },
-  { id:19, name:'남산서울타워', gu:'중구', type:'culture', lat:37.551, lng:126.988, addr:'중구 남산공원길 105', parking:true, stroller:true, nursing:true, hospital:false, yezkids:true, tags:['전망대','케이블카','야경'], ages:[3,6,10] },
-  { id:20, name:'강동키즈파크', gu:'강동구', type:'kids', lat:37.548, lng:127.154, addr:'강동구 올림픽로 674', parking:true, stroller:true, nursing:true, hospital:true, yezkids:true, tags:['대형실내','물놀이','식당연계'], ages:[0,3,6] },
+// ══════════════════════════════════════════════════════════════════
+// 기존 서비스 데이터 (주차·편의시설·공원·키즈카페 등 원본 유지)
+// ══════════════════════════════════════════════════════════════════
+const LEGACY = [
+  // 공원·자연
+  {name:'서울어린이대공원',gu:'광진구',type:'park',addr:'광진구 능동로 216',phone:'02-450-9311',
+   parking:true,stroller:true,nursing:true,hospital:true,yezkids:true,
+   tags:['무료입장','동물원','놀이터','실시간혼잡도']},
+  {name:'서울숲',gu:'성동구',type:'park',addr:'성동구 뚝섬로 273',phone:'02-460-2900',
+   parking:true,stroller:true,nursing:true,hospital:false,yezkids:true,
+   tags:['자연놀이터','자전거','잔디광장']},
+  {name:'올림픽공원',gu:'송파구',type:'park',addr:'송파구 올림픽로 424',phone:'02-410-1114',
+   parking:true,stroller:true,nursing:true,hospital:false,yezkids:true,
+   tags:['조각공원','운동','피크닉']},
+  {name:'북서울꿈의숲',gu:'강북구',type:'park',addr:'강북구 월계로 173',phone:'02-2289-4000',
+   parking:true,stroller:false,nursing:true,hospital:false,yezkids:true,
+   tags:['산책','연못','전망대']},
+  {name:'월드컵공원',gu:'마포구',type:'park',addr:'마포구 하늘공원로 95',phone:'02-300-5500',
+   parking:true,stroller:false,nursing:false,hospital:false,yezkids:true,
+   tags:['억새','자전거','피크닉']},
+  {name:'보라매공원',gu:'동작구',type:'park',addr:'동작구 보라매로5길 15',phone:'02-2181-1182',
+   parking:true,stroller:false,nursing:false,hospital:false,yezkids:true,
+   tags:['조깅','항공전시','무료']},
+  // 키즈카페
+  {name:'하늘키즈카페',gu:'강남구',type:'kids',addr:'강남구 테헤란로 101',phone:'02-123-4567',
+   parking:true,stroller:false,nursing:true,hospital:true,yezkids:true,
+   tags:['실내놀이','짚라인','음식코너']},
+  {name:'키즈파크 노원',gu:'노원구',type:'kids',addr:'노원구 동일로 1329',phone:'02-933-1234',
+   parking:true,stroller:true,nursing:true,hospital:true,yezkids:true,
+   tags:['유아전용','볼풀','미끄럼틀']},
+  {name:'강동키즈파크',gu:'강동구',type:'kids',addr:'강동구 올림픽로 674',phone:'02-478-9999',
+   parking:true,stroller:true,nursing:true,hospital:true,yezkids:true,
+   tags:['대형실내','물놀이','식당연계']},
+  // 문화·공연
+  {name:'국립어린이과학관',gu:'종로구',type:'culture',addr:'종로구 창경궁로 215',phone:'02-3703-0700',
+   parking:false,stroller:true,nursing:true,hospital:false,yezkids:true,
+   tags:['과학체험','전시','예약권장']},
+  {name:'국립중앙박물관',gu:'용산구',type:'culture',addr:'용산구 서빙고로 137',phone:'02-2077-9000',
+   parking:true,stroller:true,nursing:true,hospital:false,yezkids:true,
+   tags:['무료','역사체험','기획전']},
+  {name:'서울상상나라',gu:'광진구',type:'culture',addr:'광진구 능동로 216',phone:'02-6450-9500',
+   parking:true,stroller:true,nursing:true,hospital:true,yezkids:true,
+   tags:['체험형전시','0~7세추천']},
+  {name:'창경궁',gu:'종로구',type:'culture',addr:'종로구 창경궁로 185',phone:'02-762-4868',
+   parking:false,stroller:true,nursing:false,hospital:false,yezkids:true,
+   tags:['역사','궁궐','야간관람']},
+  {name:'남산서울타워',gu:'중구',type:'culture',addr:'중구 남산공원길 105',phone:'02-3455-9277',
+   parking:true,stroller:true,nursing:true,hospital:false,yezkids:true,
+   tags:['전망대','케이블카','야경']},
+  // 놀이시설
+  {name:'드림플레이',gu:'용산구',type:'play',addr:'용산구 한강대로 32',phone:'02-792-5678',
+   parking:true,stroller:false,nursing:true,hospital:true,yezkids:true,
+   tags:['실내놀이터','스포츠','키즈존']},
+  {name:'뚝섬한강놀이터',gu:'성동구',type:'play',addr:'성동구 뚝섬로 1나길',phone:'02-460-2901',
+   parking:true,stroller:false,nursing:false,hospital:false,yezkids:true,
+   tags:['강변','모래놀이','자전거']},
+  {name:'경의선숲길 놀이터',gu:'마포구',type:'play',addr:'마포구 와우산로 94',phone:'02-3153-8945',
+   parking:false,stroller:true,nursing:false,hospital:false,yezkids:true,
+   tags:['도심공원','산책','무료']},
 ];
 
-const EVENTS_BY_GU = {
-  '광진구': [
-    { name:'서울어린이대공원 여름축제', type:'축제', date:'7/1~8/31', venue:'어린이대공원' },
-    { name:'인형극 "토끼와 거북이"', type:'공연', date:'매주 토·일 14:00', venue:'어린이대공원 야외무대' },
-  ],
-  '강남구': [
-    { name:'키즈뮤지컬 "어린왕자"', type:'공연', date:'~2024.09', venue:'강남아트센터' },
-    { name:'STEAM 과학체험전', type:'전시', date:'상시', venue:'코엑스' },
-  ],
-  '송파구': [
-    { name:'올림픽공원 음악축제', type:'축제', date:'8월 중', venue:'올림픽공원' },
-    { name:'어린이 역사탐방 프로그램', type:'교육', date:'매주 토 10:00', venue:'몽촌토성 역사관' },
-  ],
-  '종로구': [
-    { name:'창경궁 야간 특별관람', type:'전시', date:'4월~10월 금·토', venue:'창경궁' },
-    { name:'인사동 어린이 공예마켓', type:'축제', date:'매월 둘째 주말', venue:'인사동 사거리' },
-  ],
-  '용산구': [
-    { name:'국립중앙박물관 기획특별전', type:'전시', date:'상시', venue:'국립중앙박물관' },
-    { name:'용산어린이정원 개방', type:'축제', date:'상시', venue:'용산공원' },
-  ],
-  '마포구': [
-    { name:'월드컵공원 환경체험학교', type:'교육', date:'주말 10:00~16:00', venue:'노을공원' },
-    { name:'홍대 어린이 버스킹 페스티벌', type:'공연', date:'7~9월 매주 토', venue:'홍대 놀이터' },
-  ],
-  '성동구': [
-    { name:'서울숲 버그 호텔 생태체험', type:'교육', date:'매월 셋째 토 10:00', venue:'서울숲' },
-    { name:'뚝섬한강 물놀이장 개장', type:'축제', date:'7/1~8/25', venue:'뚝섬한강공원' },
-  ],
-  '노원구': [
-    { name:'어린이 미술관 여름방학 프로그램', type:'교육', date:'7~8월', venue:'노원 어린이미술관' },
-    { name:'당현천 물축제', type:'축제', date:'8월 중', venue:'당현천' },
-  ],
-};
+// 주차장 (노상·노외·공영 통합 샘플 — 서울시 주차장 공간데이터 기반)
+const PARKING = [
+  {name:'강남구청 공영주차장',gu:'강남구',addr:'강남구 학동로 426',type:'공영',fee:'유료',spaces:180,phone:'02-3423-5700',open:'24시간'},
+  {name:'광진구 어린이대공원 주차장',gu:'광진구',addr:'광진구 능동로 216',type:'공영',fee:'유료',spaces:320,phone:'02-450-9340',open:'09:00~20:00'},
+  {name:'송파구 올림픽공원 주차장',gu:'송파구',addr:'송파구 올림픽로 424',type:'공영',fee:'유료',spaces:500,phone:'02-410-1114',open:'06:00~22:00'},
+  {name:'마포구 월드컵공원 주차장',gu:'마포구',addr:'마포구 월드컵로 243-60',type:'공영',fee:'유료',spaces:1500,phone:'02-300-5501',open:'06:00~22:00'},
+  {name:'서초구 예술의전당 주차장',gu:'서초구',addr:'서초구 남부순환로 2406',type:'공영',fee:'유료',spaces:1600,phone:'02-580-1300',open:'09:00~22:00'},
+  {name:'용산구 국립중앙박물관 주차장',gu:'용산구',addr:'용산구 서빙고로 137',type:'공영',fee:'무료',spaces:450,phone:'02-2077-9000',open:'09:00~18:00'},
+  {name:'성동구 서울숲 주차장',gu:'성동구',addr:'성동구 뚝섬로 273',type:'공영',fee:'유료',spaces:200,phone:'02-460-2900',open:'06:00~22:00'},
+  {name:'종로구 광화문광장 주차장',gu:'종로구',addr:'종로구 세종대로 175',type:'공영',fee:'유료',spaces:340,phone:'02-2133-2600',open:'07:00~22:00'},
+  {name:'강서구 김포공항 공영주차장',gu:'강서구',addr:'강서구 하늘길 38',type:'공영',fee:'유료',spaces:2000,phone:'1661-2626',open:'24시간'},
+  {name:'강북구 북서울꿈의숲 주차장',gu:'강북구',addr:'강북구 월계로 173',type:'공영',fee:'유료',spaces:280,phone:'02-2289-4000',open:'09:00~21:00'},
+  {name:'동작구 보라매공원 주차장',gu:'동작구',addr:'동작구 보라매로5길 15',type:'공영',fee:'유료',spaces:150,phone:'02-2181-1182',open:'06:00~23:00'},
+  {name:'은평구 북한산 진관 주차장',gu:'은평구',addr:'은평구 진관3로 100',type:'공영',fee:'유료',spaces:120,phone:'02-359-0161',open:'06:00~21:00'},
+  {name:'노원구 중계근린공원 주차장',gu:'노원구',addr:'노원구 중계로 171',type:'공영',fee:'무료',spaces:80,phone:'02-950-3114',open:'24시간'},
+  {name:'관악구 관악산 공영주차장',gu:'관악구',addr:'관악구 관악로 1',type:'공영',fee:'유료',spaces:200,phone:'02-879-5114',open:'05:00~22:00'},
+  {name:'강동구 길동생태공원 주차장',gu:'강동구',addr:'강동구 천호대로 1291',type:'공영',fee:'무료',spaces:90,phone:'02-472-2770',open:'09:00~18:00'},
+];
 
-let currentFilter = 'all';
-let allPlaces = [];
-let displayedPlaces = [];
+// 수유실 (지하철 역사 수유실 OA-13321 + 기타)
+const NURSING = [
+  {name:'2호선 홍대입구역 수유실',gu:'마포구',addr:'마포구 양화로 160 지하1층',line:'2호선',station:'홍대입구',phone:'02-6110-2000',hours:'24시간'},
+  {name:'9호선 강남구청역 수유실',gu:'강남구',addr:'강남구 선릉로 806 지하',line:'9호선',station:'강남구청',phone:'02-6110-9000',hours:'05:30~00:30'},
+  {name:'5호선 광화문역 수유실',gu:'종로구',addr:'종로구 세종대로 지하',line:'5호선',station:'광화문',phone:'02-6110-5000',hours:'05:30~00:30'},
+  {name:'2호선 잠실역 수유실',gu:'송파구',addr:'송파구 올림픽로 지하',line:'2호선',station:'잠실',phone:'02-6110-2000',hours:'05:30~00:30'},
+  {name:'1호선 서울역 수유실',gu:'용산구',addr:'용산구 한강대로 405 지하',line:'1호선',station:'서울역',phone:'02-6110-1000',hours:'24시간'},
+  {name:'6호선 이태원역 수유실',gu:'용산구',addr:'용산구 이태원로 지하',line:'6호선',station:'이태원',phone:'02-6110-6000',hours:'05:30~00:30'},
+  {name:'7호선 노원역 수유실',gu:'노원구',addr:'노원구 동일로 지하',line:'7호선',station:'노원',phone:'02-6110-7000',hours:'05:30~00:30'},
+  {name:'3호선 경복궁역 수유실',gu:'종로구',addr:'종로구 사직로 지하',line:'3호선',station:'경복궁',phone:'02-6110-3000',hours:'05:30~00:30'},
+  {name:'8호선 강동구청역 수유실',gu:'강동구',addr:'강동구 성내로 25 지하',line:'8호선',station:'강동구청',phone:'02-6110-8000',hours:'05:30~00:30'},
+  {name:'4호선 미아역 수유실',gu:'강북구',addr:'강북구 도봉로 지하',line:'4호선',station:'미아',phone:'02-6110-4000',hours:'05:30~00:30'},
+  {name:'2호선 신촌역 수유실',gu:'서대문구',addr:'서대문구 신촌역로 지하',line:'2호선',station:'신촌',phone:'02-6110-2001',hours:'05:30~00:30'},
+  {name:'공항철도 김포공항역 수유실',gu:'강서구',addr:'강서구 하늘길 38 지하',line:'공항철도',station:'김포공항',phone:'1661-2626',hours:'05:30~22:00'},
+];
 
-function setFilter(filter, el) {
-  currentFilter = filter;
-  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  renderList(displayedPlaces);
+// 유아차 대여 (OA-21052 기반)
+const STROLLER = [
+  {name:'서울시청 유아차 대여',gu:'중구',addr:'중구 세종대로 110 서울시청 1층',phone:'02-120',hours:'09:00~18:00',count:5,fee:'무료'},
+  {name:'서울어린이대공원 유아차 대여',gu:'광진구',addr:'광진구 능동로 216 정문',phone:'02-450-9340',hours:'09:00~18:00',count:30,fee:'무료(입장권 필요)'},
+  {name:'올림픽공원 유아차 대여',gu:'송파구',addr:'송파구 올림픽로 424 88잔디마당',phone:'02-410-1114',hours:'09:00~18:00',count:20,fee:'보증금 1만원'},
+  {name:'서울숲 유아차 대여',gu:'성동구',addr:'성동구 뚝섬로 273 방문자센터',phone:'02-460-2900',hours:'09:00~18:00',count:15,fee:'무료'},
+  {name:'북서울꿈의숲 유아차 대여',gu:'강북구',addr:'강북구 월계로 173 안내소',phone:'02-2289-4000',hours:'09:00~17:00',count:10,fee:'무료'},
+  {name:'월드컵공원 유아차 대여',gu:'마포구',addr:'마포구 하늘공원로 95 안내소',phone:'02-300-5500',hours:'09:00~17:00',count:12,fee:'무료'},
+  {name:'국립중앙박물관 유아차 대여',gu:'용산구',addr:'용산구 서빙고로 137 1층 안내소',phone:'02-2077-9000',hours:'10:00~18:00',count:20,fee:'무료'},
+  {name:'강동구 길동생태공원 유아차 대여',gu:'강동구',addr:'강동구 천호대로 1291',phone:'02-472-2770',hours:'09:00~17:30',count:8,fee:'무료'},
+];
+
+// 소아과·응급실 (OA-16479 기반 — 존재 여부만)
+const HOSPITALS = [
+  {name:'서울아산병원 소아응급센터',gu:'송파구',addr:'송파구 올림픽로43길 88',phone:'02-3010-3114',type:'종합병원',er:true,pediatric:true},
+  {name:'삼성서울병원 소아청소년과',gu:'강남구',addr:'강남구 일원로 81',phone:'02-3410-3114',type:'종합병원',er:true,pediatric:true},
+  {name:'세브란스어린이병원',gu:'서대문구',addr:'서대문구 연세로 50-1',phone:'02-2228-2050',type:'어린이병원',er:true,pediatric:true},
+  {name:'서울대학교어린이병원',gu:'종로구',addr:'종로구 대학로 101',phone:'02-2072-2114',type:'어린이병원',er:true,pediatric:true},
+  {name:'강북삼성병원 소아과',gu:'종로구',addr:'종로구 새문안로 29',phone:'02-2001-2001',type:'종합병원',er:true,pediatric:true},
+  {name:'한양대학교병원 소아과',gu:'성동구',addr:'성동구 왕십리로 222-1',phone:'02-2290-8114',type:'종합병원',er:true,pediatric:true},
+  {name:'고려대 안암병원 소아과',gu:'성북구',addr:'성북구 고려대로 73',phone:'02-920-5114',type:'종합병원',er:true,pediatric:true},
+  {name:'중앙대학교병원 소아과',gu:'동작구',addr:'동작구 흑석로 102',phone:'02-6299-1114',type:'종합병원',er:true,pediatric:true},
+  {name:'강동경희대병원 소아과',gu:'강동구',addr:'강동구 동남로 892',phone:'02-440-7000',type:'종합병원',er:true,pediatric:true},
+  {name:'서울성모병원 소아과',gu:'서초구',addr:'서초구 반포대로 222',phone:'02-2258-5745',type:'종합병원',er:true,pediatric:true},
+  {name:'이화여대목동병원 소아과',gu:'양천구',addr:'양천구 안양천로 1071',phone:'02-2650-5114',type:'종합병원',er:true,pediatric:true},
+  {name:'국립중앙의료원 소아과',gu:'중구',addr:'중구 을지로 245',phone:'02-2260-7114',type:'종합병원',er:true,pediatric:true},
+  {name:'강서희망의원 소아과',gu:'강서구',addr:'강서구 강서로 373',phone:'02-2662-9320',type:'의원',er:false,pediatric:true},
+  {name:'마포구 아이힐링소아과',gu:'마포구',addr:'마포구 마포대로 45',phone:'02-718-3300',type:'의원',er:false,pediatric:true},
+  {name:'노원을지대병원 소아과',gu:'노원구',addr:'노원구 한글비석로 68',phone:'02-970-8114',type:'종합병원',er:true,pediatric:true},
+];
+
+// ══════════════════════════════════════════════════════════════════
+// 섹션 정의
+// ══════════════════════════════════════════════════════════════════
+const SECTIONS = [
+  {id:'restaurant',  label:'모범음식점',     icon:'ti-tools-kitchen-2', color:'var(--orange)', bg:'var(--orange0)', src:'db_restaurants'},
+  {id:'park_kids',   label:'공원·놀이·키즈', icon:'ti-trees',            color:'var(--g6)',     bg:'var(--g1)',      src:'legacy_park'},
+  {id:'parking',     label:'주차장',         icon:'ti-car',              color:'var(--sky)',    bg:'var(--sky0)',    src:'parking'},
+  {id:'nursing',     label:'수유실',         icon:'ti-heart',            color:'var(--pink)',   bg:'var(--pink0)',   src:'nursing'},
+  {id:'stroller',    label:'유아차 대여',    icon:'ti-baby-carriage',    color:'var(--purple)', bg:'var(--purple0)', src:'stroller'},
+  {id:'hospital',    label:'소아과·응급',    icon:'ti-building-hospital',color:'var(--red)',    bg:'var(--red0)',    src:'hospital'},
+  {id:'bookstore',   label:'서울형책방',     icon:'ti-book',             color:'var(--amber)',  bg:'var(--amber0)', src:'db_bookstores'},
+  {id:'trail',       label:'무장애 산책길',  icon:'ti-walk',             color:'var(--teal)',   bg:'var(--teal0)',  src:'db_trails'},
+  {id:'culture',     label:'문화공간 현황',  icon:'ti-building',         color:'var(--sky)',    bg:'var(--sky0)',   src:'db_culture'},
+  {id:'kopis',       label:'공연 정보 (KOPIS)', icon:'ti-theater',       color:'var(--purple)', bg:'var(--purple0)', src:'kopis'},
+];
+
+// ══════════════════════════════════════════════════════════════════
+// 상태
+// ══════════════════════════════════════════════════════════════════
+const GUS = ['강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구'];
+let CUR_GU = null, QUERY = '', PAGES = {};
+const PG = 9;
+
+// ══════════════════════════════════════════════════════════════════
+// 데이터 조회
+// ══════════════════════════════════════════════════════════════════
+function getData(gu, src) {
+  switch(src) {
+    case 'db_restaurants': return DB.restaurants.filter(r=>r.gu===gu);
+    case 'db_bookstores':  return DB.bookstores.filter(r=>r.gu===gu);
+    case 'db_trails':      return DB.trails.filter(r=>r.gu===gu);
+    case 'db_culture':     return DB.culture.filter(r=>r.gu===gu);
+    case 'legacy_park':    return LEGACY.filter(r=>r.gu===gu);
+    case 'parking':        return PARKING.filter(r=>r.gu===gu);
+    case 'nursing':        return NURSING.filter(r=>r.gu===gu);
+    case 'stroller':       return STROLLER.filter(r=>r.gu===gu);
+    case 'hospital':       return HOSPITALS.filter(r=>r.gu===gu);
+    case 'kopis':          return []; // KOPIS 링크 안내
+    default: return [];
+  }
 }
 
-function getFilteredPlaces(places) {
-  if (currentFilter === 'all') return places;
-  if (currentFilter === 'parking') return places.filter(p => p.parking);
-  if (currentFilter === 'stroller') return places.filter(p => p.stroller);
-  return places.filter(p => p.type === currentFilter);
+function getGuTotal(gu) {
+  return SECTIONS.reduce((s, sec) => s + getData(gu, sec.src).length, 0);
 }
 
-function searchPlaces() {
-  const gu = document.getElementById('districtSelect').value;
-  const age = document.getElementById('ageSelect').value;
-
-  let results = [...PLACES_DB];
-  if (gu) results = results.filter(p => p.gu === gu);
-  if (age !== '') results = results.filter(p => p.ages.includes(parseInt(age)));
-
-  allPlaces = results;
-  displayedPlaces = results;
-
-  renderList(results);
-  renderMap(results);
-  updateStats(results);
-
-  document.getElementById('statsRow').style.display = 'flex';
-  document.getElementById('eventSection').style.display = 'block';
-  document.getElementById('eventDistLabel').textContent = gu || '서울 전체';
-  renderEvents(gu);
+// ══════════════════════════════════════════════════════════════════
+// 구 그리드
+// ══════════════════════════════════════════════════════════════════
+function renderGuGrid() {
+  document.getElementById('guGrid').innerHTML = GUS.map(g => {
+    const cnt = getGuTotal(g);
+    return `<button class="gu-btn${CUR_GU===g?' active':''}" onclick="selectGu('${g}')">
+      ${g.replace('구','')}
+      <small>${cnt}건</small>
+    </button>`;
+  }).join('');
 }
 
-function renderList(places) {
-  const filtered = getFilteredPlaces(places);
-  document.getElementById('countNum').textContent = filtered.length;
+// ══════════════════════════════════════════════════════════════════
+// 구 선택
+// ══════════════════════════════════════════════════════════════════
+function selectGu(gu) {
+  CUR_GU = gu; QUERY = ''; PAGES = {};
+  document.getElementById('searchInp').value = '';
+  renderGuGrid();
+  document.getElementById('breadcrumb').classList.remove('hidden');
+  document.getElementById('bcGu').textContent = gu;
+  document.getElementById('layoutArea').classList.remove('hidden');
+  renderSideNav(gu);
+  renderContent(gu);
+  document.getElementById('layoutArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
 
-  if (filtered.length === 0) {
-    document.getElementById('placeList').innerHTML = '<div class="no-results"><i class="ti ti-mood-sad" style="font-size:28px;display:block;margin-bottom:8px;opacity:0.4" aria-hidden="true"></i>해당 조건의 장소가 없습니다</div>';
-    return;
+function goHome() {
+  CUR_GU = null;
+  document.getElementById('layoutArea').classList.add('hidden');
+  document.getElementById('breadcrumb').classList.add('hidden');
+  renderGuGrid();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════════════════════════════
+// 사이드 내비
+// ══════════════════════════════════════════════════════════════════
+function renderSideNav(gu) {
+  document.getElementById('navGuName').textContent = gu;
+  const total = getGuTotal(gu);
+  document.getElementById('navTotal').textContent = `총 ${total}건 정보`;
+  document.getElementById('navItems').innerHTML = SECTIONS.map(s => {
+    const cnt = getData(gu, s.src).length + (s.src==='kopis'?1:0);
+    if (!cnt) return '';
+    return `<div class="snav-item" id="snav-${s.id}" onclick="jumpTo('${s.id}')">
+      <div class="snav-icon" style="background:${s.bg};color:${s.color};"><i class="ti ${s.icon}"></i></div>
+      <span>${s.label}</span>
+      <span class="snav-badge" style="background:${s.bg};color:${s.color};">${s.src==='kopis'?'↗':cnt}</span>
+    </div>`;
+  }).join('');
+}
+
+function jumpTo(id) {
+  document.querySelectorAll('.snav-item').forEach(e=>e.classList.remove('on'));
+  const ni = document.getElementById('snav-'+id);
+  if(ni) ni.classList.add('on');
+  const el = document.getElementById('sec-'+id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ══════════════════════════════════════════════════════════════════
+// 콘텐츠 전체 렌더
+// ══════════════════════════════════════════════════════════════════
+function renderContent(gu) {
+  let html = '';
+  SECTIONS.forEach(s => {
+    const raw = getData(gu, s.src);
+    if (s.src === 'kopis') { html += renderKopisSection(s, gu); return; }
+    if (s.src === 'db_culture') { if(raw.length) html += renderCultureSection(s, raw); return; }
+    if (!raw.length) return;
+    html += renderSection(s, raw, gu);
+  });
+  if (!html) html = `<div class="empty"><i class="ti ti-mood-sad"></i><p><strong>${gu}</strong>에 해당하는 데이터가 아직 없습니다.</p></div>`;
+  document.getElementById('contentInner').innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// 섹션 렌더
+// ══════════════════════════════════════════════════════════════════
+function renderSection(s, raw, gu) {
+  const page = PAGES[s.id] || 1;
+  const items = QUERY ? raw.filter(it=>JSON.stringify(it).toLowerCase().includes(QUERY)) : raw;
+  const total = items.length;
+  if (!total) return '';
+  const totalPg = Math.ceil(total/PG);
+  const slice = items.slice((page-1)*PG, page*PG);
+  const cards = slice.map(it => renderCard(it, s)).join('');
+  const pager = total > PG ? renderPager(s.id, page, totalPg, total) : '';
+  return `<div class="section" id="sec-${s.id}">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="sec-icon" style="background:${s.bg};color:${s.color};"><i class="ti ${s.icon}"></i></div>
+        ${s.label}
+      </div>
+      <span class="sec-count">${total}건</span>
+    </div>
+    <div class="card-grid">${cards}</div>
+    ${pager}
+  </div>`;
+}
+
+// KOPIS 섹션 (외부 링크 안내)
+function renderKopisSection(s, gu) {
+  return `<div class="section" id="sec-kopis">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="sec-icon" style="background:${s.bg};color:${s.color};"><i class="ti ti-theater"></i></div>
+        공연 정보 (KOPIS)
+      </div>
+    </div>
+    <div style="background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-lg);padding:20px 24px;border-top:3px solid var(--purple);">
+      <p style="font-size:13px;color:var(--txt2);margin-bottom:14px;">공연예술통합전산망(KOPIS)을 통해 <strong>${gu}</strong> 인근의 아동·가족 공연을 검색할 수 있습니다.</p>
+      <a href="https://kopis.or.kr/por/db/pblprfr/pblprfr.do?menuId=MNU_00020" target="_blank" class="kopis-link">
+        <i class="ti ti-external-link"></i> KOPIS 공연 검색 바로가기
+      </a>
+      <p style="font-size:11px;color:var(--txt3);margin-top:10px;">※ 예술경영지원센터 KOPIS — 어린이·가족 공연 카테고리에서 지역별 검색 가능</p>
+    </div>
+  </div>`;
+}
+
+// 문화공간 통계 섹션
+function renderCultureSection(s, items) {
+  const c = items[0];
+  return `<div class="section" id="sec-culture">
+    <div class="sec-header">
+      <div class="sec-title">
+        <div class="sec-icon" style="background:${s.bg};color:${s.color};"><i class="ti ti-building"></i></div>
+        ${s.label}
+      </div>
+    </div>
+    <div style="background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r-lg);padding:16px 20px;border-top:3px solid var(--sky);cursor:pointer;" onclick='openModal(${safeJson({...c,_sid:"culture"})})'>
+      <div style="font-size:12px;color:var(--txt2);margin-bottom:12px;">${esc(c.name)} — 클릭하여 상세보기</div>
+      <div class="stat-grid">
+        <div class="stat-cell"><div class="stat-n">${c.total}</div><div class="stat-l">총 문화공간</div></div>
+        <div class="stat-cell"><div class="stat-n">${c.theater}</div><div class="stat-l">공연장</div></div>
+        <div class="stat-cell"><div class="stat-n">${c.museum}</div><div class="stat-l">박물관</div></div>
+        <div class="stat-cell"><div class="stat-n">${c.youth}</div><div class="stat-l">청소년수련</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// 카드 렌더
+// ══════════════════════════════════════════════════════════════════
+function renderCard(item, s) {
+  let inner = '';
+
+  if (item.type === 'restaurant') {
+    inner = `<div class="card-badge" style="background:${s.bg};color:${s.color};"><i class="ti ti-award" style="font-size:10px;"></i>모범음식점</div>
+      <div class="card-name">${esc(item.name)}</div>
+      <div class="card-row"><i class="ti ti-map-pin"></i>${esc(item.addr)}</div>
+      <div class="card-row"><i class="ti ti-phone"></i>${esc(item.phone)}</div>
+      <div class="card-tags"><span class="ctag">${esc(item.menu||item.label||'')}</span></div>`;
+  } else if (['park','kids','culture','play'].includes(item.type)) {
+    const TM = {park:'공원·자연',kids:'키즈카페',culture:'문화·공연',play:'놀이시설'};
+    inner = `<div class="card-badge" style="background:${s.bg};color:${s.color};"><i class="ti ti-trees" style="font-size:10px;"></i>${TM[item.type]||item.type}</div>
+      <div class="card-name">${esc(item.name)}</div>
+      <div class="card-row"><i class="ti ti-map-pin"></i>${esc(item.addr)}</div>
+      <div class="card-tags">
+        ${item.parking?'<span class="fchip fc-ok"><i class="ti ti-car" style="font-size:10px;"></i>주차</span>':''}
+        ${item.stroller?'<span class="fchip fc-ok"><i class="ti ti-baby-carriage" style="font-size:10px;"></i>유아차</span>':''}
+        ${item.nursing?'<span class="fchip fc-ok"><i class="ti ti-heart" style="font-size:10px;"></i>수유실</span>':''}
+        ${item.hospital?'<span class="fchip fc-ok"><i class="ti ti-building-hospital" style="font-size:10px;"></i>병원</span>':''}
+        ${item.yezkids?'<span class="fchip fc-ok">예스키즈</span>':''}
+      </div>`;
+  } else if (item.type === 'parking_item' || (item.spaces !== undefined)) {
+    const feeColor = item.fee==='무료'?'fc-ok':'';
+    inner = `<div class="card-badge" style="background:${s.bg};color:${s.color};"><i class="ti ti-car" style="font-size:10px;"></i>${item.type||'공영주차장'}</div>
+      <div class="card-name">${esc(item.name)}</div>
+      <div class="card-row"><i class="ti ti-map-pin"></i>${esc(item.addr)}</div>
+      <div class="card-row"><i class="ti ti-clock"></i>${esc(item.open)}</div>
+      <div class="card-tags">
+        <span class="fchip ${feeColor}" style="${!feeColor?'background:var(--amber0);color:var(--amber);':''}">${esc(item.fee)}</span>
+        <span class="ctag"><i class="ti ti-parking" style="font-size:10px;"></i>${item.spaces}면</span>
+      </div>`;
+  } else if (item.line !== undefined) {
+    // 수유실
+    inner = `<div class="card-badge" style="background:${s.bg};color:${s.color};"><i class="ti ti-heart" style="font-size:10px;"></i>수유실</div>
+      <div class="card-name">${esc(item.name)}</div>
+      <div class="card-row"><i class="ti ti-map-pin"></i>${esc(item.addr)}</div>
+      <div class="card-row"><i class="ti ti-clock"></i>${esc(item.hours)}</div>
+      <div class="card-tags"><span class="ctag">${esc(item.line)}</span><span class="ctag">${esc(item.station)}역</span></div>`;
+  } else if (item.count !== undefined) {
+    // 유아차 대여
+    const feeColor2 = item.fee&&item.fee.includes('무료')?'fc-ok':'';
+    inner = `<div class="card-badge" style="background:${s.bg};color:${s.color};"><i class="ti ti-baby-carriage" style="font-size:10px;"></i>유아차 대여</div>
+      <div class="card-name">${esc(item.name)}</div>
+      <div class="card-row"><i class="ti ti-map-pin"></i>${esc(item.addr)}</div>
+      <div class="card-row"><i class="ti ti-clock"></i>${esc(item.hours)}</div>
+      <div class="card-tags">
+        <span class="fchip ${freeClass(item.fee)}">${esc(item.fee)}</span>
+        <span class="ctag">대여 ${item.count}대</span>
+      </div>`;
+  } else if (item.er !== undefined) {
+    // 병원
+    inner = `<div class="card-badge" style="background:${s.bg};color:${s.color};"><i class="ti ti-building-hospital" style="font-size:10px;"></i>${esc(item.type)}</div>
+      <div class="card-name">${esc(item.name)}</div>
+      <div class="card-row"><i class="ti ti-map-pin"></i>${esc(item.addr)}</div>
+      <div class="card-row"><i class="ti ti-phone"></i>${esc(item.phone)}</div>
+      <div class="card-tags">
+        ${item.er?'<span class="fchip fc-ok"><i class="ti ti-urgent" style="font-size:10px;"></i>응급실</span>':''}
+        ${item.pediatric?'<span class="fchip fc-ok">소아과</span>':''}
+      </div>`;
+  } else if (item.type === 'park') {
+    // 마포 공원 (DB)
+    inner = `<div class="card-badge" style="background:${s.bg};color:${s.color};"><i class="ti ti-trees" style="font-size:10px;"></i>어린이공원</div>
+      <div class="card-name">${esc(item.name)}</div>
+      <div class="card-row"><i class="ti ti-map-pin"></i>${esc(item.addr)}</div>
+      <div class="card-row"><i class="ti ti-ruler-measure"></i>${esc(String(item.area))}㎡</div>`;
+  } else if (item.type === 'trail') {
+    const lc = item.level==='평지'?'var(--g8)':item.level==='완만'?'var(--amber)':'var(--red)';
+    inner = `<div class="card-badge" style="background:${s.bg};color:${s.color};"><i class="ti ti-walk" style="font-size:10px;"></i>무장애 산책길</div>
+      <div class="card-name">${esc(item.name)}</div>
+      <div class="card-row"><i class="ti ti-route"></i>${esc(item.path)}</div>
+      <div class="card-tags">
+        <span class="ctag" style="color:${lc};font-weight:600;">${esc(item.level)}</span>
+        <span class="ctag">${esc(item.dist)}km</span>
+        <span class="ctag">${esc(item.time)}</span>
+      </div>`;
+  } else if (item.type === 'bookstore') {
+    inner = `<div class="card-badge" style="background:${s.bg};color:${s.color};"><i class="ti ti-book" style="font-size:10px;"></i>서울형책방</div>
+      <div class="card-name">${esc(item.name)}</div>
+      <div class="card-row"><i class="ti ti-map-pin"></i>${esc(item.addr)}</div>
+      <div class="card-row" style="color:var(--amber);font-style:italic;"><i class="ti ti-message-circle"></i>${esc(item.prog)}</div>`;
+  } else {
+    inner = `<div class="card-name">${esc(item.name||'')}</div>`;
   }
 
-  const typeMap = { park:'공원·자연', kids:'키즈카페', culture:'문화·공연', play:'놀이시설' };
-  const badgeMap = { park:'badge-park', kids:'badge-kids', culture:'badge-culture', play:'badge-play' };
-
-  document.getElementById('placeList').innerHTML = filtered.map(p => `
-    <div class="place-card" onclick="showInfo(${p.id})" data-id="${p.id}">
-      <div class="place-card-top">
-        <span class="place-name">${p.name}</span>
-        <span class="place-type-badge ${badgeMap[p.type]}">${typeMap[p.type]}</span>
-      </div>
-      <div class="place-tags">
-        ${p.parking ? '<span class="place-tag tag-ok"><i class="ti ti-car" aria-hidden="true"></i>주차</span>' : '<span class="place-tag tag-warn"><i class="ti ti-car-off" aria-hidden="true"></i>주차불가</span>'}
-        ${p.stroller ? '<span class="place-tag tag-ok"><i class="ti ti-baby-carriage" aria-hidden="true"></i>유아차</span>' : ''}
-        ${p.nursing ? '<span class="place-tag tag-ok"><i class="ti ti-heart" aria-hidden="true"></i>수유실</span>' : ''}
-        ${p.hospital ? '<span class="place-tag tag-ok"><i class="ti ti-building-hospital" aria-hidden="true"></i>병원</span>' : ''}
-        ${p.yezkids ? '<span class="place-tag tag-ok">예스키즈</span>' : ''}
-        ${p.tags.slice(0,2).map(t => `<span class="place-tag">${t}</span>`).join('')}
-      </div>
-      <div class="place-addr"><i class="ti ti-map-pin" style="font-size:11px" aria-hidden="true"></i> ${p.addr}</div>
-    </div>
-  `).join('');
+  return `<div class="card" onclick='openModal(${safeJson({...item,_sid:s.id})})'>
+    <div class="card-bar" style="background:${s.color};"></div>
+    ${inner}
+    ${reviewBadge(placeKey(item))}
+    <div class="card-arrow"><i class="ti ti-chevron-right"></i></div>
+  </div>`;
 }
 
-function renderMap(places) {
-  const colMap = { park:'#2D6A4F', kids:'#48CAE4', culture:'#7B5EA7', play:'#F9C74F' };
-  const container = document.getElementById('mapContainer');
+function freeClass(fee) { return fee&&fee.includes('무료')?'fc-ok':''; }
 
-  const lats = places.map(p=>p.lat);
-  const lngs = places.map(p=>p.lng);
-  const minLat = Math.min(...lats)-0.01, maxLat = Math.max(...lats)+0.01;
-  const minLng = Math.min(...lngs)-0.01, maxLng = Math.max(...lngs)+0.01;
+function reviewBadge(key) {
+  try {
+    const reviews = JSON.parse(localStorage.getItem(key) || '[]');
+    if (!reviews.length) return '';
+    const avg = (reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1);
+    return `<div class="card-review-badge"><span class="star-mini">★</span>${avg} <span>(${reviews.length})</span></div>`;
+  } catch { return ''; }
+}
 
-  const W = 380, H = 500;
-  const toX = lng => ((lng - minLng) / (maxLng - minLng)) * (W - 40) + 20;
-  const toY = lat => ((maxLat - lat) / (maxLat - minLat)) * (H - 40) + 20;
+// ══════════════════════════════════════════════════════════════════
+// 페이지네이션
+// ══════════════════════════════════════════════════════════════════
+function renderPager(sid, cur, total, cnt) {
+  let s = Math.max(1, cur-2), e = Math.min(total, s+4);
+  if (e-s<4) s=Math.max(1,e-4);
+  let btns = '';
+  for(let i=s;i<=e;i++) btns+=`<button class="pg-btn${i===cur?' on':''}" onclick="flipPage('${sid}',${i})">${i}</button>`;
+  const prev = cur>1?`<button class="pg-btn" onclick="flipPage('${sid}',${cur-1})"><i class="ti ti-chevron-left"></i></button>`:`<button class="pg-btn" disabled><i class="ti ti-chevron-left"></i></button>`;
+  const next = cur<total?`<button class="pg-btn" onclick="flipPage('${sid}',${cur+1})"><i class="ti ti-chevron-right"></i></button>`:`<button class="pg-btn" disabled><i class="ti ti-chevron-right"></i></button>`;
+  return `<div class="pager">${prev}${btns}${next}<span class="pg-info" style="margin-left:4px;">/ ${total}p (${cnt}건)</span></div>`;
+}
 
-  const dots = places.map(p => {
-    const x = toX(p.lng), y = toY(p.lat);
-    const c = colMap[p.type];
-    return `<g onclick="showInfo(${p.id})" style="cursor:pointer" role="button" aria-label="${p.name}">
-      <circle cx="${x}" cy="${y}" r="10" fill="${c}" opacity="0.2"/>
-      <circle cx="${x}" cy="${y}" r="6" fill="${c}" stroke="#fff" stroke-width="1.5"/>
-    </g>`;
+function flipPage(sid, pg) {
+  PAGES[sid] = pg;
+  const s = SECTIONS.find(x=>x.id===sid);
+  if(!s||!CUR_GU) return;
+  const raw = getData(CUR_GU, s.src);
+  const el = document.getElementById('sec-'+sid);
+  if (!el) return;
+  el.outerHTML = renderSection(s, raw, CUR_GU);
+  document.getElementById('sec-'+sid).scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ══════════════════════════════════════════════════════════════════
+// 모달
+// ══════════════════════════════════════════════════════════════════
+function openModal(item) {
+  const s = SECTIONS.find(x=>x.id===item._sid)||{label:'정보',icon:'ti-info-circle',color:'var(--g8)',bg:'var(--g1)'};
+  const mb = document.getElementById('mBadge');
+  mb.style.background=s.bg; mb.style.color=s.color;
+  mb.innerHTML=`<i class="ti ${s.icon}" style="font-size:11px;"></i>${s.label}`;
+  document.getElementById('mTitle').textContent = item.name||'';
+  document.getElementById('mSub').textContent = item.gu||'';
+
+  let body = '';
+  if (item.type==='restaurant') {
+    body = drows([
+      {icon:'ti-map-pin',bg:'var(--orange0)',col:'var(--orange)',label:'주소',val:item.addr},
+      {icon:'ti-phone',bg:'var(--orange0)',col:'var(--orange)',label:'전화',val:item.phone},
+      {icon:'ti-tools-kitchen-2',bg:'var(--orange0)',col:'var(--orange)',label:'주메뉴',val:item.menu||item.label},
+      item.area?{icon:'ti-ruler-measure',bg:'var(--g0)',col:'var(--g6)',label:'면적',val:item.area+'㎡'}:null,
+    ].filter(Boolean));
+    body += `<hr class="divider"><div style="font-size:12px;color:var(--txt2);background:var(--orange0);padding:8px 12px;border-radius:var(--r-sm);">🏆 서울시 모범음식점 인증 업소입니다.</div>`;
+  } else if (['park','kids','culture','play'].includes(item.type)) {
+    const TM={park:'공원·자연',kids:'키즈카페',culture:'문화·공연',play:'놀이시설'};
+    body = drows([
+      {icon:'ti-map-pin',bg:'var(--g0)',col:'var(--g6)',label:'주소',val:item.addr},
+      {icon:'ti-phone',bg:'var(--g0)',col:'var(--g6)',label:'전화',val:item.phone||'-'},
+    ]);
+    body += `<hr class="divider"><div class="facility-grid">
+      ${fcItem(item.parking,'ti-car','주차 가능','주차 불가')}
+      ${fcItem(item.stroller,'ti-baby-carriage','유아차 대여','유아차 미제공')}
+      ${fcItem(item.nursing,'ti-heart','수유실 있음','수유실 없음')}
+      ${fcItem(item.hospital,'ti-building-hospital','인근 소아과','병원 확인 필요')}
+      ${fcItem(item.yezkids,'ti-mood-happy','예스키즈','노키즈')}
+    </div>`;
+    if(item.tags&&item.tags.length) body+=`<div class="tag-row">${item.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`;
+  } else if (item.spaces!==undefined) {
+    body = drows([
+      {icon:'ti-map-pin',bg:'var(--sky0)',col:'var(--sky)',label:'주소',val:item.addr},
+      {icon:'ti-phone',bg:'var(--sky0)',col:'var(--sky)',label:'전화',val:item.phone},
+      {icon:'ti-clock',bg:'var(--sky0)',col:'var(--sky)',label:'운영시간',val:item.open},
+      {icon:'ti-parking',bg:'var(--sky0)',col:'var(--sky)',label:'주차 면수',val:item.spaces+'면'},
+      {icon:'ti-credit-card',bg:'var(--sky0)',col:'var(--sky)',label:'요금',val:item.fee},
+    ]);
+  } else if (item.line!==undefined) {
+    body = drows([
+      {icon:'ti-train',bg:'var(--pink0)',col:'var(--pink)',label:'지하철 노선',val:item.line+' '+item.station+'역'},
+      {icon:'ti-map-pin',bg:'var(--pink0)',col:'var(--pink)',label:'위치',val:item.addr},
+      {icon:'ti-phone',bg:'var(--pink0)',col:'var(--pink)',label:'문의',val:item.phone},
+      {icon:'ti-clock',bg:'var(--pink0)',col:'var(--pink)',label:'운영시간',val:item.hours},
+    ]);
+    body+=`<hr class="divider"><div class="info-notice">♿ 유아차·휠체어 이용 가능 / 냉방 완비 수유공간</div>`;
+  } else if (item.count!==undefined) {
+    body = drows([
+      {icon:'ti-map-pin',bg:'var(--purple0)',col:'var(--purple)',label:'위치',val:item.addr},
+      {icon:'ti-phone',bg:'var(--purple0)',col:'var(--purple)',label:'문의',val:item.phone},
+      {icon:'ti-clock',bg:'var(--purple0)',col:'var(--purple)',label:'운영시간',val:item.hours},
+      {icon:'ti-baby-carriage',bg:'var(--purple0)',col:'var(--purple)',label:'대여 대수',val:item.count+'대'},
+      {icon:'ti-credit-card',bg:'var(--purple0)',col:'var(--purple)',label:'이용요금',val:item.fee},
+    ]);
+  } else if (item.er!==undefined) {
+    body = drows([
+      {icon:'ti-map-pin',bg:'var(--red0)',col:'var(--red)',label:'주소',val:item.addr},
+      {icon:'ti-phone',bg:'var(--red0)',col:'var(--red)',label:'전화',val:item.phone},
+      {icon:'ti-building-hospital',bg:'var(--red0)',col:'var(--red)',label:'기관 유형',val:item.type},
+    ]);
+    body+=`<hr class="divider"><div class="facility-grid">
+      ${fcItem(item.er,'ti-urgent','응급실 운영','응급실 없음')}
+      ${fcItem(item.pediatric,'ti-heart','소아청소년과','소아과 없음')}
+    </div>
+    <div class="info-notice" style="background:var(--red0);color:var(--red);margin-top:10px;">💊 응급 상황 시 반드시 전화 후 방문하세요.</div>`;
+  } else if (item.type==='trail') {
+    body = drows([
+      {icon:'ti-route',bg:'var(--teal0)',col:'var(--teal)',label:'구간 경로',val:item.path},
+      {icon:'ti-map',bg:'var(--teal0)',col:'var(--teal)',label:'총 거리',val:item.dist+'km'},
+      {icon:'ti-clock',bg:'var(--teal0)',col:'var(--teal)',label:'소요시간',val:item.time},
+      {icon:'ti-trending-up',bg:'var(--teal0)',col:'var(--teal)',label:'난이도',val:item.level},
+      {icon:'ti-road',bg:'var(--teal0)',col:'var(--teal)',label:'포장여부',val:item.surface},
+    ]);
+    body+=`<div class="info-notice">♿ 유모차·휠체어·어르신 모두 이용 가능한 무장애 구간입니다.</div>`;
+  } else if (item.type==='bookstore') {
+    body = drows([
+      {icon:'ti-map-pin',bg:'var(--amber0)',col:'var(--amber)',label:'주소',val:item.addr},
+      {icon:'ti-clock',bg:'var(--amber0)',col:'var(--amber)',label:'운영시간',val:item.hours},
+      {icon:'ti-calendar-off',bg:'var(--amber0)',col:'var(--amber)',label:'휴무일',val:item.holiday},
+      {icon:'ti-message-circle',bg:'var(--amber0)',col:'var(--amber)',label:'운영 프로그램',val:item.prog},
+    ]);
+    if(item.sns&&item.sns!=='nan')
+      body+=`<hr class="divider"><a href="${item.sns}" target="_blank" class="sns-link"><i class="ti ti-brand-instagram"></i> 인스타그램 보기</a>`;
+  } else if (item._sid==='culture') {
+    body=`<div class="stat-grid" style="margin-bottom:14px;">
+      <div class="stat-cell"><div class="stat-n">${item.theater}</div><div class="stat-l">공연장</div></div>
+      <div class="stat-cell"><div class="stat-n">${item.cinema}</div><div class="stat-l">영화관</div></div>
+      <div class="stat-cell"><div class="stat-n">${item.museum}</div><div class="stat-l">박물관</div></div>
+      <div class="stat-cell"><div class="stat-n">${item.art}</div><div class="stat-l">문예회관</div></div>
+      <div class="stat-cell"><div class="stat-n">${item.welfare}</div><div class="stat-l">복지회관</div></div>
+      <div class="stat-cell"><div class="stat-n">${item.sports}</div><div class="stat-l">구민체육</div></div>
+      <div class="stat-cell"><div class="stat-n">${item.youth}</div><div class="stat-l">청소년수련</div></div>
+      <div class="stat-cell"><div class="stat-n">${item.cultural_org}</div><div class="stat-l">문화원</div></div>
+    </div>
+    ${drows([{icon:'ti-phone',bg:'var(--sky0)',col:'var(--sky)',label:'대표문의',val:item.phone}])}`;
+  } else {
+    body = `<p style="color:var(--txt2);font-size:13px;">상세 정보를 불러오는 중 오류가 발생했습니다.</p>`;
+  }
+
+  document.getElementById('mBody').innerHTML = body + reviewSection(placeKey(item));
+  document.getElementById('overlay').classList.add('show');
+  document.body.style.overflow='hidden';
+  // 현재 열린 아이템 저장
+  window._curItem = item;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// 리뷰 시스템
+// ══════════════════════════════════════════════════════════════════
+// localStorage key 생성 — 장소명+구로 유니크 식별
+function placeKey(item) {
+  return 'rv__' + (item.name||'') + '__' + (item.gu||'');
+}
+
+// localStorage 저장/로드
+function loadReviews(key) {
+  try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch { return []; }
+}
+function saveReviews(key, arr) {
+  try { localStorage.setItem(key, JSON.stringify(arr)); } catch {}
+}
+
+// 리뷰 섹션 HTML 생성
+const REVIEW_TAGS = [
+  {id:'yezkids',  label:'예스키즈 ✅',  cls:''},
+  {id:'nokids',   label:'노키즈존 ❌',  cls:'rtag-red'},
+  {id:'stroller', label:'유아차OK 🛒',  cls:'rtag-blue'},
+  {id:'nursing',  label:'수유실있음 🍼', cls:'rtag-blue'},
+  {id:'parking',  label:'주차편리 🚗',  cls:''},
+  {id:'clean',    label:'청결양호 ✨',  cls:''},
+  {id:'wait',     label:'대기있음 ⏳',  cls:'rtag-amber'},
+  {id:'kidsmenu', label:'아이메뉴 🍱',  cls:''},
+  {id:'tasty',    label:'어른도맛있음 😋', cls:''},
+];
+
+function reviewSection(key) {
+  const reviews = loadReviews(key);
+  const avg = reviews.length
+    ? (reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1)
+    : null;
+
+  const listHtml = reviews.length
+    ? reviews.map((r,i) => reviewItemHtml(r, i, key)).join('')
+    : '<div class="review-empty"><i class="ti ti-message-off" style="font-size:22px;display:block;margin-bottom:4px;opacity:.3;"></i>아직 리뷰가 없어요.<br>첫 번째 리뷰를 남겨보세요!</div>';
+
+  return `
+  <div class="review-wrap" id="reviewWrap">
+    <div class="review-head">
+      <div class="review-title">
+        <i class="ti ti-message-circle" style="font-size:15px;color:var(--g4);"></i>
+        방문 리뷰
+        ${avg ? `<span style="color:#FBBF24;font-size:13px;">★ ${avg}</span>` : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="review-count">${reviews.length}개</span>
+        <button class="btn-write" id="btnWrite" onclick="toggleForm()">
+          <i class="ti ti-pencil" style="font-size:12px;"></i> 리뷰 쓰기
+        </button>
+      </div>
+    </div>
+
+    <!-- 작성 폼 -->
+    <div class="review-form" id="reviewForm">
+      <div class="form-label">닉네임</div>
+      <input class="form-inp" id="rvNick" type="text" placeholder="예: 맑은하늘맘" maxlength="12">
+
+      <div class="form-label">별점</div>
+      <div class="stars-row" id="starRow">
+        <span class="star" data-v="1" onclick="setStar(1)" onmouseenter="hoverStar(1)" onmouseleave="unhoverStar()">★</span>
+        <span class="star" data-v="2" onclick="setStar(2)" onmouseenter="hoverStar(2)" onmouseleave="unhoverStar()">★</span>
+        <span class="star" data-v="3" onclick="setStar(3)" onmouseenter="hoverStar(3)" onmouseleave="unhoverStar()">★</span>
+        <span class="star" data-v="4" onclick="setStar(4)" onmouseenter="hoverStar(4)" onmouseleave="unhoverStar()">★</span>
+        <span class="star" data-v="5" onclick="setStar(5)" onmouseenter="hoverStar(5)" onmouseleave="unhoverStar()">★</span>
+      </div>
+
+      <div class="form-label">태그 선택 (중복 가능)</div>
+      <div class="tag-select" id="tagSelect">
+        ${REVIEW_TAGS.map(t=>`<span class="rtag ${t.cls}" data-id="${t.id}" onclick="toggleTag(this)">${t.label}</span>`).join('')}
+      </div>
+
+      <div class="form-label">리뷰 내용</div>
+      <textarea class="form-inp" id="rvText" placeholder="방문 경험을 자유롭게 남겨주세요 (최대 150자)" maxlength="150"></textarea>
+
+      <div class="form-btns">
+        <button class="btn-cancel-sm" onclick="toggleForm()">취소</button>
+        <button class="btn-submit-sm" onclick="submitReview('${key}')">등록하기</button>
+      </div>
+    </div>
+
+    <!-- 리뷰 목록 -->
+    <div class="review-list" id="reviewList">${listHtml}</div>
+  </div>`;
+}
+
+function reviewItemHtml(r, i, key) {
+  const stars = '★'.repeat(r.rating) + '☆'.repeat(5-r.rating);
+  const tagHtml = (r.tags||[]).map(tid => {
+    const def = REVIEW_TAGS.find(x=>x.id===tid);
+    if (!def) return '';
+    const cls = def.cls === 'rtag-red' ? 'rv-tag-red' : def.cls === 'rtag-blue' ? 'rv-tag-blue' : def.cls === 'rtag-amber' ? 'rv-tag-amber' : '';
+    return `<span class="rv-tag ${cls}">${def.label}</span>`;
   }).join('');
-
-  container.innerHTML = `
-    <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
-      <rect width="${W}" height="${H}" fill="#EEF4ED"/>
-      <rect x="10" y="10" width="${W-20}" height="${H-20}" rx="8" fill="#E8F0E8" stroke="#C8D8C8" stroke-width="0.5"/>
-      ${dots}
-    </svg>
-    <div class="legend">
-      <div class="legend-row"><div class="legend-dot" style="background:#2D6A4F"></div> 공원·자연</div>
-      <div class="legend-row"><div class="legend-dot" style="background:#48CAE4"></div> 키즈카페</div>
-      <div class="legend-row"><div class="legend-dot" style="background:#7B5EA7"></div> 문화·공연</div>
-      <div class="legend-row"><div class="legend-dot" style="background:#F9C74F"></div> 놀이시설</div>
-    </div>
-  `;
-}
-
-function showInfo(id) {
-  const p = PLACES_DB.find(x => x.id === id);
-  if (!p) return;
-  document.querySelectorAll('.place-card').forEach(c => c.classList.remove('active'));
-  const card = document.querySelector(`[data-id="${id}"]`);
-  if (card) card.classList.add('active');
-
-  const typeMap = { park:'공원·자연', kids:'키즈카페', culture:'문화·공연', play:'놀이시설' };
-  document.getElementById('panelName').textContent = p.name;
-  document.getElementById('panelType').textContent = `${p.gu} · ${typeMap[p.type]}`;
-
-  const rows = [
-    { ok: p.parking, icon:'ti-car', label:'주차장', ok_txt:'이용 가능', no_txt:'주차 불가' },
-    { ok: p.stroller, icon:'ti-baby-carriage', label:'유아차 대여', ok_txt:'있음', no_txt:'미제공' },
-    { ok: p.nursing, icon:'ti-heart', label:'수유실', ok_txt:'있음', no_txt:'없음' },
-    { ok: p.hospital, icon:'ti-building-hospital', label:'인근 소아과', ok_txt:'있음', no_txt:'확인 필요' },
-    { ok: p.yezkids, icon:'ti-mood-happy', label:'키즈존', ok_txt:'예스키즈', no_txt:'노키즈' },
-  ];
-
-  document.getElementById('panelRows').innerHTML = rows.map(r => `
-    <div class="info-row">
-      <div class="info-icon ${r.ok ? 'info-ok':'info-warn'}">
-        <i class="ti ${r.icon}" style="font-size:14px; color:${r.ok ? '#2E7D32':'#E65100'}" aria-hidden="true"></i>
+  return `<div class="review-item" id="rvi-${i}">
+    <div class="review-item-head">
+      <div class="reviewer">
+        <div class="avatar">${(r.nick||'?')[0]}</div>
+        <span class="reviewer-name">${esc(r.nick)}</span>
       </div>
-      <span class="info-label">${r.label}</span>
-      <span class="info-val" style="margin-left:auto; color:${r.ok ? '#2E7D32':'#E65100'}">
-        ${r.ok ? r.ok_txt : r.no_txt}
-      </span>
-    </div>
-  `).join('');
-
-  document.getElementById('infoPanel').classList.add('show');
-}
-
-function closePanel() {
-  document.getElementById('infoPanel').classList.remove('show');
-  document.querySelectorAll('.place-card').forEach(c => c.classList.remove('active'));
-}
-
-function updateStats(places) {
-  document.getElementById('statPark').textContent = places.filter(p=>p.type==='park').length;
-  document.getElementById('statKids').textContent = places.filter(p=>p.type==='kids').length;
-  document.getElementById('statCulture').textContent = places.filter(p=>p.type==='culture').length;
-  document.getElementById('statParking').textContent = places.filter(p=>p.parking).length;
-  document.getElementById('statStroller').textContent = places.filter(p=>p.stroller).length;
-  document.getElementById('statNursing').textContent = places.filter(p=>p.nursing).length;
-}
-
-function renderEvents(gu) {
-  const el = document.getElementById('eventLoadingSpan');
-  el.textContent = '공연 정보 불러오는 중...';
-  const eventCards = document.getElementById('eventCards');
-  eventCards.innerHTML = '';
-
-  setTimeout(() => {
-    el.textContent = '';
-    let events = [];
-    if (gu && EVENTS_BY_GU[gu]) {
-      events = EVENTS_BY_GU[gu];
-    } else {
-      Object.values(EVENTS_BY_GU).forEach(arr => events.push(...arr));
-      events = events.slice(0, 6);
-    }
-
-    if (events.length === 0) {
-      eventCards.innerHTML = '<span style="font-size:12px;color:var(--color-text-tertiary);padding:8px 0;">등록된 공연·행사 정보가 없습니다</span>';
-      return;
-    }
-
-    eventCards.innerHTML = events.map(e => `
-      <div class="event-card">
-        <span class="event-type">${e.type}</span>
-        <div class="event-name">${e.name}</div>
-        <div class="event-meta"><i class="ti ti-calendar" style="font-size:11px" aria-hidden="true"></i> ${e.date}</div>
-        <div class="event-meta" style="margin-top:2px"><i class="ti ti-map-pin" style="font-size:11px" aria-hidden="true"></i> ${e.venue}</div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span class="review-date">${r.date}</span>
+        <button class="review-del" onclick="deleteReview('${key}',${i})" title="삭제"><i class="ti ti-trash" style="font-size:12px;"></i></button>
       </div>
-    `).join('');
-  }, 900);
+    </div>
+    <div class="review-stars">${stars}</div>
+    ${tagHtml ? `<div class="review-tags">${tagHtml}</div>` : ''}
+    <div class="review-text">${esc(r.text)}</div>
+  </div>`;
 }
 
-searchPlaces();
+// 폼 토글
+let _star = 0;
+function toggleForm() {
+  const form = document.getElementById('reviewForm');
+  const btn  = document.getElementById('btnWrite');
+  const isOpen = form.classList.contains('show');
+  form.classList.toggle('show');
+  btn.classList.toggle('open');
+  if (!isOpen) {
+    // 초기화
+    _star = 0;
+    document.getElementById('rvNick').value = '';
+    document.getElementById('rvText').value = '';
+    document.querySelectorAll('#starRow .star').forEach(s=>s.classList.remove('on','hover'));
+    document.querySelectorAll('#tagSelect .rtag').forEach(t=>t.classList.remove('on'));
+  }
+}
+
+// 별점
+function setStar(v) {
+  _star = v;
+  document.querySelectorAll('#starRow .star').forEach(s => {
+    s.classList.toggle('on', parseInt(s.dataset.v) <= v);
+  });
+}
+function hoverStar(v) {
+  document.querySelectorAll('#starRow .star').forEach(s => {
+    s.classList.toggle('hover', parseInt(s.dataset.v) <= v);
+  });
+}
+function unhoverStar() {
+  document.querySelectorAll('#starRow .star').forEach(s => s.classList.remove('hover'));
+}
+
+// 태그 토글
+function toggleTag(el) { el.classList.toggle('on'); }
+
+// 리뷰 등록
+function submitReview(key) {
+  const nick = document.getElementById('rvNick').value.trim();
+  const text = document.getElementById('rvText').value.trim();
+  if (!nick) { alert('닉네임을 입력해주세요.'); return; }
+  if (!_star) { alert('별점을 선택해주세요.'); return; }
+  if (!text)  { alert('리뷰 내용을 입력해주세요.'); return; }
+
+  const tags = [...document.querySelectorAll('#tagSelect .rtag.on')].map(el=>el.dataset.id);
+  const d = new Date();
+  const date = `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+
+  const reviews = loadReviews(key);
+  reviews.unshift({ nick, rating: _star, tags, text, date });
+  saveReviews(key, reviews);
+
+  // 리뷰 섹션만 갱신
+  const wrap = document.getElementById('reviewWrap');
+  if (wrap) wrap.outerHTML = reviewSection(key);
+
+  // 카드도 갱신 (리뷰 뱃지)
+  if (CUR_GU) refreshCardBadge(window._curItem);
+}
+
+// 리뷰 삭제
+function deleteReview(key, idx) {
+  if (!confirm('이 리뷰를 삭제하시겠습니까?')) return;
+  const reviews = loadReviews(key);
+  reviews.splice(idx, 1);
+  saveReviews(key, reviews);
+  const wrap = document.getElementById('reviewWrap');
+  if (wrap) wrap.outerHTML = reviewSection(key);
+  if (CUR_GU) refreshCardBadge(window._curItem);
+}
+
+// 카드 내 리뷰 뱃지 갱신
+function refreshCardBadge(item) {
+  if (!item) return;
+  const key = placeKey(item);
+  const reviews = loadReviews(key);
+  if (!reviews.length) return;
+  const avg = (reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1);
+  // 카드 찾아서 뱃지 업데이트
+  document.querySelectorAll('.card').forEach(card => {
+    const nameEl = card.querySelector('.card-name');
+    if (nameEl && nameEl.textContent.trim() === (item.name||'').replace(/&amp;/g,'&')) {
+      let badge = card.querySelector('.card-review-badge');
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'card-review-badge';
+        card.appendChild(badge);
+      }
+      badge.innerHTML = `<span class="star-mini">★</span>${avg} <span style="color:var(--txt3);">(${reviews.length})</span>`;
+    }
+  });
+}
+
+function drows(rows) {
+  return rows.map(r=>`<div class="d-row">
+    <div class="d-icon" style="background:${r.bg};color:${r.col};"><i class="ti ${r.icon}"></i></div>
+    <div><div class="d-label">${r.label}</div><div class="d-val">${esc(r.val||'-')}</div></div>
+  </div>`).join('');
+}
+
+function fcItem(ok, icon, yes, no) {
+  return `<div class="fc-item ${ok?'fc-green':'fc-yellow'}">
+    <i class="ti ${icon}"></i>${ok?yes:no}
+  </div>`;
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('show');
+  document.body.style.overflow='';
+}
+function closeOut(e){ if(e.target===document.getElementById('overlay')) closeModal(); }
+
+// ══════════════════════════════════════════════════════════════════
+// 검색
+// ══════════════════════════════════════════════════════════════════
+function onSearch() {
+  QUERY = document.getElementById('searchInp').value.trim().toLowerCase();
+  if (CUR_GU) { PAGES={}; renderContent(CUR_GU); }
+}
+
+// ══════════════════════════════════════════════════════════════════
+// 유틸
+// ══════════════════════════════════════════════════════════════════
+function esc(s){ if(!s||s==='nan'||s==='None') return '-'; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function safeJson(obj){ return JSON.stringify(obj).replace(/'/g,'&#39;'); }
+
+// ══════════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════════
+renderGuGrid();
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
 </script>
+</body>
+</html>
